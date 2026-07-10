@@ -75,4 +75,8 @@ def create_app():
     app.register_blueprint(negociacoes_bp)
     app.register_blueprint(configuracoes_bp)
 
+    with app.app_context():
+        from app.bootstrap import bootstrap
+        bootstrap()
+
     return app
