@@ -8,31 +8,32 @@ def bootstrap():
 
     inspector = inspect(db.engine)
 
-    # Aguarda as migrations criarem as tabelas
+    # Aguarda o banco ser criado pelas migrations
     if "usuarios" not in inspector.get_table_names():
         return
 
     EMAIL = "master@77frotas.com"
     SENHA = "123456"
 
-    usuario = Usuario.query.filter_by(
+    master = Usuario.query.filter_by(
         email=EMAIL
     ).first()
 
-    if usuario:
+    # Já existe
+    if master:
         return
 
-    usuario = Usuario(
-        nome="MASTER",
+    master = Usuario(
+        nome="Master",
         email=EMAIL,
         perfil="MASTER",
         ativo=True,
         conta_id=None
     )
 
-    usuario.set_senha(SENHA)
+    master.set_senha(SENHA)
 
-    db.session.add(usuario)
+    db.session.add(master)
     db.session.commit()
 
-    print("✅ Usuário MASTER criado automaticamente.")
+    print("✅ Master criado automaticamente.")
