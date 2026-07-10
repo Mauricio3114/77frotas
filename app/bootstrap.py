@@ -1,23 +1,24 @@
-from app import create_app, db
+from sqlalchemy import inspect
 
+from app import db
 from app.models.conta import Conta
 from app.models.usuario import Usuario
 
 
-app = create_app()
+def bootstrap():
 
+    inspector = inspect(db.engine)
 
-with app.app_context():
-
-    print("\n======================================")
-    print("       77 FROTAS - BOOTSTRAP")
-    print("======================================\n")
+    # Se as tabelas ainda não existem,
+    # não faz nada.
+    if "usuarios" not in inspector.get_table_names():
+        return
 
     EMAIL = "master@77frotas.com"
     SENHA = "123456"
 
     #
-    # CONTA MASTER
+    # Conta Master
     #
 
     conta = Conta.query.filter_by(
@@ -47,14 +48,10 @@ with app.app_context():
         db.session.add(conta)
         db.session.commit()
 
-        print("✅ Conta MASTER criada.")
-
-    else:
-
-        print("✅ Conta MASTER já existe.")
+        print("✔ Conta MASTER criada.")
 
     #
-    # USUÁRIO MASTER
+    # Usuário Master
     #
 
     usuario = Usuario.query.filter_by(
@@ -82,15 +79,4 @@ with app.app_context():
         db.session.add(usuario)
         db.session.commit()
 
-        print("✅ Usuário MASTER criado.")
-
-    else:
-
-        print("✅ Usuário MASTER já existe.")
-
-    print("\n======================================")
-    print("      SISTEMA PRONTO")
-    print("======================================")
-    print(f"E-mail : {EMAIL}")
-    print(f"Senha  : {SENHA}")
-    print("======================================\n")
+        print("✔ Usuário MASTER criado.")
