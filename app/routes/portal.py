@@ -270,21 +270,6 @@ def solicitar_negociacao(parcela_id):
 
     parcela = Parcela.query.get_or_404(parcela_id)
 
-    pagamento_existente = Pagamento.query.filter_by(
-        parcela_id=parcela.id
-    ).filter(
-        Pagamento.webhook_recebido == False
-    ).first()
-
-    if pagamento_existente:
-        flash(
-            "Já existe um pagamento aguardando confirmação para esta parcela.",
-            "warning"
-        )
-
-        return redirect(
-            url_for("portal.parcelas")
-        )
 
     if request.method == "POST":
 
@@ -353,6 +338,22 @@ def pagamento_pix(parcela_id):
 
     parcela = Parcela.query.get_or_404(parcela_id)
 
+    pagamento_existente = Pagamento.query.filter_by(
+        parcela_id=parcela.id
+    ).filter(
+        Pagamento.webhook_recebido == False
+    ).first()
+
+    if pagamento_existente:
+        flash(
+            "Já existe um pagamento aguardando confirmação para esta parcela.",
+            "warning"
+        )
+
+        return redirect(
+            url_for("portal.parcelas")
+        )
+
     if request.method == "POST":
 
         url_comprovante = None
@@ -381,7 +382,7 @@ def pagamento_pix(parcela_id):
 
             gateway="Manual",
 
-            webhook_recebido=False
+            webhook_recebido=False,
 
             comprovante=url_comprovante,
 
