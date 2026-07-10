@@ -1,0 +1,393 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Parcelas{% endblock %}
+{% block topbar_title %}Parcelas{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Parcelas</h1>
+        <p>Controle os vencimentos e pagamentos da locadora.</p>
+    </div>
+
+</div>
+
+<div class="grid-kpis">
+
+    <div class="kpi-card">
+        <small>ABERTO</small>
+        <h2>R$ {{ "%.2f"|format(total_aberto or 0) }}</h2>
+    </div>
+
+    <div class="kpi-card">
+        <small>PAGO</small>
+        <h2>R$ {{ "%.2f"|format(total_pago or 0) }}</h2>
+    </div>
+
+    <div class="kpi-card">
+        <small>ATRASADAS</small>
+        <h2>{{ total_atrasadas }}</h2>
+    </div>
+
+    <div class="kpi-card">
+        <small>TOTAL</small>
+        <h2>{{ parcelas|length }}</h2>
+    </div>
+
+</div>
+
+<div class="premium-card filtro-card">
+
+    <div class="filtros">
+
+        <a href="{{ url_for('parcelas.listar') }}" class="filtro {% if not status %}ativo{% endif %}">
+            Todas
+        </a>
+
+        <a href="{{ url_for('parcelas.listar', status='abertas') }}" class="filtro {% if status=='abertas' %}ativo{% endif %}">
+            Abertas
+        </a>
+
+        <a href="{{ url_for('parcelas.listar', status='atrasadas') }}" class="filtro {% if status=='atrasadas' %}ativo{% endif %}">
+            Atrasadas
+        </a>
+
+        <a href="{{ url_for('parcelas.listar', status='pagas') }}" class="filtro {% if status=='pagas' %}ativo{% endif %}">
+            Pagas
+        </a>
+
+    </div>
+
+</div>
+
+{% if parcelas %}
+
+<div class="parcelas-grid">
+
+{% for p in parcelas %}
+
+<div class="parcela-card">
+
+    <div class="parcela-info">
+
+        <h3>
+            {{ p.locacao.cliente.nome if p.locacao and p.locacao.cliente else "Cliente" }}
+        </h3>
+
+        <p>
+            🚗
+            {{ p.locacao.veiculo.marca if p.locacao and p.locacao.veiculo else "" }}
+            {{ p.locacao.veiculo.modelo if p.locacao and p.locacao.veiculo else "" }}
+        </p>
+
+        <p>
+            Parcela {{ p.numero }}
+        </p>
+
+    </div>
+
+    <div class="parcela-dados">
+
+        <small>VENCIMENTO</small>
+
+        <strong>
+            {{ p.vencimento.strftime("%d/%m/%Y") }}
+        </strong>
+
+    </div>
+
+    <div class="parcela-dados">
+
+        <small>VALOR</small>
+
+        <strong>
+            R$ {{ "%.2f"|format(p.valor or 0) }}
+        </strong>
+
+    </div>
+
+    <div class="parcela-status">
+
+        {% if p.status == "paga" %}
+
+            <span class="status pago">Pago</span>
+
+        {% elif p.vencimento < hoje %}
+
+            <span class="status atrasado">Atrasado</span>
+
+        {% else %}
+
+            <span class="status aberto">Aberto</span>
+
+        {% endif %}
+
+        {% if p.negociacoes %}
+
+            <span class="status negociada">
+                🤝 Renegociada ({{ p.negociacoes|length }})
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <div class="parcela-acoes">
+
+        {% if p.status == "paga" %}
+
+            <span class="recebido">
+                ✔ Recebido
+            </span>
+
+        {% elif p.status == "negociada" %}
+
+            <span class="negociada">
+                🤝 Negociada
+            </span>
+
+        {% else %}
+
+            <div class="acoes-grid">
+
+                <a
+                    href="{{ url_for('locacoes.receber_parcela', parcela_id=p.id) }}"
+                    class="btn-mini">
+
+                    Receber
+
+                </a>
+
+                <a
+                    href="{{ url_for('locacoes.negociar_parcela', parcela_id=p.id) }}"
+                    class="btn-negociar">
+
+                    Negociar
+
+                </a>
+
+                {% if p.negociacoes %}
+
+                <a
+                    href="{{ url_for('locacoes.historico_negociacao', parcela_id=p.id) }}"
+                    class="btn-historico">
+
+                    Histórico
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="premium-card empty">
+    <div style="font-size:70px;">💵</div>
+    <h2>Nenhuma parcela encontrada</h2>
+    <p>As parcelas das locações aparecerão aqui.</p>
+</div>
+
+{% endif %}
+
+<style>
+
+.filtro-card{
+    margin-bottom:22px;
+}
+
+.filtros{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.filtro{
+    padding:12px 18px;
+    border-radius:14px;
+    background:#f1f5f9;
+    color:#0f172a;
+    font-weight:900;
+}
+
+.filtro.ativo{
+    background:#ff6a00;
+    color:#fff;
+    box-shadow:0 12px 24px rgba(255,106,0,.20);
+}
+
+.parcelas-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+}
+
+.parcela-card{
+    background:#fff;
+    border:1px solid #edf2f7;
+    border-left:6px solid #ff6a00;
+    border-radius:26px;
+    padding:22px;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr .8fr .8fr;
+    gap:18px;
+    align-items:center;
+    box-shadow:0 18px 40px rgba(15,23,42,.06);
+}
+
+.parcela-info h3{
+    margin:0 0 8px;
+}
+
+.parcela-info p{
+    margin:4px 0;
+    color:#64748b;
+    font-weight:700;
+}
+
+.parcela-dados small{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    font-weight:900;
+    margin-bottom:6px;
+}
+
+.parcela-dados strong{
+    font-size:18px;
+}
+
+.status{
+    display:inline-block;
+    padding:8px 13px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:900;
+}
+
+.status.pago{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status.aberto{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.status.atrasado{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.btn-mini{
+    padding:11px 20px;
+    border-radius:14px;
+    font-weight:900;
+    text-decoration:none;
+    text-align:center;
+    background:#111827;
+    color:#fff;
+    display:inline-flex;
+    justify-content:center;
+}
+
+.recebido{
+    color:#166534;
+    font-weight:900;
+}
+
+.empty{
+    text-align:center;
+    padding:70px 30px;
+}
+
+@media(max-width:900px){
+
+    .parcela-card{
+        grid-template-columns:1fr;
+    }
+
+}
+
+.acoes-grid{
+
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+
+}
+
+.btn-negociar{
+
+    padding:11px 20px;
+    border-radius:14px;
+    background:#f59e0b;
+    color:#fff;
+    text-decoration:none;
+    font-weight:900;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.btn-negociar:hover{
+
+    background:#d97706;
+
+}
+
+.negociada{
+
+    display:inline-block;
+    padding:8px 13px;
+    border-radius:999px;
+    background:#fef3c7;
+    color:#92400e;
+    font-weight:900;
+
+}
+
+.btn-historico{
+
+    background:#2563eb;
+    color:#fff;
+    padding:11px 20px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:900;
+
+}
+
+.btn-historico:hover{
+
+    background:#1d4ed8;
+
+}
+
+.status.negociada{
+
+    margin-top:8px;
+    display:inline-block;
+    background:#fef3c7;
+    color:#92400e;
+    border:1px solid #fde68a;
+
+}
+
+</style>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Encerrar Locação{% endblock %}
+{% block topbar_title %}Encerrar Locação{% endblock %}
+
+{% block content %}
+
+<form method="POST">
+
+<div class="page-header">
+
+    <div>
+        <h1>Encerrar Locação</h1>
+        <p>{{ locacao.cliente.nome }} • {{ locacao.veiculo.placa }}</p>
+    </div>
+
+</div>
+
+<div class="premium-card">
+
+    <div class="form-grid">
+
+        <div>
+            <label>KM de Devolução</label>
+            <input
+                type="number"
+                name="km_devolucao"
+                class="form-control"
+                value="{{ locacao.veiculo.km_atual or 0 }}">
+        </div>
+
+        <div>
+            <label>Data de Encerramento</label>
+            <input
+                type="text"
+                class="form-control"
+                value="Hoje"
+                disabled>
+        </div>
+
+    </div>
+
+    <div style="margin-top:20px;">
+
+        <label>Observações</label>
+
+        <textarea
+            name="observacoes"
+            rows="5"
+            class="form-control"
+            placeholder="Ex: veículo devolvido sem pendências..."></textarea>
+
+    </div>
+
+    <div style="margin-top:30px; display:flex; justify-content:flex-end; gap:12px;">
+
+        <a
+            href="{{ url_for('locacoes.detalhes_locacao', locacao_id=locacao.id) }}"
+            class="btn-premium"
+            style="background:#64748b;">
+            Voltar
+        </a>
+
+        <button
+            type="submit"
+            class="btn-premium">
+            🔚 Finalizar Locação
+        </button>
+
+    </div>
+
+</div>
+
+</form>
+
+{% endblock %}

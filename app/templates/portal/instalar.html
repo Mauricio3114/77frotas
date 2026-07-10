@@ -1,0 +1,215 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Bem-vindo{% endblock %}
+
+{% block content %}
+
+<div class="welcome-container">
+
+    <div class="welcome-card">
+
+        <div class="phone">
+
+            📱
+
+        </div>
+
+        <h1>
+
+            Baixe o Aplicativo 77 Frotas
+
+        </h1>
+
+        <p>
+
+            Instale o aplicativo na tela inicial do seu celular
+            para acessar rapidamente sempre que precisar.
+
+        </p>
+
+        <div class="vantagens">
+
+            <div>✅ Acesso com apenas um toque</div>
+
+            <div>✅ Abre como aplicativo</div>
+
+            <div>✅ Mais rápido e seguro</div>
+
+            <div>✅ Sem precisar abrir o navegador</div>
+
+        </div>
+
+        <button
+            id="btnInstalar"
+            class="btn-instalar">
+
+            📲 Instalar Aplicativo
+
+        </button>
+
+    </div>
+
+</div>
+
+<style>
+
+body{
+
+    background:#f5f7fb;
+
+}
+
+.welcome-container{
+
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+
+}
+
+.welcome-card{
+
+    max-width:520px;
+    width:100%;
+    background:#fff;
+    border-radius:28px;
+    border-left:7px solid #ff6a00;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+
+}
+
+.phone{
+
+    font-size:75px;
+    margin-bottom:20px;
+
+}
+
+.welcome-card h1{
+
+    margin-bottom:18px;
+
+}
+
+.welcome-card p{
+
+    color:#64748b;
+    line-height:1.7;
+    margin-bottom:25px;
+
+}
+
+.vantagens{
+
+    text-align:left;
+    background:#fff7ed;
+    border:1px solid #fed7aa;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:30px;
+
+}
+
+.vantagens div{
+
+    margin:10px 0;
+    font-weight:700;
+
+}
+
+.btn-instalar{
+
+    width:100%;
+    border:none;
+    padding:18px;
+    border-radius:16px;
+    background:#ff6a00;
+    color:#fff;
+    font-size:17px;
+    font-weight:900;
+    cursor:pointer;
+
+}
+
+.btn-instalar:hover{
+
+    background:#ea580c;
+
+}
+
+</style>
+
+<script>
+
+if(localStorage.getItem("portal_instalado")=="sim"){
+
+    window.location="{{ url_for('portal.home') }}";
+
+}
+
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt",(e)=>{
+
+    e.preventDefault();
+
+    deferredPrompt=e;
+
+});
+
+document
+.getElementById("btnInstalar")
+.addEventListener("click",async()=>{
+
+    if(deferredPrompt){
+
+        deferredPrompt.prompt();
+
+        const escolha=await deferredPrompt.userChoice;
+
+        if(escolha.outcome==="accepted"){
+
+            localStorage.setItem(
+                "portal_instalado",
+                "sim"
+            );
+
+        }
+
+        window.location="{{ url_for('portal.home') }}";
+
+    }else{
+
+        alert(
+            "No iPhone toque em Compartilhar e depois em 'Adicionar à Tela de Início'."
+        );
+
+        localStorage.setItem(
+            "portal_instalado",
+            "sim"
+        );
+
+        window.location="{{ url_for('portal.home') }}";
+
+    }
+
+});
+
+window.addEventListener("appinstalled",()=>{
+
+    localStorage.setItem(
+        "portal_instalado",
+        "sim"
+    );
+
+    window.location="{{ url_for('portal.home') }}";
+
+});
+
+</script>
+
+{% endblock %}

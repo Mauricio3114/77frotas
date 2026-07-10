@@ -1,0 +1,255 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block content %}
+
+<div class="mb-4 d-flex justify-content-between align-items-center flex-wrap">
+
+    <div>
+
+        <h2 class="mb-1">💳 Recebimento</h2>
+
+        <small class="text-muted">
+            Confirme o pagamento realizado pelo cliente.
+        </small>
+
+    </div>
+
+    <div>
+
+        {% if pagamento.webhook_recebido %}
+
+        <span class="badge bg-success fs-6 px-3 py-2">
+            ✔ Confirmado
+        </span>
+
+        {% else %}
+
+        <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+            ⏳ Aguardando confirmação
+        </span>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<div class="card border-0 shadow rounded-4">
+
+<div class="card-body p-4">
+
+<div class="row g-4">
+
+<div class="col-md-6">
+
+<label class="text-muted fw-bold">
+
+CLIENTE
+
+</label>
+
+<h5>
+
+{{ parcela.locacao.cliente.nome }}
+
+</h5>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="text-muted fw-bold">
+
+VEÍCULO
+
+</label>
+
+<h5>
+
+{{ parcela.locacao.veiculo.marca }}
+
+{{ parcela.locacao.veiculo.modelo }}
+
+</h5>
+
+</div>
+
+<div class="col-md-4">
+
+<label class="text-muted fw-bold">
+
+PARCELA
+
+</label>
+
+<h4>
+
+{{ parcela.numero }}
+
+</h4>
+
+</div>
+
+<div class="col-md-4">
+
+<label class="text-muted fw-bold">
+
+VALOR
+
+</label>
+
+<h4 class="text-success">
+
+R$ {{ "%.2f"|format(parcela.valor) }}
+
+</h4>
+
+</div>
+
+<div class="col-md-4">
+
+<label class="text-muted fw-bold">
+
+VENCIMENTO
+
+</label>
+
+<h4>
+
+{{ parcela.vencimento.strftime("%d/%m/%Y") }}
+
+</h4>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="alert alert-warning rounded-4">
+
+<h5 class="mb-2">
+
+📲 Recebimento via PIX
+
+</h5>
+
+<p class="mb-0">
+
+Confira o comprovante enviado pelo cliente ou confirme diretamente no extrato bancário antes de aprovar o pagamento.
+
+</p>
+
+</div>
+
+{% if pagamento.comprovante %}
+
+<div class="card border-0 shadow-sm rounded-4 mt-4">
+
+    <div class="card-body">
+
+        <h5 class="mb-3">
+            📎 Comprovante enviado
+        </h5>
+
+        {% set arquivo = pagamento.comprovante|lower %}
+
+        {% if ".jpg" in arquivo
+        or ".jpeg" in arquivo
+        or ".png" in arquivo
+        or ".webp" in arquivo %}
+
+            <img
+                src="{{ pagamento.comprovante }}"
+                class="img-fluid rounded-4 border shadow-sm mb-3"
+                style="max-height:650px;width:auto;display:block;margin:auto;"
+            >
+
+        {% else %}
+
+            <div class="alert alert-info rounded-4">
+
+                Este comprovante é um PDF ou outro documento.
+
+            </div>
+
+        {% endif %}
+
+        <a
+            href="{{ pagamento.comprovante }}"
+            target="_blank"
+            class="btn btn-primary rounded-4">
+
+            <i class="bi bi-eye-fill"></i>
+
+            Abrir comprovante
+
+        </a>
+
+    </div>
+
+</div>
+
+{% if pagamento.webhook_recebido and pagamento.data_pagamento %}
+
+<div class="alert alert-success rounded-4 mt-3">
+
+    <strong>Pagamento confirmado em:</strong>
+
+    {{ pagamento.data_pagamento.strftime("%d/%m/%Y às %H:%M") }}
+
+</div>
+
+{% endif %}
+
+{% else %}
+
+<div class="alert alert-warning rounded-4 mt-4">
+
+    Nenhum comprovante foi enviado.
+
+</div>
+
+{% endif %}
+
+<hr class="my-4">
+
+<div class="d-flex gap-3 flex-wrap justify-content-end">
+
+    {% if not pagamento.webhook_recebido %}
+
+    <a
+        href="{{ url_for('recebimentos.confirmar_pix', pagamento_id=pagamento.id) }}"
+        class="btn btn-success btn-lg rounded-4">
+
+        ✔ Confirmar Recebimento
+
+    </a>
+
+    <a
+        href="{{ url_for('recebimentos.recusar_pix', pagamento_id=pagamento.id) }}"
+        class="btn btn-danger btn-lg rounded-4">
+
+        ✖ Recusar Comprovante
+
+    </a>
+
+    {% endif %}
+
+    <a
+        href="{{ url_for('recebimentos.listar') }}"
+        class="btn btn-secondary btn-lg rounded-4">
+
+        Voltar
+
+    </a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

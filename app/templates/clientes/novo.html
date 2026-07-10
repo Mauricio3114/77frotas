@@ -1,0 +1,319 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Novo Cliente{% endblock %}
+{% block topbar_title %}Novo Cliente{% endblock %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Novo Cliente</h1>
+
+        <p>Cadastro rápido do motorista.</p>
+
+    </div>
+
+    <div class="acoes-topo">
+
+        <a href="{{ url_for('clientes.listar') }}" class="btn-cinza">
+
+            Voltar
+
+        </a>
+
+        <button type="submit" class="btn-premium">
+
+            Cadastrar Cliente
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="form-grid">
+
+    <div class="premium-card">
+
+        <h3>👤 Dados Pessoais</h3>
+
+        <div class="campo">
+            <label>Nome *</label>
+            <input type="text" name="nome" required>
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+                <label>CPF</label>
+                <input type="text" name="cpf">
+            </div>
+
+            <div class="campo">
+                <label>RG</label>
+                <input type="text" name="rg">
+            </div>
+
+        </div>
+
+        <div class="campo">
+            <label>Data Nascimento</label>
+            <input type="date" name="data_nascimento">
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>🚗 CNH</h3>
+
+        <div class="campo">
+            <label>Número CNH</label>
+            <input type="text" name="numero_cnh">
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+                <label>Categoria</label>
+
+                <select name="categoria_cnh">
+
+                    <option value="">Selecione</option>
+
+                    <option>A</option>
+                    <option>B</option>
+                    <option>AB</option>
+                    <option>C</option>
+                    <option>D</option>
+                    <option>E</option>
+
+                </select>
+
+            </div>
+
+            <div class="campo">
+
+                <label>Validade</label>
+
+                <input
+                    type="date"
+                    name="validade_cnh">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>📞 Contato</h3>
+
+        <div class="campo">
+            <label>WhatsApp</label>
+            <input type="text" name="whatsapp">
+        </div>
+
+        <div class="campo">
+            <label>Telefone</label>
+            <input type="text" name="telefone">
+        </div>
+
+        <div class="campo">
+            <label>E-mail</label>
+            <input type="email" name="email">
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>📍 Endereço</h3>
+
+        <div class="campo">
+            <label>CEP</label>
+            <input type="text" name="cep">
+        </div>
+
+        <div class="campo">
+            <label>Endereço</label>
+            <input type="text" name="endereco">
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+                <label>Número</label>
+                <input type="text" name="numero">
+            </div>
+
+            <div class="campo">
+                <label>Bairro</label>
+                <input type="text" name="bairro">
+            </div>
+
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+                <label>Cidade</label>
+                <input type="text" name="cidade">
+            </div>
+
+            <div class="campo">
+                <label>UF</label>
+                <input
+                    type="text"
+                    maxlength="2"
+                    name="estado">
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>📎 Documentos</h3>
+
+        <div class="campo">
+            <label>Foto Cliente</label>
+            <input type="file" name="foto_cliente">
+        </div>
+
+        <div class="campo">
+            <label>Foto CNH</label>
+            <input type="file" name="foto_cnh">
+        </div>
+
+        <div class="campo">
+            <label>Comprovante Residência</label>
+            <input
+                type="file"
+                name="comprovante">
+        </div>
+
+    </div>
+
+</div>
+
+</form>
+
+<style>
+
+.form-grid{
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+gap:22px;
+
+}
+
+.duas-colunas{
+
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+
+}
+
+.campo{
+
+display:flex;
+flex-direction:column;
+margin-top:16px;
+
+}
+
+.campo label{
+
+margin-bottom:6px;
+font-weight:700;
+font-size:14px;
+
+}
+
+.campo input,
+.campo select{
+
+padding:13px;
+border-radius:14px;
+border:1px solid #dbe3ec;
+outline:none;
+
+}
+
+.page-header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+gap:20px;
+flex-wrap:wrap;
+
+}
+
+.acoes-topo{
+
+display:flex;
+gap:12px;
+
+}
+
+.btn-premium{
+
+background:#0f172a;
+color:#fff;
+padding:14px 26px;
+border:none;
+border-radius:14px;
+cursor:pointer;
+font-weight:700;
+
+}
+
+.btn-cinza{
+
+background:#e5e7eb;
+color:#111827;
+padding:14px 24px;
+border-radius:14px;
+text-decoration:none;
+font-weight:700;
+
+}
+
+@media(max-width:800px){
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.duas-colunas{
+
+grid-template-columns:1fr;
+
+}
+
+.acoes-topo{
+
+width:100%;
+display:grid;
+grid-template-columns:1fr 1fr;
+
+}
+
+}
+
+</style>
+
+{% endblock %}

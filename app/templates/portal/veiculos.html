@@ -1,0 +1,338 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Veículos Disponíveis{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Veículos Disponíveis</h1>
+
+        <p>
+
+            Confira todos os veículos disponíveis das locadoras
+            parceiras do 77 Frotas.
+
+        </p>
+
+    </div>
+
+</div>
+
+{% if veiculos %}
+
+<div class="veiculos-grid">
+
+{% for v in veiculos %}
+
+<div class="veiculo-card">
+
+    <div class="foto">
+
+        {% if v.foto_principal %}
+
+            <img
+                src="{{ v.foto_principal }}"
+                alt="Veículo">
+
+        {% else %}
+
+            🚗
+
+        {% endif %}
+
+    </div>
+
+    <div class="dados">
+
+        <h2>
+
+            {{ v.marca }}
+
+            {{ v.modelo }}
+
+        </h2>
+
+        <p>
+
+            {{ v.categoria or "Veículo" }}
+
+        </p>
+
+        <div class="linha">
+
+            <span>
+
+                Ano
+
+            </span>
+
+            <strong>
+
+                {{ v.ano_modelo }}
+
+            </strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>
+
+                Câmbio
+
+            </span>
+
+            <strong>
+
+                {{ v.cambio }}
+
+            </strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>
+
+                Combustível
+
+            </span>
+
+            <strong>
+
+                {{ v.combustivel }}
+
+            </strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>
+
+                Diária
+
+            </span>
+
+            <strong class="valor">
+
+                R$ {{ "%.2f"|format(v.valor_diaria or 0) }}
+
+            </strong>
+
+        </div>
+
+        <div class="empresa">
+
+            {{ v.conta.nome }}
+
+        </div>
+
+        <a
+
+        class="btn-interesse"
+
+        target="_blank"
+
+        href="https://wa.me/55{{ v.conta.telefone|replace('(','')|replace(')','')|replace('-','')|replace(' ','') }}?text=Olá!%0A%0AMeu nome é {{ cliente.nome|replace(' ','%20') }}.%0ACPF:%20{{ cliente.cpf }}.%0ACódigo%20Cliente:%20{{ cliente.id }}.%0A%0ATenho interesse no veículo:%0A🚗 {{ v.marca }} {{ v.modelo }}.%0A%0AEncontrei através do Portal 77 Frotas e gostaria de mais informações.">
+
+            Tenho Interesse
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="premium-card empty">
+
+    <div style="font-size:70px;">
+
+        🚗
+
+    </div>
+
+    <h2>
+
+        Nenhum veículo disponível.
+
+    </h2>
+
+</div>
+
+{% endif %}
+
+<style>
+
+.veiculos-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:24px;
+
+}
+
+.veiculo-card{
+
+    background:#fff;
+
+    border-left:6px solid #ff6a00;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    box-shadow:0 18px 40px rgba(15,23,42,.06);
+
+    transition:.25s;
+
+}
+
+.veiculo-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.foto{
+
+    height:220px;
+
+    background:#f8fafc;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:70px;
+
+}
+
+.foto img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.dados{
+
+    padding:25px;
+
+}
+
+.dados h2{
+
+    margin-bottom:6px;
+
+}
+
+.dados p{
+
+    color:#64748b;
+
+    margin-bottom:18px;
+
+}
+
+.linha{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:12px 0;
+
+}
+
+.valor{
+
+    color:#ff6a00;
+
+    font-size:22px;
+
+}
+
+.empresa{
+
+    margin-top:22px;
+
+    background:#fff7ed;
+
+    border-radius:12px;
+
+    padding:12px;
+
+    text-align:center;
+
+    font-weight:800;
+
+    color:#c2410c;
+
+}
+
+.btn-interesse{
+
+    margin-top:20px;
+
+    display:block;
+
+    text-align:center;
+
+    background:#16a34a;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    font-weight:900;
+
+}
+
+.btn-interesse:hover{
+
+    background:#15803d;
+
+}
+
+.empty{
+
+    text-align:center;
+
+    padding:70px;
+
+}
+
+@media(max-width:768px){
+
+    .veiculos-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

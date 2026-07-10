@@ -1,0 +1,416 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Editar Veículo{% endblock %}
+{% block topbar_title %}Editar Veículo{% endblock %}
+
+{% block content %}
+
+<form method="POST">
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Editar Veículo</h1>
+
+        <p>Atualize os dados do veículo.</p>
+
+    </div>
+
+    <div class="acoes-topo">
+
+        <a href="{{ url_for('veiculos.detalhes', id=veiculo.id) }}" class="btn-cinza">
+
+            Cancelar
+
+        </a>
+
+        <button type="submit" class="btn-premium">
+
+            Salvar Alterações
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="form-grid">
+
+    <div class="premium-card">
+
+        <h3>🚗 Dados do Veículo</h3>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+
+                <label>Marca</label>
+
+                <select name="marca">
+
+                    {% for marca in marcas %}
+
+                    <option
+                        value="{{ marca.nome }}"
+                        {% if marca.nome==veiculo.marca %}selected{% endif %}>
+
+                        {{ marca.nome }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="campo">
+
+                <label>Modelo</label>
+
+                <select name="modelo">
+
+                    {% for modelo in modelos %}
+
+                    <option
+                        value="{{ modelo.nome }}"
+                        {% if modelo.nome==veiculo.modelo %}selected{% endif %}>
+
+                        {{ modelo.nome }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+
+                <label>Categoria</label>
+
+                <input
+                    name="categoria"
+                    value="{{ veiculo.categoria or '' }}">
+
+            </div>
+
+            <div class="campo">
+
+                <label>Cor</label>
+
+                <input
+                    name="cor"
+                    value="{{ veiculo.cor or '' }}">
+
+            </div>
+
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+
+                <label>Ano Fabricação</label>
+
+                <input
+                    name="ano_fabricacao"
+                    value="{{ veiculo.ano_fabricacao or '' }}">
+
+            </div>
+
+            <div class="campo">
+
+                <label>Ano Modelo</label>
+
+                <input
+                    name="ano_modelo"
+                    value="{{ veiculo.ano_modelo or '' }}">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>📄 Documentação</h3>
+
+        <div class="campo">
+
+            <label>Placa</label>
+
+            <input
+                name="placa"
+                value="{{ veiculo.placa }}">
+
+        </div>
+
+        <div class="campo">
+
+            <label>RENAVAM</label>
+
+            <input
+                name="renavam"
+                value="{{ veiculo.renavam or '' }}">
+
+        </div>
+
+        <div class="campo">
+
+            <label>Chassi</label>
+
+            <input
+                name="chassi"
+                value="{{ veiculo.chassi or '' }}">
+
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>⚡ Motorização</h3>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+
+                <label>Combustível</label>
+
+                <select name="combustivel">
+
+                    {% for c in ["Flex","Gasolina","Diesel","Elétrico","Híbrido","GNV"] %}
+
+                    <option
+                        value="{{ c }}"
+                        {% if veiculo.combustivel==c %}selected{% endif %}>
+
+                        {{ c }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="campo">
+
+                <label>Câmbio</label>
+
+                <select name="cambio">
+
+                    {% for c in ["Manual","Automático","CVT"] %}
+
+                    <option
+                        value="{{ c }}"
+                        {% if veiculo.cambio==c %}selected{% endif %}>
+
+                        {{ c }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+
+                <label>Portas</label>
+
+                <input
+                    type="number"
+                    name="portas"
+                    value="{{ veiculo.portas }}">
+
+            </div>
+
+            <div class="campo">
+
+                <label>Lugares</label>
+
+                <input
+                    type="number"
+                    name="lugares"
+                    value="{{ veiculo.lugares }}">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>💰 Locação</h3>
+
+        <div class="campo">
+
+            <label>Valor Diária</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="valor_diaria"
+                value="{{ veiculo.valor_diaria }}">
+
+        </div>
+
+        <div class="duas-colunas">
+
+            <div class="campo">
+
+                <label>KM Atual</label>
+
+                <input
+                    type="number"
+                    name="km_atual"
+                    value="{{ veiculo.km_atual }}">
+
+            </div>
+
+            <div class="campo">
+
+                <label>Status</label>
+
+                <select name="status">
+
+                    <option value="disponivel" {% if veiculo.status=="disponivel" %}selected{% endif %}>Disponível</option>
+
+                    <option value="locado" {% if veiculo.status=="locado" %}selected{% endif %}>Locado</option>
+
+                    <option value="oficina" {% if veiculo.status=="oficina" %}selected{% endif %}>Oficina</option>
+
+                    <option value="inativo" {% if veiculo.status=="inativo" %}selected{% endif %}>Inativo</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="premium-card">
+
+        <h3>📝 Observações</h3>
+
+        <div class="campo">
+
+            <textarea
+                name="observacoes"
+                rows="6">{{ veiculo.observacoes or '' }}</textarea>
+
+        </div>
+
+    </div>
+
+</div>
+
+</form>
+
+<style>
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+gap:22px;
+}
+
+.duas-colunas{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.campo{
+display:flex;
+flex-direction:column;
+margin-top:16px;
+}
+
+.campo label{
+margin-bottom:6px;
+font-weight:700;
+font-size:14px;
+}
+
+.campo input,
+.campo select,
+.campo textarea{
+padding:13px;
+border:1px solid #dbe3ec;
+border-radius:14px;
+outline:none;
+font-family:inherit;
+}
+
+.page-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.acoes-topo{
+display:flex;
+gap:12px;
+}
+
+.btn-premium{
+background:#0f172a;
+color:#fff;
+padding:14px 26px;
+border:none;
+border-radius:14px;
+font-weight:700;
+cursor:pointer;
+}
+
+.btn-cinza{
+background:#e5e7eb;
+padding:14px 24px;
+border-radius:14px;
+text-decoration:none;
+font-weight:700;
+color:#111827;
+}
+
+@media(max-width:800px){
+
+.form-grid{
+grid-template-columns:1fr;
+}
+
+.duas-colunas{
+grid-template-columns:1fr;
+}
+
+.acoes-topo{
+width:100%;
+display:grid;
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+</style>
+
+{% endblock %}

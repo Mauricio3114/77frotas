@@ -1,0 +1,107 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Pagamento PIX{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+<h1>💳 Pagamento via PIX</h1>
+
+<p>
+
+Realize o pagamento e aguarde a confirmação da locadora.
+
+</p>
+
+</div>
+
+<div class="premium-card">
+
+<h3>
+
+Valor da Parcela
+
+</h3>
+
+<h1 class="text-success">
+
+R$ {{ "%.2f"|format(parcela.valor) }}
+
+</h1>
+
+<hr>
+
+<h5>
+
+Chave PIX
+
+</h5>
+
+<div class="pix-box">
+
+{{ conta.chave_pix }}
+
+</div>
+
+<button
+class="btn btn-warning mt-3"
+onclick="navigator.clipboard.writeText('{{ conta.chave_pix }}')">
+
+📋 Copiar Chave PIX
+
+</button>
+
+<hr>
+
+<p>
+
+Após realizar o pagamento, a locadora confirmará o recebimento.
+
+</p>
+
+<a
+href="{{ url_for('portal.parcelas') }}"
+class="btn btn-dark">
+
+Voltar
+
+</a>
+
+</div>
+
+<style>
+
+.pix-box{
+
+background:#f8fafc;
+
+padding:18px;
+
+border-radius:16px;
+
+font-size:18px;
+
+font-weight:700;
+
+border:2px dashed #f97316;
+
+word-break:break-all;
+
+}
+
+.premium-card{
+
+background:#fff;
+
+border-radius:24px;
+
+padding:30px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.08);
+
+}
+
+</style>
+
+{% endblock %}

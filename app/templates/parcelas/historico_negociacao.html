@@ -1,0 +1,394 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Histórico de Negociações{% endblock %}
+{% block topbar_title %}Histórico de Negociações{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Histórico de Negociações</h1>
+
+        <p>
+            Todas as alterações realizadas nesta parcela.
+        </p>
+
+    </div>
+
+</div>
+
+<div class="premium-card resumo-card">
+
+    <div class="resumo-grid">
+
+        <div>
+
+            <small>CLIENTE</small>
+
+            <h3>
+
+                {{ parcela.locacao.cliente.nome }}
+
+            </h3>
+
+        </div>
+
+        <div>
+
+            <small>VEÍCULO</small>
+
+            <h3>
+
+                {{ parcela.locacao.veiculo.marca }}
+                {{ parcela.locacao.veiculo.modelo }}
+
+            </h3>
+
+        </div>
+
+        <div>
+
+            <small>PARCELA</small>
+
+            <h3>
+
+                {{ parcela.numero }}
+
+            </h3>
+
+        </div>
+
+        <div>
+
+            <small>VALOR ATUAL</small>
+
+            <h3>
+
+                R$ {{ "%.2f"|format(parcela.valor) }}
+
+            </h3>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% if negociacoes %}
+
+<div class="timeline">
+
+{% for n in negociacoes %}
+
+<div class="timeline-card">
+
+    <div class="timeline-header">
+
+        <h3>
+
+            Negociação #{{ loop.index }}
+
+        </h3>
+
+        <span>
+
+            {{ n.data_negociacao.strftime("%d/%m/%Y %H:%M") }}
+
+        </span>
+
+    </div>
+
+    <div class="dados-grid">
+
+        <div>
+
+            <small>VALOR ORIGINAL</small>
+
+            <strong>
+
+                R$ {{ "%.2f"|format(n.valor_original) }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>NOVO VALOR</small>
+
+            <strong>
+
+                R$ {{ "%.2f"|format(n.novo_valor) }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>VENCIMENTO ANTIGO</small>
+
+            <strong>
+
+                {{ n.vencimento_original.strftime("%d/%m/%Y") }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>NOVO VENCIMENTO</small>
+
+            <strong>
+
+                {{ n.novo_vencimento.strftime("%d/%m/%Y") }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>JUROS</small>
+
+            <strong>
+
+                R$ {{ "%.2f"|format(n.juros or 0) }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>MULTA</small>
+
+            <strong>
+
+                R$ {{ "%.2f"|format(n.multa or 0) }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>DESCONTO</small>
+
+            <strong>
+
+                R$ {{ "%.2f"|format(n.desconto or 0) }}
+
+            </strong>
+
+        </div>
+
+        <div>
+
+            <small>STATUS</small>
+
+            <span class="status">
+
+                {{ n.status|capitalize }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    {% if n.observacoes %}
+
+    <div class="obs">
+
+        <small>OBSERVAÇÕES</small>
+
+        <p>
+
+            {{ n.observacoes }}
+
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="premium-card empty">
+
+    <div style="font-size:70px;">
+
+        📄
+
+    </div>
+
+    <h2>
+
+        Nenhuma negociação encontrada
+
+    </h2>
+
+</div>
+
+{% endif %}
+
+<div class="acoes">
+
+    <a
+        href="{{ url_for('parcelas.listar') }}"
+        class="btn-voltar">
+
+        ← Voltar
+
+    </a>
+
+</div>
+
+<style>
+
+.resumo-card{
+
+    margin-bottom:25px;
+
+}
+
+.resumo-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+
+}
+
+.resumo-grid small,
+.dados-grid small{
+
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    font-weight:900;
+    margin-bottom:6px;
+
+}
+
+.timeline{
+
+    display:grid;
+    gap:22px;
+
+}
+
+.timeline-card{
+
+    background:#fff;
+    border-left:6px solid #ff6a00;
+    border-radius:22px;
+    padding:25px;
+    box-shadow:0 15px 35px rgba(15,23,42,.06);
+
+}
+
+.timeline-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+
+}
+
+.timeline-header span{
+
+    color:#64748b;
+    font-weight:700;
+
+}
+
+.dados-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+    gap:20px;
+
+}
+
+.dados-grid strong{
+
+    font-size:18px;
+
+}
+
+.status{
+
+    display:inline-block;
+    padding:8px 16px;
+    border-radius:999px;
+    background:#dcfce7;
+    color:#166534;
+    font-weight:900;
+
+}
+
+.obs{
+
+    margin-top:25px;
+    border-top:1px solid #eee;
+    padding-top:20px;
+
+}
+
+.obs p{
+
+    margin-top:8px;
+
+}
+
+.empty{
+
+    text-align:center;
+    padding:70px;
+
+}
+
+.acoes{
+
+    margin-top:25px;
+
+}
+
+.btn-voltar{
+
+    background:#111827;
+    color:#fff;
+    text-decoration:none;
+    padding:14px 26px;
+    border-radius:14px;
+    font-weight:900;
+
+}
+
+@media(max-width:768px){
+
+    .timeline-header{
+
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

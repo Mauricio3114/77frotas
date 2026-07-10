@@ -1,0 +1,291 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Negociar Parcela{% endblock %}
+{% block topbar_title %}Negociar Parcela{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Negociar Parcela</h1>
+
+        <p>Altere vencimento e valores mantendo todo o histórico.</p>
+
+    </div>
+
+</div>
+
+<form method="POST">
+
+<div class="premium-card">
+
+    <div class="info-grid">
+
+        <div>
+
+            <label>Cliente</label>
+
+            <div class="info-box">
+
+                {{ parcela.locacao.cliente.nome }}
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <label>Veículo</label>
+
+            <div class="info-box">
+
+                {{ parcela.locacao.veiculo.marca }}
+                {{ parcela.locacao.veiculo.modelo }}
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <label>Parcela</label>
+
+            <div class="info-box">
+
+                {{ parcela.numero }}
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <label>Valor Atual</label>
+
+            <div class="info-box">
+
+                R$ {{ "%.2f"|format(parcela.valor) }}
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <label>Vencimento Atual</label>
+
+            <div class="info-box">
+
+                {{ parcela.vencimento.strftime("%d/%m/%Y") }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="premium-card">
+
+    <h3>Nova negociação</h3>
+
+    <div class="form-grid">
+
+        <div>
+
+            <label>Novo Valor</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="novo_valor"
+                value="{{ parcela.valor }}"
+                required>
+
+        </div>
+
+        <div>
+
+            <label>Novo Vencimento</label>
+
+            <input
+                type="date"
+                name="novo_vencimento"
+                value="{{ parcela.vencimento }}"
+                required>
+
+        </div>
+
+        <div>
+
+            <label>Juros</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="juros"
+                value="0">
+
+        </div>
+
+        <div>
+
+            <label>Multa</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="multa"
+                value="0">
+
+        </div>
+
+        <div>
+
+            <label>Desconto</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="desconto"
+                value="0">
+
+        </div>
+
+    </div>
+
+    <div style="margin-top:20px;">
+
+        <label>Observações</label>
+
+        <textarea
+            name="observacoes"
+            rows="4"></textarea>
+
+    </div>
+
+</div>
+
+<div class="acoes">
+
+    <a
+        href="{{ url_for('locacoes.detalhes_locacao', locacao_id=parcela.locacao_id) }}"
+        class="btn-voltar">
+
+        Cancelar
+
+    </a>
+
+    <button
+        class="btn-salvar"
+        type="submit">
+
+        Salvar Negociação
+
+    </button>
+
+</div>
+
+</form>
+
+<style>
+
+.info-grid,
+.form-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+
+}
+
+.info-box{
+
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    padding:14px;
+    font-weight:700;
+
+}
+
+label{
+
+    display:block;
+    margin-bottom:8px;
+    font-weight:800;
+
+}
+
+input,
+textarea{
+
+    width:100%;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    font-size:15px;
+
+}
+
+textarea{
+
+    resize:vertical;
+
+}
+
+.acoes{
+
+    margin-top:24px;
+    display:flex;
+    justify-content:flex-end;
+    gap:14px;
+
+}
+
+.btn-voltar{
+
+    background:#64748b;
+    color:#fff;
+    padding:14px 24px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:800;
+
+}
+
+.btn-salvar{
+
+    background:#ff6a00;
+    color:#fff;
+    border:none;
+    padding:14px 28px;
+    border-radius:14px;
+    font-weight:800;
+    cursor:pointer;
+
+}
+
+@media(max-width:768px){
+
+    .acoes{
+
+        flex-direction:column;
+
+    }
+
+    .btn-voltar,
+    .btn-salvar{
+
+        width:100%;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

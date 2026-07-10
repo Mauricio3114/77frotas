@@ -1,0 +1,347 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Minhas Parcelas{% endblock %}
+
+{% block content %}
+
+<div class="topo-app">
+
+    <h1>💰 Minhas Parcelas</h1>
+
+    <p>
+
+        Consulte suas parcelas e acompanhe seus vencimentos.
+
+    </p>
+
+</div>
+
+{% if parcelas %}
+
+<div class="parcelas-app">
+
+{% for p in parcelas %}
+
+<div class="parcela-card">
+
+    <div class="parcela-topo">
+
+        <div>
+
+            <small>PARCELA</small>
+
+            <h2>{{ p.numero }}</h2>
+
+        </div>
+
+        <div class="valor">
+
+            R$ {{ "%.2f"|format(p.valor or 0) }}
+
+        </div>
+
+    </div>
+
+    <div class="linha">
+
+        <span>Vencimento</span>
+
+        <strong>
+
+            {{ p.vencimento.strftime("%d/%m/%Y") }}
+
+        </strong>
+
+    </div>
+
+    {% if p.status=="paga" %}
+
+        <div class="status pago">
+
+            ✅ Pagamento realizado
+
+        </div>
+
+    {% elif p.vencimento < hoje %}
+
+        <div class="status atrasado">
+
+            🔴 {{ p.dias_atraso }} dias de atraso
+
+        </div>
+
+    {% elif p.vencimento == hoje %}
+
+        <div class="status hoje">
+
+            🟡 Vence hoje
+
+        </div>
+
+    {% else %}
+
+        <div class="status aberto">
+
+            🟢 Em dia
+
+        </div>
+
+    {% endif %}
+
+    <div class="acoes">
+
+        {% if p.status!="paga" %}
+
+        <a
+
+            href="{{ url_for('portal.pagamento_pix', parcela_id=p.id) }}"
+
+            class="btn-laranja">
+
+            💳 Pagar
+
+        </a>
+
+        <a
+
+            href="{{ url_for('portal.solicitar_negociacao', parcela_id=p.id) }}"
+
+            class="btn-preto">
+
+            🤝 Solicitar Negociação
+
+        </a>
+
+        {% else %}
+
+        <a
+
+            href="{{ url_for('portal.pagamentos') }}"
+
+            class="btn-verde">
+
+            ✔ Ver Pagamento
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+    <div class="emoji">
+
+        💰
+
+    </div>
+
+    <h2>
+
+        Nenhuma parcela encontrada.
+
+    </h2>
+
+</div>
+
+{% endif %}
+
+<style>
+
+.topo-app{
+
+    margin-bottom:25px;
+
+}
+
+.topo-app p{
+
+    color:#64748b;
+
+}
+
+.parcelas-app{
+
+    display:grid;
+
+    gap:20px;
+
+}
+
+.parcela-card{
+
+    background:#fff;
+
+    border-left:6px solid #ff6a00;
+
+    border-radius:24px;
+
+    padding:24px;
+
+    box-shadow:0 18px 40px rgba(15,23,42,.06);
+
+}
+
+.parcela-topo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.parcela-topo small{
+
+    color:#64748b;
+
+    font-weight:900;
+
+}
+
+.valor{
+
+    color:#ff6a00;
+
+    font-size:24px;
+
+    font-weight:900;
+
+}
+
+.linha{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:18px 0;
+
+}
+
+.status{
+
+    margin-top:20px;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    text-align:center;
+
+    font-weight:900;
+
+}
+
+.status.pago{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.status.aberto{
+
+    background:#dbeafe;
+
+    color:#1d4ed8;
+
+}
+
+.status.hoje{
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+}
+
+.status.atrasado{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+
+}
+
+.acoes{
+
+    display:grid;
+
+    gap:12px;
+
+    margin-top:22px;
+
+}
+
+.btn-laranja,
+.btn-preto,
+.btn-verde{
+
+    text-decoration:none;
+
+    text-align:center;
+
+    color:#fff;
+
+    padding:15px;
+
+    border-radius:14px;
+
+    font-weight:900;
+
+}
+
+.btn-laranja{
+
+    background:#ff6a00;
+
+}
+
+.btn-preto{
+
+    background:#111827;
+
+}
+
+.btn-verde{
+
+    background:#16a34a;
+
+}
+
+.empty{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:70px;
+
+    text-align:center;
+
+}
+
+.emoji{
+
+    font-size:70px;
+
+    margin-bottom:20px;
+
+}
+
+</style>
+
+{% endblock %}

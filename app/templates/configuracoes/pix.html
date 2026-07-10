@@ -1,0 +1,122 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-8">
+
+<div class="card border-0 shadow rounded-4">
+
+<div class="card-body p-4">
+
+<h2 class="mb-1">
+
+💳 Configuração PIX
+
+</h2>
+
+<p class="text-muted mb-4">
+
+Configure como sua locadora irá receber pagamentos.
+
+</p>
+
+<form method="POST">
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Tipo da Chave
+
+</label>
+
+<select
+name="tipo_chave_pix"
+class="form-select rounded-4">
+
+<option value="cpf">CPF</option>
+
+<option value="cnpj">CNPJ</option>
+
+<option value="celular">Celular</option>
+
+<option value="email">E-mail</option>
+
+<option value="aleatoria">Aleatória</option>
+
+</select>
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Chave PIX
+
+</label>
+
+<input
+type="text"
+name="chave_pix"
+class="form-control rounded-4"
+value="{{ conta.chave_pix or '' }}">
+
+</div>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Favorecido
+
+</label>
+
+<input
+type="text"
+name="favorecido_pix"
+class="form-control rounded-4"
+value="{{ conta.favorecido_pix or '' }}">
+
+</div>
+
+<div class="mb-4">
+
+<label class="form-label">
+
+Banco
+
+</label>
+
+<input
+type="text"
+name="banco_pix"
+class="form-control rounded-4"
+value="{{ conta.banco_pix or '' }}">
+
+</div>
+
+<button
+class="btn btn-warning btn-lg rounded-4">
+
+💾 Salvar Configuração
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

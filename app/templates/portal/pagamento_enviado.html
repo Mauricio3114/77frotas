@@ -1,0 +1,113 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Pagamento Enviado{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+<div class="premium-card text-center">
+
+<div class="icone">
+
+⏳
+
+</div>
+
+<h2>
+
+Pagamento em análise
+
+</h2>
+
+<p>
+
+Recebemos a informação do seu pagamento.
+
+Nossa equipe irá conferir o PIX e liberar sua parcela em instantes.
+
+</p>
+
+<div class="status-box">
+
+<strong>STATUS</strong>
+
+<h3>
+
+Aguardando confirmação da locadora
+
+</h3>
+
+</div>
+
+<div class="mt-4">
+
+<a
+
+href="{{ url_for('portal.parcelas') }}"
+
+class="btn btn-dark btn-lg rounded-4">
+
+Voltar para minhas parcelas
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<style>
+
+.premium-card{
+
+max-width:700px;
+
+margin:40px auto;
+
+background:#fff;
+
+padding:50px;
+
+border-radius:28px;
+
+box-shadow:0 20px 50px rgba(15,23,42,.08);
+
+}
+
+.icone{
+
+font-size:70px;
+
+margin-bottom:25px;
+
+}
+
+.status-box{
+
+margin-top:35px;
+
+background:#fff7ed;
+
+border:2px solid #fed7aa;
+
+padding:25px;
+
+border-radius:20px;
+
+}
+
+.status-box h3{
+
+margin-top:10px;
+
+color:#ea580c;
+
+font-weight:800;
+
+}
+
+</style>
+
+{% endblock %}

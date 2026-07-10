@@ -1,0 +1,400 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Cobranças{% endblock %}
+{% block topbar_title %}Cobranças{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Cobranças</h1>
+
+        <p>
+            Gerencie rapidamente todas as cobranças pendentes.
+        </p>
+
+    </div>
+
+</div>
+
+<div class="grid-kpis">
+
+    <div class="kpi-card">
+
+        <small>VENCIDAS</small>
+
+        <h2>{{ vencidas }}</h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>VENCEM HOJE</small>
+
+        <h2>{{ vencem_hoje }}</h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>PRÓXIMOS 7 DIAS</small>
+
+        <h2>{{ proximos_7 }}</h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>EM ABERTO</small>
+
+        <h2>
+
+            R$ {{ "%.2f"|format(total_aberto) }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="premium-card filtro-card">
+
+    <div class="filtros">
+
+        <a href="{{ url_for('cobrancas.listar') }}"
+           class="filtro {% if filtro=='todas' %}ativo{% endif %}">
+
+            Todas
+
+        </a>
+
+        <a href="{{ url_for('cobrancas.listar', filtro='vencidas') }}"
+           class="filtro {% if filtro=='vencidas' %}ativo{% endif %}">
+
+            Vencidas
+
+        </a>
+
+        <a href="{{ url_for('cobrancas.listar', filtro='hoje') }}"
+           class="filtro {% if filtro=='hoje' %}ativo{% endif %}">
+
+            Hoje
+
+        </a>
+
+        <a href="{{ url_for('cobrancas.listar', filtro='7dias') }}"
+           class="filtro {% if filtro=='7dias' %}ativo{% endif %}">
+
+            7 Dias
+
+        </a>
+
+        <a href="{{ url_for('cobrancas.listar', filtro='30dias') }}"
+           class="filtro {% if filtro=='30dias' %}ativo{% endif %}">
+
+            30 Dias
+
+        </a>
+
+    </div>
+
+</div>
+
+{% if parcelas %}
+
+<div class="cobrancas-grid">
+
+{% for p in parcelas %}
+
+<div class="cobranca-card">
+
+    <div>
+
+        <h3>
+
+            {{ p.locacao.cliente.nome }}
+
+        </h3>
+
+        <p>
+
+            🚗
+
+            {{ p.locacao.veiculo.marca }}
+            {{ p.locacao.veiculo.modelo }}
+
+        </p>
+
+        <p>
+
+            Parcela {{ p.numero }}
+
+        </p>
+
+    </div>
+
+    <div>
+
+        <small>VENCIMENTO</small>
+
+        <strong>
+
+            {{ p.vencimento.strftime("%d/%m/%Y") }}
+
+        </strong>
+
+        {% if p.vencimento < hoje %}
+
+        <div class="badge atraso">
+
+            {{ p.dias_atraso }} dias de atraso
+
+        </div>
+
+        {% elif p.vencimento == hoje %}
+
+        <div class="badge hoje">
+
+            Vence Hoje
+
+        </div>
+
+        {% else %}
+
+        <div class="badge futuro">
+
+            Em Dia
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    <div>
+
+        <small>VALOR</small>
+
+        <strong>
+
+            R$ {{ "%.2f"|format(p.valor) }}
+
+        </strong>
+
+    </div>
+
+    <div class="acoes">
+
+        <a
+        class="btn-whats"
+        target="_blank"
+        href="https://wa.me/55{{ p.locacao.cliente.telefone|replace('(','')|replace(')','')|replace('-','')|replace(' ','') }}?text=Olá%20{{ p.locacao.cliente.nome|replace(' ','%20') }}!%0A%0AIdentificamos%20que%20a%20Parcela%20{{ p.numero }}%20no%20valor%20de%20R$%20{{ '%.2f'|format(p.valor) }}%20vence%20em%20{{ p.vencimento.strftime('%d/%m/%Y') }}.%0A%0ACaso%20o%20pagamento%20já%20tenha%20sido%20realizado,%20desconsidere%20esta%20mensagem.%0A%0ASe%20precisar%20de%20uma%20negociação,%20estamos%20à%20disposição.%0A%0AAtt.%0AEquipe%2077%20Frotas">
+
+            WhatsApp
+
+        </a>
+
+        <a
+        class="btn-receber"
+        href="{{ url_for('locacoes.receber_parcela', parcela_id=p.id) }}">
+
+            Receber
+
+        </a>
+
+        <a
+        class="btn-negociar"
+        href="{{ url_for('locacoes.negociar_parcela', parcela_id=p.id) }}">
+
+            Negociar
+
+        </a>
+
+        {% if p.negociacoes %}
+
+        <a
+        class="btn-historico"
+        href="{{ url_for('locacoes.historico_negociacao', parcela_id=p.id) }}">
+
+            Histórico
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="premium-card empty">
+
+    <div style="font-size:70px;">
+
+        ✅
+
+    </div>
+
+    <h2>
+
+        Nenhuma cobrança encontrada
+
+    </h2>
+
+</div>
+
+{% endif %}
+
+<style>
+
+.filtro-card{
+    margin-bottom:22px;
+}
+
+.filtros{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.filtro{
+    padding:12px 18px;
+    border-radius:14px;
+    background:#eef2f7;
+    text-decoration:none;
+    color:#111827;
+    font-weight:900;
+}
+
+.filtro.ativo{
+    background:#ff6a00;
+    color:#fff;
+}
+
+.cobrancas-grid{
+    display:grid;
+    gap:18px;
+}
+
+.cobranca-card{
+
+    background:#fff;
+    border-left:6px solid #ff6a00;
+    border-radius:24px;
+    padding:22px;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1.3fr;
+    gap:20px;
+    align-items:center;
+    box-shadow:0 18px 40px rgba(15,23,42,.06);
+
+}
+
+small{
+
+    display:block;
+    margin-bottom:6px;
+    color:#64748b;
+    font-weight:900;
+
+}
+
+strong{
+
+    font-size:20px;
+
+}
+
+.badge{
+
+    display:inline-block;
+    margin-top:10px;
+    padding:8px 14px;
+    border-radius:999px;
+    font-weight:900;
+
+}
+
+.atraso{
+
+    background:#fee2e2;
+    color:#991b1b;
+
+}
+
+.hoje{
+
+    background:#fde68a;
+    color:#92400e;
+
+}
+
+.futuro{
+
+    background:#dcfce7;
+    color:#166534;
+
+}
+
+.acoes{
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+}
+
+.acoes a{
+
+    text-align:center;
+    text-decoration:none;
+    border-radius:12px;
+    padding:11px;
+    font-weight:900;
+    color:#fff;
+
+}
+
+.btn-whats{
+    background:#22c55e;
+}
+
+.btn-receber{
+    background:#111827;
+}
+
+.btn-negociar{
+    background:#f59e0b;
+}
+
+.btn-historico{
+    background:#2563eb;
+}
+
+.empty{
+
+    text-align:center;
+    padding:70px;
+
+}
+
+@media(max-width:900px){
+
+    .cobranca-card{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}

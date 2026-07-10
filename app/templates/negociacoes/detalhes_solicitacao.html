@@ -1,0 +1,303 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2>🤝 Solicitação de Negociação</h2>
+
+        <small class="text-muted">
+
+            Analise a proposta enviada pelo cliente.
+
+        </small>
+
+    </div>
+
+</div>
+
+<div class="card border-0 shadow-sm rounded-4">
+
+<div class="card-body p-4">
+
+{% if solicitacao.status=="pendente" %}
+
+<div class="alert alert-warning rounded-4">
+
+<h5 class="mb-0">
+
+🟡 Solicitação Pendente
+
+</h5>
+
+</div>
+
+{% elif solicitacao.status=="aprovada" %}
+
+<div class="alert alert-success rounded-4">
+
+<h5 class="mb-0">
+
+🟢 Solicitação Aprovada
+
+</h5>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-danger rounded-4">
+
+<h5 class="mb-0">
+
+🔴 Solicitação Recusada
+
+</h5>
+
+</div>
+
+{% endif %}
+
+<div class="row g-4">
+
+<div class="col-lg-6">
+
+<label class="text-muted small fw-bold">
+
+CLIENTE
+
+</label>
+
+<h5>
+
+👤 {{ solicitacao.cliente.nome }}
+
+</h5>
+
+<div class="text-muted">
+
+CPF:
+
+<strong>
+
+{{ solicitacao.cliente.cpf }}
+
+</strong>
+
+</div>
+
+<div class="col-lg-6">
+
+<label class="text-muted small fw-bold">
+
+VEÍCULO
+
+</label>
+
+<h5>
+
+🚗 {{ solicitacao.parcela.locacao.veiculo.marca }}
+
+{{ solicitacao.parcela.locacao.veiculo.modelo }}
+
+</h5>
+
+<div class="text-muted">
+
+Placa:
+
+<strong>
+
+{{ solicitacao.parcela.locacao.veiculo.placa }}
+
+</strong>
+
+</div>
+
+<div class="col-md-3">
+
+<label class="text-muted small fw-bold">
+
+PARCELA
+
+</label>
+
+<h4>
+
+{{ solicitacao.parcela.numero }}
+
+</h4>
+
+</div>
+
+<div class="col-md-3">
+
+<label class="text-muted small fw-bold">
+
+VALOR ATUAL
+
+</label>
+
+<h4 class="text-primary">
+
+R$ {{ "%.2f"|format(solicitacao.parcela.valor) }}
+
+</h4>
+
+</div>
+
+<div class="col-md-3">
+
+<label class="text-muted small fw-bold">
+
+VALOR PROPOSTO
+
+</label>
+
+<h4 class="text-success">
+
+R$ {{ "%.2f"|format(solicitacao.valor_proposto) }}
+
+</h4>
+
+</div>
+
+<div class="col-md-3">
+
+<label class="text-muted small fw-bold">
+
+NOVO VENCIMENTO
+
+</label>
+
+<h4>
+
+{{ solicitacao.nova_data.strftime("%d/%m/%Y") }}
+
+</h4>
+
+</div>
+
+<div class="col-12">
+
+<label class="text-muted small fw-bold">
+
+MOTIVO INFORMADO
+
+</label>
+
+<div class="border rounded-4 p-4 bg-light mt-2">
+
+<div class="text-muted mb-2">
+
+📝 Motivo informado pelo cliente
+
+</div>
+
+<strong>
+
+{{ solicitacao.motivo }}
+
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-4">
+
+{% if solicitacao.status=="pendente" %}
+
+<div class="d-flex gap-3 mt-4 flex-wrap">
+
+<a
+
+href="{{ url_for('negociacoes.aprovar_solicitacao', id=solicitacao.id) }}"
+
+class="btn btn-success rounded-4 px-4">
+
+<i class="bi bi-check-circle-fill"></i>
+
+Aprovar
+
+</a>
+
+<a
+
+href="{{ url_for('negociacoes.recusar_solicitacao', id=solicitacao.id) }}"
+
+class="btn btn-danger rounded-4 px-4">
+
+<i class="bi bi-x-circle-fill"></i>
+
+Recusar
+
+</a>
+
+</div>
+
+{% elif solicitacao.status=="aprovada" %}
+
+<div class="alert alert-success rounded-4 mt-4">
+
+<h5>
+
+✅ Solicitação aprovada
+
+</h5>
+
+<hr>
+
+<div>
+
+✔ Negociação registrada no sistema.
+
+</div>
+
+<div>
+
+✔ Cliente visualizará o novo status no Portal.
+
+</div>
+
+<div>
+
+✔ Histórico atualizado.
+
+</div>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-danger rounded-4">
+
+<h5 class="mb-1">
+
+❌ Solicitação Recusada
+
+</h5>
+
+<div>
+
+Esta solicitação foi recusada pela locadora.
+
+</div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

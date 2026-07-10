@@ -1,0 +1,318 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Meu Veículo{% endblock %}
+
+{% block content %}
+
+<div class="topo">
+
+    <h1>
+
+        🚗 Meu Veículo
+
+    </h1>
+
+    <p>
+
+        Informações do veículo que você está utilizando.
+
+    </p>
+
+</div>
+
+{% if locacao %}
+
+<div class="veiculo-card">
+
+    <div class="foto">
+
+        {% if locacao.veiculo.foto_principal %}
+
+            <img
+                src="{{ locacao.veiculo.foto_principal }}">
+
+        {% else %}
+
+            🚗
+
+        {% endif %}
+
+    </div>
+
+    <div class="conteudo">
+
+        <h2>
+
+            {{ locacao.veiculo.marca }}
+
+            {{ locacao.veiculo.modelo }}
+
+        </h2>
+
+        <div class="info">
+
+            <span>Placa</span>
+
+            <strong>
+
+                {{ locacao.veiculo.placa }}
+
+            </strong>
+
+        </div>
+
+        <div class="info">
+
+            <span>Categoria</span>
+
+            <strong>
+
+                {{ locacao.veiculo.categoria }}
+
+            </strong>
+
+        </div>
+
+        <div class="info">
+
+            <span>Ano</span>
+
+            <strong>
+
+                {{ locacao.veiculo.ano_modelo }}
+
+            </strong>
+
+        </div>
+
+        <div class="info">
+
+            <span>Combustível</span>
+
+            <strong>
+
+                {{ locacao.veiculo.combustivel }}
+
+            </strong>
+
+        </div>
+
+        <div class="info">
+
+            <span>Câmbio</span>
+
+            <strong>
+
+                {{ locacao.veiculo.cambio }}
+
+            </strong>
+
+        </div>
+
+        <div class="empresa">
+
+            🚩 Disponível em
+
+            <br><br>
+
+            <strong>
+
+                {{ locacao.conta.nome }}
+
+            </strong>
+
+        </div>
+
+        <div class="acoes">
+
+            <a
+
+                href="{{ url_for('locacoes.contrato_pdf', locacao_id=locacao.id) }}"
+
+                class="btn laranja">
+
+                📄 Contrato
+
+            </a>
+
+            <a
+
+                href="{{ url_for('locacoes.recibo_pdf', locacao_id=locacao.id) }}"
+
+                class="btn preto">
+
+                🧾 Recibo
+
+            </a>
+
+            <a
+
+                target="_blank"
+
+                href="https://wa.me/55{{ locacao.conta.telefone|replace('(','')|replace(')','')|replace('-','')|replace(' ','') }}"
+
+                class="btn verde">
+
+                💬 Falar com a Locadora
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+    <div style="font-size:80px;">
+
+        🚗
+
+    </div>
+
+    <h2>
+
+        Você não possui veículo alugado.
+
+    </h2>
+
+</div>
+
+{% endif %}
+
+<style>
+
+.veiculo-card{
+
+    background:#fff;
+
+    border-radius:26px;
+
+    overflow:hidden;
+
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+
+}
+
+.foto{
+
+    height:240px;
+
+    background:#f8fafc;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:80px;
+
+}
+
+.foto img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+.conteudo{
+
+    padding:25px;
+
+}
+
+.info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin:16px 0;
+
+}
+
+.empresa{
+
+    margin-top:25px;
+
+    background:#fff7ed;
+
+    padding:18px;
+
+    border-radius:16px;
+
+    text-align:center;
+
+    color:#c2410c;
+
+}
+
+.acoes{
+
+    margin-top:25px;
+
+    display:grid;
+
+    gap:14px;
+
+}
+
+.btn{
+
+    display:block;
+
+    text-align:center;
+
+    text-decoration:none;
+
+    color:#fff;
+
+    padding:16px;
+
+    border-radius:14px;
+
+    font-weight:900;
+
+}
+
+.laranja{
+
+    background:#ff6a00;
+
+}
+
+.preto{
+
+    background:#111827;
+
+}
+
+.verde{
+
+    background:#16a34a;
+
+}
+
+.empty{
+
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:70px;
+
+    text-align:center;
+
+}
+
+</style>
+
+{% endblock %}

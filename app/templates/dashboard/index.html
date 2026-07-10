@@ -1,0 +1,407 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block topbar_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+
+            Bem-vindo,
+
+            {{ current_user.nome }}
+
+            👋
+
+        </h1>
+
+        <p>
+
+            Resumo da sua locadora.
+
+        </p>
+
+    </div>
+
+</div>
+
+<div class="grid-kpis">
+
+    <div class="kpi-card">
+
+        <small>VEÍCULOS</small>
+
+        <h2>{{ total_veiculos }}</h2>
+
+        <p>
+
+            {{ veiculos_locados }}
+
+            locados /
+
+            {{ veiculos_disponiveis }}
+
+            disponíveis
+
+        </p>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>CLIENTES</small>
+
+        <h2>{{ total_clientes }}</h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>LOCAÇÕES</small>
+
+        <h2>{{ total_locacoes }}</h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>RECEBER HOJE</small>
+
+        <h2>
+
+            R$
+
+            {{ "%.2f"|format(receber_hoje) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>RECEBER MÊS</small>
+
+        <h2>
+
+            R$
+
+            {{ "%.2f"|format(receber_mes) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>ATRASADAS</small>
+
+        <h2>
+
+            {{ parcelas_atrasadas }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>VALOR ATRASADO</small>
+
+        <h2>
+
+            R$
+
+            {{ "%.2f"|format(valor_atrasado) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>RECEBIDO HOJE</small>
+
+        <h2>
+
+            R$
+
+            {{ "%.2f"|format(recebido_hoje) }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="atalhos-grid">
+
+    <a href="/clientes" class="premium-card atalho">
+
+        👤
+
+        <span>
+
+            Clientes
+
+        </span>
+
+    </a>
+
+    <a href="/veiculos" class="premium-card atalho">
+
+        🚗
+
+        <span>
+
+            Veículos
+
+        </span>
+
+    </a>
+
+    <a href="/locacoes" class="premium-card atalho">
+
+        📄
+
+        <span>
+
+            Locações
+
+        </span>
+
+    </a>
+
+    <a href="/parcelas" class="premium-card atalho">
+
+        💰
+
+        <span>
+
+            Recebimentos
+
+        </span>
+
+    </a>
+
+</div>
+
+<div class="dashboard-grid">
+
+<div class="premium-card">
+
+<h2>
+
+Últimas Locações
+
+</h2>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Cliente</th>
+
+<th>Veículo</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for locacao in ultimas_locacoes %}
+
+<tr>
+
+<td>
+
+{{ locacao.cliente.nome }}
+
+</td>
+
+<td>
+
+{{ locacao.veiculo.placa }}
+
+</td>
+
+<td>
+
+{{ locacao.status }}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="premium-card">
+
+<h2>
+
+Próximos Recebimentos
+
+</h2>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Venc.</th>
+
+<th>Cliente</th>
+
+<th>Valor</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for parcela in ultimas_parcelas %}
+
+<tr>
+
+<td>
+
+{{ parcela.vencimento.strftime("%d/%m") }}
+
+</td>
+
+<td>
+
+{{ parcela.locacao.cliente.nome }}
+
+</td>
+
+<td>
+
+R$
+
+{{ "%.2f"|format(parcela.valor) }}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<style>
+
+.atalhos-grid{
+
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px;
+margin:25px 0;
+
+}
+
+.atalho{
+
+padding:25px;
+text-align:center;
+text-decoration:none;
+color:#0f172a;
+font-size:38px;
+
+}
+
+.atalho span{
+
+display:block;
+margin-top:12px;
+font-size:16px;
+font-weight:700;
+
+}
+
+.dashboard-grid{
+
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+
+}
+
+.table{
+
+width:100%;
+
+}
+
+.table th{
+
+padding:12px;
+text-align:left;
+
+}
+
+.table td{
+
+padding:12px;
+border-top:1px solid #edf2f7;
+
+}
+
+@media(max-width:1000px){
+
+.dashboard-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.atalhos-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:650px){
+
+.atalhos-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.table{
+
+display:block;
+overflow:auto;
+
+}
+
+}
+
+</style>
+
+{% endblock %}

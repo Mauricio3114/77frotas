@@ -1,0 +1,316 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Recebimentos{% endblock %}
+{% block topbar_title %}Recebimentos{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>💳 Recebimentos</h1>
+
+        <p>
+
+            Histórico de pagamentos recebidos e pendentes de confirmação.
+
+        </p>
+
+    </div>
+
+</div>
+
+<div class="grid-kpis">
+
+    <div class="kpi-card">
+
+        <small>HOJE</small>
+
+        <h2>
+
+            R$ {{ "%.2f"|format(total_hoje or 0) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>PIX</small>
+
+        <h2>
+
+            R$ {{ "%.2f"|format(total_pix or 0) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>TOTAL RECEBIDO</small>
+
+        <h2>
+
+            R$ {{ "%.2f"|format(total_geral or 0) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>PENDENTES</small>
+
+        <h2 class="text-warning">
+
+            {{ total_pendentes }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="premium-card filtro-card">
+
+    <div class="filtros">
+
+        <a
+        href="{{ url_for('recebimentos.listar') }}"
+        class="filtro {% if not forma %}ativo{% endif %}">
+
+            Todos
+
+        </a>
+
+        <a
+        href="{{ url_for('recebimentos.listar', forma='pix') }}"
+        class="filtro {% if forma=='pix' %}ativo{% endif %}">
+
+            PIX
+
+        </a>
+
+        <a
+        href="{{ url_for('recebimentos.listar', forma='dinheiro') }}"
+        class="filtro {% if forma=='dinheiro' %}ativo{% endif %}">
+
+            Dinheiro
+
+        </a>
+
+        <a
+        href="{{ url_for('recebimentos.listar', forma='cartao') }}"
+        class="filtro {% if forma=='cartao' %}ativo{% endif %}">
+
+            Cartão
+
+        </a>
+
+        <a
+        href="{{ url_for('recebimentos.listar', forma='transferencia') }}"
+        class="filtro {% if forma=='transferencia' %}ativo{% endif %}">
+
+            Transferência
+
+        </a>
+
+    </div>
+
+</div>
+
+{% if pagamentos %}
+
+<div class="recebimentos-grid">
+
+{% for pagamento in pagamentos %}
+
+<div class="recebimento-card">
+
+    <div class="recebimento-info">
+
+        <h3>
+
+            {{ pagamento.parcela.locacao.cliente.nome }}
+
+        </h3>
+
+        <p>
+
+            🚗
+            {{ pagamento.parcela.locacao.veiculo.marca }}
+            {{ pagamento.parcela.locacao.veiculo.modelo }}
+
+        </p>
+
+        <p>
+
+            Parcela {{ pagamento.parcela.numero }}
+
+        </p>
+
+    </div>
+
+    <div class="recebimento-col">
+
+        <small>DATA</small>
+
+        <strong>
+
+            {% if pagamento.data_pagamento %}
+
+                {{ pagamento.data_pagamento.strftime("%d/%m/%Y") }}
+
+            {% else %}
+
+                --
+
+            {% endif %}
+
+        </strong>
+
+    </div>
+
+    <div class="recebimento-col">
+
+        <small>FORMA</small>
+
+        <strong>
+
+            {{ (pagamento.forma_pagamento or "-")|upper }}
+
+        </strong>
+
+    </div>
+
+    <div class="recebimento-col">
+
+        <small>VALOR</small>
+
+        <strong>
+
+            R$ {{ "%.2f"|format(pagamento.valor or 0) }}
+
+        </strong>
+
+    </div>
+
+    <div class="recebimento-col">
+
+        <small>STATUS</small>
+
+        <br>
+
+        {% if pagamento.webhook_recebido %}
+
+            <span class="status pago">
+
+                ✔ Confirmado
+
+            </span>
+
+        {% else %}
+
+            <span class="status pendente">
+
+                ⏳ Aguardando
+
+            </span>
+
+        {% endif %}
+
+    </div>
+
+    <div class="recebimento-acoes">
+
+        <a
+        href="{{ url_for('recebimentos.detalhes_recebimento', pagamento_id=pagamento.id) }}"
+        class="btn btn-dark btn-sm rounded-3">
+
+            <i class="bi bi-eye-fill"></i>
+
+            Abrir
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="premium-card empty">
+
+    <div style="font-size:70px">
+
+        💰
+
+    </div>
+
+    <h2>
+
+        Nenhum recebimento encontrado
+
+    </h2>
+
+    <p>
+
+        Os pagamentos aparecerão aqui.
+
+    </p>
+
+</div>
+
+{% endif %}
+
+<style>
+
+.status{
+
+    padding:8px 14px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:800;
+
+    display:inline-block;
+
+}
+
+.status.pago{
+
+    background:#dcfce7;
+
+    color:#166534;
+
+}
+
+.status.pendente{
+
+    background:#fef3c7;
+
+    color:#92400e;
+
+}
+
+.recebimento-acoes{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+</style>
+
+{% endblock %}

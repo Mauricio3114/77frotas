@@ -1,0 +1,295 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Locação{% endblock %}
+{% block topbar_title %}Detalhes da Locação{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>
+
+            {{ locacao.cliente.nome }}
+
+        </h1>
+
+        <p>
+
+            {{ locacao.veiculo.marca.nome }}
+            {{ locacao.veiculo.modelo.nome }}
+
+        </p>
+
+    </div>
+
+    <span class="status {{ locacao.status }}">
+
+        {{ locacao.status|upper }}
+
+    </span>
+
+</div>
+
+<div class="grid-kpis">
+
+    <div class="kpi-card">
+
+        <small>
+
+            PLANO
+
+        </small>
+
+        <h2>
+
+            {{ locacao.plano }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>
+
+            VALOR
+
+        </small>
+
+        <h2>
+
+            R$
+
+            {{ "%.2f"|format(locacao.valor_diaria or 0) }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>
+
+            INÍCIO
+
+        </small>
+
+        <h2>
+
+            {{ locacao.data_inicio.strftime("%d/%m/%Y") }}
+
+        </h2>
+
+    </div>
+
+    <div class="kpi-card">
+
+        <small>
+
+            STATUS
+
+        </small>
+
+        <h2>
+
+            {{ locacao.status }}
+
+        </h2>
+
+    </div>
+
+</div>
+
+<div class="premium-card">
+
+<h2>
+
+Parcelas
+
+</h2>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>Vencimento</th>
+
+<th>Valor</th>
+
+<th>Status</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for parcela in parcelas %}
+
+<tr>
+
+<td>
+
+{{ parcela.numero }}
+
+</td>
+
+<td>
+
+{{ parcela.vencimento.strftime("%d/%m/%Y") }}
+
+</td>
+
+<td>
+
+R$
+
+{{ "%.2f"|format(parcela.valor) }}
+
+</td>
+
+<td>
+
+{{ parcela.status }}
+
+</td>
+
+<td>
+
+<a
+href="/parcelas/{{ parcela.id }}/receber"
+class="btn-premium">
+
+Receber
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+<div
+style="
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+margin-top:25px;">
+
+<a
+class="premium-card"
+href="{{ url_for('locacoes.contrato_pdf', locacao_id=locacao.id) }}"
+target="_blank">
+
+📄
+
+<h3>
+
+Contrato
+
+</h3>
+
+</a>
+
+<a
+class="premium-card"
+href="{{ url_for('locacoes.recibo_pdf', locacao_id=locacao.id) }}"
+target="_blank">
+
+🧾
+
+<h3>
+
+Recibo
+
+</h3>
+
+</a>
+
+<a
+class="premium-card"
+href="#">
+
+💰
+
+<h3>
+
+Recebimentos
+
+</h3>
+
+</a>
+
+<a
+class="premium-card"
+href="{{ url_for('locacoes.encerrar_locacao', locacao_id=locacao.id) }}">
+
+🔚
+
+<h3>
+Encerrar
+</h3>
+
+</a>
+
+</div>
+
+<style>
+
+table{
+
+width:100%;
+
+}
+
+th{
+
+text-align:left;
+
+padding:12px;
+
+}
+
+td{
+
+padding:12px;
+
+border-top:1px solid #edf2f7;
+
+}
+
+@media(max-width:900px){
+
+div[style*="repeat(4"]{
+
+grid-template-columns:repeat(2,1fr)!important;
+
+}
+
+table{
+
+display:block;
+overflow:auto;
+
+}
+
+}
+
+</style>
+
+{% endblock %}

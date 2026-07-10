@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard Master | 77 Frotas{% endblock %}
+{% block topbar_title %}Dashboard Master{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Olá, {{ current_user.nome }} 👋</h1>
+        <p>Bem-vindo ao painel administrativo do 77 Frotas.</p>
+    </div>
+
+    <div>
+        <button class="btn-premium">
+            <i class="bi bi-plus-circle"></i>
+            Nova Conta
+        </button>
+    </div>
+
+</div>
+
+
+<div class="grid-kpis">
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <small>CONTAS</small>
+            <div class="kpi-icon">
+                <i class="bi bi-buildings"></i>
+            </div>
+        </div>
+
+        <h2>{{ total_contas }}</h2>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <small>USUÁRIOS</small>
+            <div class="kpi-icon">
+                <i class="bi bi-people"></i>
+            </div>
+        </div>
+
+        <h2>{{ total_usuarios }}</h2>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <small>VEÍCULOS</small>
+            <div class="kpi-icon">
+                <i class="bi bi-car-front"></i>
+            </div>
+        </div>
+
+        <h2>{{ total_veiculos }}</h2>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-top">
+            <small>LOCAÇÕES</small>
+            <div class="kpi-icon">
+                <i class="bi bi-file-earmark-text"></i>
+            </div>
+        </div>
+
+        <h2>{{ total_locacoes }}</h2>
+    </div>
+
+</div>
+
+
+<div class="premium-card">
+
+    <div class="card-title-row">
+
+        <h3>Contas cadastradas</h3>
+
+        <button class="btn-light-premium">
+
+            <i class="bi bi-arrow-clockwise"></i>
+
+            Atualizar
+
+        </button>
+
+    </div>
+
+
+    {% if total_contas == 0 %}
+
+    <div class="empty-state">
+
+        <i class="bi bi-buildings"></i>
+
+        <h3>Nenhuma conta cadastrada</h3>
+
+        <p>
+            Clique em <strong>Nova Conta</strong> para cadastrar
+            seu primeiro cliente.
+        </p>
+
+        <button class="btn-premium">
+
+            <i class="bi bi-plus-circle"></i>
+
+            Nova Conta
+
+        </button>
+
+    </div>
+
+    {% else %}
+
+    <p>Em breve aparecerão aqui todas as contas cadastradas.</p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

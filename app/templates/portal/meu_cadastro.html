@@ -1,0 +1,215 @@
+{% extends "layouts/base_cliente.html" %}
+
+{% block title %}Meu Cadastro{% endblock %}
+
+{% block content %}
+
+<div class="topo-app">
+
+    <h1>👤 Meu Cadastro</h1>
+
+    <p>
+
+        Confira seus dados cadastrados na locadora.
+
+    </p>
+
+</div>
+
+<div class="cadastro-card">
+
+    <div class="avatar">
+
+        👤
+
+    </div>
+
+    <div class="dados">
+
+        <div class="linha">
+
+            <span>Nome</span>
+
+            <strong>{{ cliente.nome }}</strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>CPF</span>
+
+            <strong>{{ cliente.cpf }}</strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>Telefone</span>
+
+            <strong>{{ cliente.telefone or "-" }}</strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>E-mail</span>
+
+            <strong>{{ cliente.email or "-" }}</strong>
+
+        </div>
+
+        <div class="linha">
+
+            <span>Endereço</span>
+
+            <strong>{{ cliente.endereco or "-" }}</strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="premium-info">
+
+    <h3>ℹ️ Importante</h3>
+
+    <p>
+
+        Caso algum dado esteja incorreto, entre em contato com sua locadora para atualização do cadastro.
+
+    </p>
+
+</div>
+
+<style>
+
+.topo-app{
+
+    margin-bottom:25px;
+
+}
+
+.topo-app p{
+
+    color:#64748b;
+
+}
+
+.cadastro-card{
+
+    background:#fff;
+
+    border-left:6px solid #ff6a00;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    box-shadow:0 18px 40px rgba(15,23,42,.06);
+
+}
+
+.avatar{
+
+    width:90px;
+
+    height:90px;
+
+    border-radius:50%;
+
+    background:#fff7ed;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:42px;
+
+    margin:auto;
+
+    margin-bottom:25px;
+
+}
+
+.linha{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:16px 0;
+
+    border-bottom:1px solid #eef2f7;
+
+}
+
+.linha:last-child{
+
+    border-bottom:none;
+
+}
+
+.linha span{
+
+    color:#64748b;
+
+    font-weight:700;
+
+}
+
+.linha strong{
+
+    color:#111827;
+
+    text-align:right;
+
+}
+
+.premium-info{
+
+    margin-top:25px;
+
+    background:#fff7ed;
+
+    border:1px solid #fed7aa;
+
+    border-radius:18px;
+
+    padding:20px;
+
+}
+
+.premium-info h3{
+
+    color:#c2410c;
+
+    margin-bottom:10px;
+
+}
+
+.premium-info p{
+
+    margin:0;
+
+    color:#7c2d12;
+
+}
+
+@media(max-width:768px){
+
+    .linha{
+
+        flex-direction:column;
+
+        gap:6px;
+
+    }
+
+}
+
+</style>
+
+{% endblock %}
