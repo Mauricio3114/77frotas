@@ -259,3 +259,36 @@ def modelos(marca_id):
         }
         for modelo in modelos
     ])
+
+
+@veiculos_bp.route("/<int:id>/excluir", methods=["POST"])
+@login_required
+def excluir(id):
+
+    veiculo = Veiculo.query.filter_by(
+        id=id,
+        conta_id=current_user.conta_id
+    ).first_or_404()
+
+    if veiculo.locacoes:
+
+        flash(
+            "Não é possível excluir um veículo que possui locações.",
+            "warning"
+        )
+
+        return redirect(
+            url_for("veiculos.listar")
+        )
+
+    db.session.delete(veiculo)
+    db.session.commit()
+
+    flash(
+        "Veículo excluído com sucesso.",
+        "success"
+    )
+
+    return redirect(
+        url_for("veiculos.listar")
+    )

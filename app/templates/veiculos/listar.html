@@ -147,20 +147,35 @@
     <div class="acoes">
 
         <a
-        href="{{ url_for('veiculos.detalhes',id=v.id) }}"
-        class="btn-mini">
+            href="{{ url_for('veiculos.detalhes', id=v.id) }}"
+            class="btn-mini">
 
             Abrir
 
         </a>
 
         <a
-        href="{{ url_for('veiculos.editar',id=v.id) }}"
-        class="btn-mini cinza">
+            href="{{ url_for('veiculos.editar', id=v.id) }}"
+            class="btn-mini cinza">
 
             Editar
 
         </a>
+
+        <form
+            action="{{ url_for('veiculos.excluir', id=v.id) }}"
+            method="POST"
+            onsubmit="return confirm('Deseja realmente excluir este veículo?');">
+
+            <button
+                type="submit"
+                class="btn-mini excluir">
+
+                Excluir
+
+            </button>
+
+        </form>
 
     </div>
 
