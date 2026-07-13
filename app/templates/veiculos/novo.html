@@ -268,37 +268,55 @@
 
 <script>
 
-const marca=document.getElementById("marca");
+const marca = document.getElementById("marca");
+const modelo = document.getElementById("modelo");
 
-const modelo=document.getElementById("modelo");
+console.log("Marca:", marca);
+console.log("Modelo:", modelo);
 
-marca.addEventListener("change",()=>{
+marca.addEventListener("change", function () {
 
-    modelo.innerHTML="<option>Carregando...</option>";
+    console.log("Marca escolhida:", this.value);
 
-    fetch("/veiculos/modelos/"+marca.value)
+    if (!this.value) {
+        modelo.innerHTML =
+            "<option value=''>Selecione uma marca</option>";
+        return;
+    }
 
-    .then(r=>r.json())
+    fetch("/veiculos/modelos/" + this.value)
 
-    .then(lista=>{
+        .then(function(response){
 
-        modelo.innerHTML="<option value=''>Selecione</option>";
+            console.log("Status:", response.status);
 
-        lista.forEach(item=>{
+            return response.json();
 
-            modelo.innerHTML += `
+        })
 
-                <option value="${item.id}">
+        .then(function(lista){
 
-                    ${item.nome}
+            console.log("Lista recebida:", lista);
 
-                </option>
+            modelo.innerHTML =
+                "<option value=''>Selecione</option>";
 
-            `;
+            lista.forEach(function(item){
+
+                modelo.innerHTML +=
+                    `<option value="${item.id}">
+                        ${item.nome}
+                    </option>`;
+
+            });
+
+        })
+
+        .catch(function(erro){
+
+            console.error(erro);
 
         });
-
-    });
 
 });
 

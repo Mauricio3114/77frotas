@@ -240,3 +240,36 @@ def clientes_pdf():
         nome_arquivo="clientes.pdf"
 
     )
+
+
+@clientes_bp.route("/<int:id>/excluir", methods=["POST"])
+@login_required
+def excluir(id):
+
+    cliente = Cliente.query.filter_by(
+        id=id,
+        conta_id=current_user.conta_id
+    ).first_or_404()
+
+    if cliente.locacoes:
+
+        flash(
+            "Não é possível excluir um cliente que possui locações.",
+            "warning"
+        )
+
+        return redirect(
+            url_for("clientes.listar")
+        )
+
+    db.session.delete(cliente)
+    db.session.commit()
+
+    flash(
+        "Cliente excluído com sucesso.",
+        "success"
+    )
+
+    return redirect(
+        url_for("clientes.listar")
+    )
