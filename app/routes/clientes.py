@@ -245,16 +245,15 @@ def excluir(id):
         conta_id=current_user.conta_id
     ).first_or_404()
 
-    locacao_ativa = Locacao.query.filter_by(
+    locacao = Locacao.query.filter_by(
         conta_id=current_user.conta_id,
-        cliente_id=cliente.id,
-        status="ativa"
+        cliente_id=cliente.id
     ).first()
 
-    if locacao_ativa:
+    if locacao:
 
         flash(
-            "Este cliente possui uma locação ativa e não pode ser excluído.",
+            "Não é possível excluir este cliente porque ele possui locações vinculadas ao histórico da locadora. Para preservar a integridade dos registros, mantenha o cadastro ou marque-o como inativo.",
             "warning"
         )
 
