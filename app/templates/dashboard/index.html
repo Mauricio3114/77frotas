@@ -42,12 +42,12 @@
 
     <div class="kpi-card">
         <small>RECEBER HOJE</small>
-        <h2>{{ receber_hoje|moeda }}</h2>
+        <h2>R$ {{ "%.2f"|format(receber_hoje) }}</h2>
     </div>
 
     <div class="kpi-card">
         <small>PREVISÃO DE RECEBIMENTOS</small>
-        <h2>{{ receber_mes|moeda }}</h2>
+        <h2>R$ {{ "%.2f"|format(receber_mes) }}</h2>
         <p>Parcelas abertas do mês atual</p>
     </div>
 
@@ -58,12 +58,12 @@
 
     <div class="kpi-card">
         <small>VALOR ATRASADO</small>
-        <h2>{{ valor_atrasado|moeda }}</h2>
+        <h2>R$ {{ "%.2f"|format(valor_atrasado) }}</h2>
     </div>
 
     <div class="kpi-card">
         <small>RECEBIDO HOJE</small>
-        <h2>{{ recebido_hoje|moeda }}</h2>
+        <h2>R$ {{ "%.2f"|format(recebido_hoje) }}</h2>
     </div>
 
 </div>
@@ -184,7 +184,7 @@
                         </td>
 
                         <td class="valor-destaque">
-                            {{ parcela.valor|moeda }}
+                            R$ {{ "%.2f"|format(parcela.valor) }}
                         </td>
                     </tr>
 
