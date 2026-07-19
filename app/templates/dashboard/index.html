@@ -6,133 +6,64 @@
 {% block content %}
 
 <div class="page-header">
-
     <div>
-
         <h1>
-
-            Bem-vindo,
-
-            {{ current_user.nome }}
-
-            👋
-
+            Bem-vindo, {{ current_user.nome }} 👋
         </h1>
 
         <p>
-
             Resumo da sua locadora.
-
         </p>
-
     </div>
-
 </div>
 
 <div class="grid-kpis">
 
     <div class="kpi-card">
-
         <small>VEÍCULOS</small>
 
         <h2>{{ total_veiculos }}</h2>
 
         <p>
-
-            {{ veiculos_locados }}
-
-            locados /
-
-            {{ veiculos_disponiveis }}
-
-            disponíveis
-
+            {{ veiculos_locados }} locados /
+            {{ veiculos_disponiveis }} disponíveis
         </p>
-
     </div>
 
     <div class="kpi-card">
-
         <small>CLIENTES</small>
-
         <h2>{{ total_clientes }}</h2>
-
     </div>
 
     <div class="kpi-card">
-
         <small>LOCAÇÕES</small>
-
         <h2>{{ total_locacoes }}</h2>
-
     </div>
 
     <div class="kpi-card">
-
         <small>RECEBER HOJE</small>
-
-        <h2>
-
-            R$
-
-            {{ "%.2f"|format(receber_hoje) }}
-
-        </h2>
-
+        <h2>{{ receber_hoje|moeda }}</h2>
     </div>
 
     <div class="kpi-card">
-
-        <small>RECEBER MÊS</small>
-
-        <h2>
-
-            R$
-
-            {{ "%.2f"|format(receber_mes) }}
-
-        </h2>
-
+        <small>PREVISÃO DE RECEBIMENTOS</small>
+        <h2>{{ receber_mes|moeda }}</h2>
+        <p>Parcelas abertas do mês atual</p>
     </div>
 
     <div class="kpi-card">
-
         <small>ATRASADAS</small>
-
-        <h2>
-
-            {{ parcelas_atrasadas }}
-
-        </h2>
-
+        <h2>{{ parcelas_atrasadas }}</h2>
     </div>
 
     <div class="kpi-card">
-
         <small>VALOR ATRASADO</small>
-
-        <h2>
-
-            R$
-
-            {{ "%.2f"|format(valor_atrasado) }}
-
-        </h2>
-
+        <h2>{{ valor_atrasado|moeda }}</h2>
     </div>
 
     <div class="kpi-card">
-
         <small>RECEBIDO HOJE</small>
-
-        <h2>
-
-            R$
-
-            {{ "%.2f"|format(recebido_hoje) }}
-
-        </h2>
-
+        <h2>{{ recebido_hoje|moeda }}</h2>
     </div>
 
 </div>
@@ -140,265 +71,331 @@
 <div class="atalhos-grid">
 
     <a href="/clientes" class="premium-card atalho">
-
-        👤
-
-        <span>
-
-            Clientes
-
-        </span>
-
+        <span class="atalho-icone">👤</span>
+        <span class="atalho-titulo">Clientes</span>
     </a>
 
     <a href="/veiculos" class="premium-card atalho">
-
-        🚗
-
-        <span>
-
-            Veículos
-
-        </span>
-
+        <span class="atalho-icone">🚗</span>
+        <span class="atalho-titulo">Veículos</span>
     </a>
 
     <a href="/locacoes" class="premium-card atalho">
-
-        📄
-
-        <span>
-
-            Locações
-
-        </span>
-
+        <span class="atalho-icone">📄</span>
+        <span class="atalho-titulo">Locações</span>
     </a>
 
     <a href="/parcelas" class="premium-card atalho">
-
-        💰
-
-        <span>
-
-            Recebimentos
-
-        </span>
-
+        <span class="atalho-icone">💰</span>
+        <span class="atalho-titulo">Recebimentos</span>
     </a>
 
 </div>
 
 <div class="dashboard-grid">
 
-<div class="premium-card">
+    <div class="premium-card dashboard-card">
 
-<h2>
+        <div class="card-header-dashboard">
+            <div>
+                <small>MOVIMENTAÇÃO</small>
+                <h2>Últimas Locações</h2>
+            </div>
+        </div>
 
-Últimas Locações
+        <div class="table-wrapper">
 
-</h2>
+            <table class="table">
 
-<table class="table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Veículo</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
 
-<thead>
+                <tbody>
 
-<tr>
+                    {% for locacao in ultimas_locacoes %}
 
-<th>Cliente</th>
+                    <tr>
+                        <td>{{ locacao.cliente.nome }}</td>
 
-<th>Veículo</th>
+                        <td>
+                            {{ locacao.veiculo.placa }}
+                        </td>
 
-<th>Status</th>
+                        <td>
+                            <span class="status-badge status-{{ locacao.status|lower }}">
+                                {{ locacao.status|replace("_", " ")|title }}
+                            </span>
+                        </td>
+                    </tr>
 
-</tr>
+                    {% else %}
 
-</thead>
+                    <tr>
+                        <td colspan="3" class="empty-state">
+                            Nenhuma locação cadastrada.
+                        </td>
+                    </tr>
 
-<tbody>
+                    {% endfor %}
 
-{% for locacao in ultimas_locacoes %}
+                </tbody>
 
-<tr>
+            </table>
 
-<td>
+        </div>
 
-{{ locacao.cliente.nome }}
+    </div>
 
-</td>
+    <div class="premium-card dashboard-card">
 
-<td>
+        <div class="card-header-dashboard">
+            <div>
+                <small>AGENDA FINANCEIRA</small>
+                <h2>Próximos Recebimentos</h2>
+            </div>
+        </div>
 
-{{ locacao.veiculo.placa }}
+        <div class="table-wrapper">
 
-</td>
+            <table class="table">
 
-<td>
+                <thead>
+                    <tr>
+                        <th>Vencimento</th>
+                        <th>Cliente</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
 
-{{ locacao.status }}
+                <tbody>
 
-</td>
+                    {% for parcela in ultimas_parcelas %}
 
-</tr>
+                    <tr>
+                        <td>{{ parcela.vencimento|data_br }}</td>
 
-{% endfor %}
+                        <td>
+                            {{ parcela.locacao.cliente.nome }}
+                        </td>
 
-</tbody>
+                        <td class="valor-destaque">
+                            {{ parcela.valor|moeda }}
+                        </td>
+                    </tr>
 
-</table>
+                    {% else %}
 
-</div>
+                    <tr>
+                        <td colspan="3" class="empty-state">
+                            Nenhuma parcela em aberto.
+                        </td>
+                    </tr>
 
-<div class="premium-card">
+                    {% endfor %}
 
-<h2>
+                </tbody>
 
-Próximos Recebimentos
+            </table>
 
-</h2>
+        </div>
 
-<table class="table">
-
-<thead>
-
-<tr>
-
-<th>Venc.</th>
-
-<th>Cliente</th>
-
-<th>Valor</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for parcela in ultimas_parcelas %}
-
-<tr>
-
-<td>
-
-{{ parcela.vencimento.strftime("%d/%m") }}
-
-</td>
-
-<td>
-
-{{ parcela.locacao.cliente.nome }}
-
-</td>
-
-<td>
-
-R$
-
-{{ "%.2f"|format(parcela.valor) }}
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
+    </div>
 
 </div>
 
 <style>
 
-.atalhos-grid{
+.atalhos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin: 22px 0;
+}
 
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:18px;
-margin:25px 0;
+.atalho {
+    min-height: 112px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    color: #0f172a;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.atalho:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, .10);
+}
+
+.atalho-icone {
+    display: block;
+    font-size: 34px;
+    line-height: 1;
+}
+
+.atalho-titulo {
+    display: block;
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(360px, 1fr);
+    gap: 20px;
+}
+
+.dashboard-card {
+    min-width: 0;
+}
+
+.card-header-dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.card-header-dashboard small {
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+.card-header-dashboard h2 {
+    margin: 3px 0 0;
+    color: #0f172a;
+    font-size: 19px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    padding: 12px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.table td {
+    padding: 12px;
+    border-top: 1px solid #edf2f7;
+    color: #334155;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.valor-destaque {
+    color: #0f172a !important;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 27px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.status-ativa,
+.status-ativo,
+.status-em-andamento {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-encerrada,
+.status-encerrado {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+.status-cancelada,
+.status-cancelado {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.empty-state {
+    padding: 28px 14px !important;
+    color: #94a3b8 !important;
+    text-align: center;
+}
+
+@media (max-width: 1100px) {
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
 
 }
 
-.atalho{
+@media (max-width: 850px) {
 
-padding:25px;
-text-align:center;
-text-decoration:none;
-color:#0f172a;
-font-size:38px;
+    .atalhos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
 }
 
-.atalho span{
+@media (max-width: 560px) {
 
-display:block;
-margin-top:12px;
-font-size:16px;
-font-weight:700;
+    .atalhos-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin: 16px 0;
+    }
 
-}
+    .atalho {
+        min-height: 95px;
+        padding: 15px 10px;
+    }
 
-.dashboard-grid{
+    .atalho-icone {
+        font-size: 28px;
+    }
 
-display:grid;
-grid-template-columns:2fr 1fr;
-gap:20px;
+    .atalho-titulo {
+        font-size: 13px;
+    }
 
-}
+    .table th,
+    .table td {
+        padding: 10px;
+        font-size: 12px;
+    }
 
-.table{
-
-width:100%;
-
-}
-
-.table th{
-
-padding:12px;
-text-align:left;
-
-}
-
-.table td{
-
-padding:12px;
-border-top:1px solid #edf2f7;
-
-}
-
-@media(max-width:1000px){
-
-.dashboard-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.atalhos-grid{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:650px){
-
-.atalhos-grid{
-
-grid-template-columns:1fr;
-
-}
-
-.table{
-
-display:block;
-overflow:auto;
-
-}
+    .card-header-dashboard h2 {
+        font-size: 17px;
+    }
 
 }
 
