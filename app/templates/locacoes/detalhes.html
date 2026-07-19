@@ -1,312 +1,1760 @@
 {% extends "layouts/base_admin.html" %}
 
-{% block title %}Locação{% endblock %}
+{% block title %}Detalhes da Locação{% endblock %}
 {% block topbar_title %}Detalhes da Locação{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
-
-    <div>
-
-        <h1>
-
-            {{ locacao.cliente.nome }}
-
-        </h1>
-
-        <p>
-
-            {{ locacao.veiculo.marca }}
-            {{ locacao.veiculo.modelo }}
-
-        </p>
-
-    </div>
-
-    <span class="status {{ locacao.status }}">
-
-        {{ locacao.status|upper }}
-
-    </span>
-
-</div>
-
-<div class="grid-kpis">
-
-    <div class="kpi-card">
-
-        <small>
-
-            PLANO
-
-        </small>
-
-        <h2>
-
-            {{ locacao.plano }}
-
-        </h2>
-
-    </div>
-
-    <div class="kpi-card">
-
-        <small>
-
-            VALOR
-
-        </small>
-
-        <h2>
-
-            R$
-
-            {{ "%.2f"|format(locacao.valor_diaria or 0) }}
-
-        </h2>
-
-    </div>
-
-    <div class="kpi-card">
-
-        <small>
-
-            INÍCIO
-
-        </small>
-
-        <h2>
-
-            {{ locacao.data_inicio.strftime("%d/%m/%Y") }}
-
-        </h2>
-
-    </div>
-
-    <div class="kpi-card">
-
-        <small>
-
-            STATUS
-
-        </small>
-
-        <h2>
-
-            {{ locacao.status }}
-
-        </h2>
-
-    </div>
-
-</div>
-
-<div class="premium-card">
-
-<h2>
-
-Parcelas
-
-</h2>
-
-<table class="table">
-
-<thead>
-
-<tr>
-
-<th>#</th>
-
-<th>Vencimento</th>
-
-<th>Valor</th>
-
-<th>Status</th>
-
-<th></th>
-
-</tr>
-
-</thead>
-
-<tbody>
+{% set ns = namespace(
+    total=0,
+    recebido=0,
+    pendente=0,
+    pagas=0,
+    abertas=0,
+    atrasadas=0
+) %}
 
 {% for parcela in parcelas %}
+    {% set ns.total = ns.total + (parcela.valor or 0) %}
 
-<tr>
-
-<td>
-
-{{ parcela.numero }}
-
-</td>
-
-<td>
-
-{{ parcela.vencimento.strftime("%d/%m/%Y") }}
-
-</td>
-
-<td>
-
-R$
-
-{{ "%.2f"|format(parcela.valor) }}
-
-</td>
-
-<td>
-
-{{ parcela.status }}
-
-</td>
-
-<td>
-
-<a
-href="/parcelas/{{ parcela.id }}/receber"
-class="btn-premium">
-
-Receber
-
-</a>
-
-</td>
-
-</tr>
-
+    {% if parcela.status == "paga" %}
+        {% set ns.pagas = ns.pagas + 1 %}
+        {% set ns.recebido = ns.recebido + (parcela.valor_recebido or parcela.valor or 0) %}
+    {% elif parcela.status == "atrasada" %}
+        {% set ns.atrasadas = ns.atrasadas + 1 %}
+        {% set ns.pendente = ns.pendente + (parcela.valor or 0) %}
+    {% else %}
+        {% set ns.abertas = ns.abertas + 1 %}
+        {% set ns.pendente = ns.pendente + (parcela.valor or 0) %}
+    {% endif %}
 {% endfor %}
 
-</tbody>
+<section class="locacao-hero">
 
-</table>
+    <div class="hero-main">
 
-</div>
+        <div class="hero-icon">
 
-<div
-style="
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:20px;
-margin-top:25px;">
+            {% if locacao.veiculo.foto_principal %}
+                <img
+                    src="{{ locacao.veiculo.foto_principal }}"
+                    alt="{{ locacao.veiculo.marca }} {{ locacao.veiculo.modelo }}">
+            {% else %}
+                🚗
+            {% endif %}
 
-<a
-class="premium-card"
-href="{{ url_for('locacoes.contrato_pdf', locacao_id=locacao.id) }}"
-target="_blank">
+        </div>
 
-📄
+        <div class="hero-copy">
 
-<h3>
+            <div class="hero-badges">
 
-Contrato
+                <span class="status-badge {{ locacao.status }}">
+                    {{ locacao.status|upper }}
+                </span>
 
-</h3>
+                <span class="id-badge">
+                    LOCAÇÃO #{{ locacao.id }}
+                </span>
 
-</a>
+            </div>
 
-<a
-class="premium-card"
-href="{{ url_for('locacoes.recibo_pdf', locacao_id=locacao.id) }}"
-target="_blank">
+            <h1>
+                {{ locacao.veiculo.marca }}
+                {{ locacao.veiculo.modelo }}
+            </h1>
 
-🧾
+            <p class="hero-plate">
+                {{ locacao.veiculo.placa }}
+            </p>
 
-<h3>
+            <div class="hero-client">
 
-Recibo
+                <span>👤</span>
 
-</h3>
+                <div>
+                    <small>CLIENTE</small>
+                    <strong>{{ locacao.cliente.nome }}</strong>
+                </div>
 
-</a>
+            </div>
 
-<a
-class="premium-card"
-href="#">
+        </div>
 
-💰
+    </div>
 
-<h3>
+    <div class="hero-actions">
 
-Recebimentos
+        <a
+            href="{{ url_for('locacoes.contrato_pdf', locacao_id=locacao.id) }}"
+            target="_blank"
+            class="action-btn secondary">
 
-</h3>
+            📄 Contrato
 
-</a>
+        </a>
 
-{% if locacao.status == "ativa" %}
+        <a
+            href="{{ url_for('locacoes.recibo_pdf', locacao_id=locacao.id) }}"
+            target="_blank"
+            class="action-btn secondary">
 
-<a
-class="premium-card"
-href="{{ url_for('locacoes.encerrar_locacao', locacao_id=locacao.id) }}">
+            🧾 Recibo
 
-🔚
+        </a>
 
-<h3>
+        {% if locacao.status == "ativa" %}
 
-Encerrar Locação
+            <a
+                href="{{ url_for('locacoes.encerrar_locacao', locacao_id=locacao.id) }}"
+                class="action-btn danger">
 
-</h3>
+                🔚 Encerrar
 
-</a>
+            </a>
 
-{% else %}
+        {% else %}
 
-<div class="premium-card">
+            <span class="action-btn finished">
+                ✅ Locação encerrada
+            </span>
 
-✅
+        {% endif %}
 
-<h3>
+    </div>
 
-Locação Encerrada
+</section>
 
-</h3>
+<section class="kpi-grid-locacao">
 
-</div>
+    <article class="kpi-locacao">
 
-{% endif %}
+        <span class="kpi-icon">💳</span>
 
-</div>
+        <div>
+            <small>VALOR DO CONTRATO</small>
+            <strong>
+                R$ {{ "%.2f"|format(ns.total) }}
+            </strong>
+        </div>
+
+    </article>
+
+    <article class="kpi-locacao success">
+
+        <span class="kpi-icon">✅</span>
+
+        <div>
+            <small>RECEBIDO</small>
+            <strong>
+                R$ {{ "%.2f"|format(ns.recebido) }}
+            </strong>
+        </div>
+
+    </article>
+
+    <article class="kpi-locacao warning">
+
+        <span class="kpi-icon">⏳</span>
+
+        <div>
+            <small>PENDENTE</small>
+            <strong>
+                R$ {{ "%.2f"|format(ns.pendente) }}
+            </strong>
+        </div>
+
+    </article>
+
+    <article class="kpi-locacao">
+
+        <span class="kpi-icon">📅</span>
+
+        <div>
+            <small>PLANO</small>
+            <strong>{{ locacao.plano }}</strong>
+        </div>
+
+    </article>
+
+    <article class="kpi-locacao">
+
+        <span class="kpi-icon">📍</span>
+
+        <div>
+            <small>INÍCIO</small>
+            <strong>
+                {{ locacao.data_inicio.strftime("%d/%m/%Y") }}
+            </strong>
+        </div>
+
+    </article>
+
+    <article class="kpi-locacao danger">
+
+        <span class="kpi-icon">⚠️</span>
+
+        <div>
+            <small>ATRASADAS</small>
+            <strong>{{ ns.atrasadas }}</strong>
+        </div>
+
+    </article>
+
+</section>
+
+<section class="content-grid">
+
+    <div class="main-column">
+
+        <article class="panel">
+
+            <div class="panel-header">
+
+                <div>
+                    <span class="eyebrow">FINANCEIRO</span>
+                    <h2>Parcelas da locação</h2>
+                    <p>
+                        Acompanhe vencimentos, pagamentos e negociações.
+                    </p>
+                </div>
+
+                <div class="parcel-summary">
+
+                    <span class="mini-stat paid">
+                        {{ ns.pagas }} pagas
+                    </span>
+
+                    <span class="mini-stat open">
+                        {{ ns.abertas }} abertas
+                    </span>
+
+                    <span class="mini-stat late">
+                        {{ ns.atrasadas }} atrasadas
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% if parcelas %}
+
+                <div class="parcelas-desktop">
+
+                    <table class="parcel-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Parcela</th>
+                                <th>Vencimento</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th class="actions-col">Ações</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for parcela in parcelas %}
+
+                                <tr>
+
+                                    <td>
+
+                                        <div class="parcel-number">
+                                            <span>{{ parcela.numero }}</span>
+                                            <small>de {{ parcelas|length }}</small>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="date-cell">
+
+                                            <strong>
+                                                {{ parcela.vencimento.strftime("%d/%m/%Y") }}
+                                            </strong>
+
+                                            {% if parcela.data_pagamento %}
+                                                <small>
+                                                    Pago em
+                                                    {{ parcela.data_pagamento.strftime("%d/%m/%Y") }}
+                                                </small>
+                                            {% endif %}
+
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="money-cell">
+
+                                            <strong>
+                                                R$ {{ "%.2f"|format(parcela.valor or 0) }}
+                                            </strong>
+
+                                            {% if parcela.status == "paga" and parcela.valor_recebido %}
+                                                <small>
+                                                    Recebido:
+                                                    R$ {{ "%.2f"|format(parcela.valor_recebido) }}
+                                                </small>
+                                            {% endif %}
+
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+
+                                        <span class="parcel-status {{ parcela.status }}">
+
+                                            {% if parcela.status == "paga" %}
+                                                ✓ Paga
+                                            {% elif parcela.status == "atrasada" %}
+                                                ⚠ Atrasada
+                                            {% elif parcela.status == "negociada" %}
+                                                🤝 Negociada
+                                            {% else %}
+                                                ⏳ Aberta
+                                            {% endif %}
+
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div class="row-actions">
+
+                                            {% if parcela.status != "paga" %}
+
+                                                <a
+                                                    href="{{ url_for('locacoes.receber_parcela', parcela_id=parcela.id) }}"
+                                                    class="table-btn receive">
+
+                                                    Receber
+
+                                                </a>
+
+                                                <a
+                                                    href="{{ url_for('locacoes.negociar_parcela', parcela_id=parcela.id) }}"
+                                                    class="table-btn negotiate">
+
+                                                    Negociar
+
+                                                </a>
+
+                                            {% endif %}
+
+                                            <a
+                                                href="{{ url_for('locacoes.historico_negociacao', parcela_id=parcela.id) }}"
+                                                class="table-btn history">
+
+                                                Histórico
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="parcelas-mobile">
+
+                    {% for parcela in parcelas %}
+
+                        <article class="parcel-card-mobile">
+
+                            <div class="parcel-mobile-top">
+
+                                <div class="parcel-mobile-number">
+                                    Parcela {{ parcela.numero }}/{{ parcelas|length }}
+                                </div>
+
+                                <span class="parcel-status {{ parcela.status }}">
+
+                                    {% if parcela.status == "paga" %}
+                                        ✓ Paga
+                                    {% elif parcela.status == "atrasada" %}
+                                        ⚠ Atrasada
+                                    {% elif parcela.status == "negociada" %}
+                                        🤝 Negociada
+                                    {% else %}
+                                        ⏳ Aberta
+                                    {% endif %}
+
+                                </span>
+
+                            </div>
+
+                            <div class="parcel-mobile-grid">
+
+                                <div>
+                                    <small>VENCIMENTO</small>
+                                    <strong>
+                                        {{ parcela.vencimento.strftime("%d/%m/%Y") }}
+                                    </strong>
+                                </div>
+
+                                <div>
+                                    <small>VALOR</small>
+                                    <strong>
+                                        R$ {{ "%.2f"|format(parcela.valor or 0) }}
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                            {% if parcela.data_pagamento %}
+
+                                <p class="payment-date-mobile">
+                                    Pago em
+                                    {{ parcela.data_pagamento.strftime("%d/%m/%Y") }}
+                                </p>
+
+                            {% endif %}
+
+                            <div class="parcel-mobile-actions">
+
+                                {% if parcela.status != "paga" %}
+
+                                    <a
+                                        href="{{ url_for('locacoes.receber_parcela', parcela_id=parcela.id) }}"
+                                        class="table-btn receive">
+
+                                        Receber
+
+                                    </a>
+
+                                    <a
+                                        href="{{ url_for('locacoes.negociar_parcela', parcela_id=parcela.id) }}"
+                                        class="table-btn negotiate">
+
+                                        Negociar
+
+                                    </a>
+
+                                {% endif %}
+
+                                <a
+                                    href="{{ url_for('locacoes.historico_negociacao', parcela_id=parcela.id) }}"
+                                    class="table-btn history">
+
+                                    Histórico
+
+                                </a>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <span>📭</span>
+
+                    <h3>Nenhuma parcela encontrada</h3>
+
+                    <p>
+                        Esta locação ainda não possui parcelas cadastradas.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </article>
+
+    </div>
+
+    <aside class="side-column">
+
+        <article class="panel compact-panel">
+
+            <div class="section-title">
+
+                <span class="section-icon">👤</span>
+
+                <div>
+                    <small>LOCATÁRIO</small>
+                    <h3>Dados do cliente</h3>
+                </div>
+
+            </div>
+
+            <div class="profile-block">
+
+                <div class="profile-photo">
+
+                    {% if locacao.cliente.foto_cliente %}
+                        <img
+                            src="{{ locacao.cliente.foto_cliente }}"
+                            alt="{{ locacao.cliente.nome }}">
+                    {% else %}
+                        👤
+                    {% endif %}
+
+                </div>
+
+                <div class="profile-copy">
+                    <strong>{{ locacao.cliente.nome }}</strong>
+                    <span>{{ locacao.cliente.cpf or "CPF não informado" }}</span>
+                </div>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span>Telefone</span>
+                    <strong>
+                        {{ locacao.cliente.whatsapp or locacao.cliente.telefone or "--" }}
+                    </strong>
+                </div>
+
+                {% if locacao.cliente.email %}
+
+                    <div class="info-row">
+                        <span>E-mail</span>
+                        <strong>{{ locacao.cliente.email }}</strong>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            {% if locacao.cliente.whatsapp or locacao.cliente.telefone %}
+
+                <a
+                    href="https://wa.me/55{{ (locacao.cliente.whatsapp or locacao.cliente.telefone)|replace('(', '')|replace(')', '')|replace('-', '')|replace(' ', '') }}"
+                    target="_blank"
+                    class="wide-btn whatsapp">
+
+                    💬 Conversar no WhatsApp
+
+                </a>
+
+            {% endif %}
+
+        </article>
+
+        <article class="panel compact-panel">
+
+            <div class="section-title">
+
+                <span class="section-icon">🚗</span>
+
+                <div>
+                    <small>VEÍCULO</small>
+                    <h3>Dados do automóvel</h3>
+                </div>
+
+            </div>
+
+            <div class="vehicle-photo">
+
+                {% if locacao.veiculo.foto_principal %}
+                    <img
+                        src="{{ locacao.veiculo.foto_principal }}"
+                        alt="{{ locacao.veiculo.marca }} {{ locacao.veiculo.modelo }}">
+                {% else %}
+                    <span>🚘</span>
+                {% endif %}
+
+            </div>
+
+            <div class="vehicle-name">
+
+                <strong>
+                    {{ locacao.veiculo.marca }}
+                    {{ locacao.veiculo.modelo }}
+                </strong>
+
+                <span>{{ locacao.veiculo.placa }}</span>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span>Combustível</span>
+                    <strong>{{ locacao.veiculo.combustivel or "--" }}</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>KM atual</span>
+                    <strong>
+                        {{ locacao.veiculo.km_atual or 0 }} km
+                    </strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Status do veículo</span>
+                    <strong>{{ locacao.veiculo.status|upper }}</strong>
+                </div>
+
+            </div>
+
+        </article>
+
+        <article class="panel compact-panel">
+
+            <div class="section-title">
+
+                <span class="section-icon">📌</span>
+
+                <div>
+                    <small>RESUMO</small>
+                    <h3>Dados da locação</h3>
+                </div>
+
+            </div>
+
+            <div class="info-list">
+
+                <div class="info-row">
+                    <span>Plano</span>
+                    <strong>{{ locacao.plano }}</strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Valor por período</span>
+                    <strong>
+                        R$ {{ "%.2f"|format(locacao.valor_diaria or 0) }}
+                    </strong>
+                </div>
+
+                <div class="info-row">
+                    <span>Data de início</span>
+                    <strong>
+                        {{ locacao.data_inicio.strftime("%d/%m/%Y") }}
+                    </strong>
+                </div>
+
+                {% if locacao.data_fim %}
+
+                    <div class="info-row">
+                        <span>Data de encerramento</span>
+                        <strong>
+                            {{ locacao.data_fim.strftime("%d/%m/%Y") }}
+                        </strong>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+            {% if locacao.observacoes %}
+
+                <div class="observation-box">
+
+                    <small>OBSERVAÇÕES</small>
+
+                    <p>{{ locacao.observacoes }}</p>
+
+                </div>
+
+            {% endif %}
+
+        </article>
+
+    </aside>
+
+</section>
+
+<section class="quick-actions">
+
+    <a
+        href="{{ url_for('locacoes.contrato_pdf', locacao_id=locacao.id) }}"
+        target="_blank"
+        class="quick-card">
+
+        <span>📄</span>
+
+        <div>
+            <strong>Contrato</strong>
+            <small>Visualizar documento</small>
+        </div>
+
+    </a>
+
+    <a
+        href="{{ url_for('locacoes.recibo_pdf', locacao_id=locacao.id) }}"
+        target="_blank"
+        class="quick-card">
+
+        <span>🧾</span>
+
+        <div>
+            <strong>Recibo</strong>
+            <small>Gerar comprovante</small>
+        </div>
+
+    </a>
+
+    <a
+        href="{{ url_for('locacoes.listar_locacoes') }}"
+        class="quick-card">
+
+        <span>📋</span>
+
+        <div>
+            <strong>Locações</strong>
+            <small>Voltar à listagem</small>
+        </div>
+
+    </a>
+
+    {% if locacao.status == "ativa" %}
+
+        <a
+            href="{{ url_for('locacoes.encerrar_locacao', locacao_id=locacao.id) }}"
+            class="quick-card danger-card">
+
+            <span>🔚</span>
+
+            <div>
+                <strong>Encerrar locação</strong>
+                <small>Registrar devolução</small>
+            </div>
+
+        </a>
+
+    {% else %}
+
+        <div class="quick-card finished-card">
+
+            <span>✅</span>
+
+            <div>
+                <strong>Locação encerrada</strong>
+                <small>Veículo já devolvido</small>
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</section>
 
 <style>
 
-table{
+:root{
+    --loc-dark:#111827;
+    --loc-dark-soft:#1f2937;
+    --loc-orange:#ff6a00;
+    --loc-bg:#f4f6f8;
+    --loc-card:#ffffff;
+    --loc-border:#e5e7eb;
+    --loc-text:#111827;
+    --loc-muted:#64748b;
+    --loc-green:#16a34a;
+    --loc-red:#dc2626;
+    --loc-yellow:#d97706;
+    --loc-blue:#2563eb;
+}
 
-width:100%;
+.locacao-hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    padding:28px;
+    border-radius:26px;
+    background:
+        radial-gradient(circle at top right, rgba(255,106,0,.24), transparent 35%),
+        linear-gradient(135deg, #111827, #1f2937);
+    color:#fff;
+    box-shadow:0 20px 45px rgba(17,24,39,.18);
+}
+
+.hero-main{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    min-width:0;
+}
+
+.hero-icon{
+    width:112px;
+    height:112px;
+    flex:0 0 112px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border-radius:24px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.14);
+    font-size:52px;
+}
+
+.hero-icon img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero-copy{
+    min-width:0;
+}
+
+.hero-badges{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+}
+
+.status-badge,
+.id-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 12px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:.05em;
+}
+
+.status-badge.ativa{
+    color:#bbf7d0;
+    background:rgba(22,163,74,.22);
+    border:1px solid rgba(134,239,172,.28);
+}
+
+.status-badge.encerrada{
+    color:#e2e8f0;
+    background:rgba(148,163,184,.18);
+    border:1px solid rgba(203,213,225,.2);
+}
+
+.status-badge.cancelada{
+    color:#fecaca;
+    background:rgba(220,38,38,.2);
+    border:1px solid rgba(252,165,165,.22);
+}
+
+.id-badge{
+    color:#fdba74;
+    background:rgba(255,106,0,.14);
+    border:1px solid rgba(251,146,60,.25);
+}
+
+.hero-copy h1{
+    margin:0;
+    font-size:32px;
+    line-height:1.1;
+}
+
+.hero-plate{
+    margin:8px 0 16px;
+    color:#cbd5e1;
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+.hero-client{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.hero-client > span{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    background:rgba(255,255,255,.09);
+}
+
+.hero-client div{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.hero-client small{
+    color:#94a3b8;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.08em;
+}
+
+.hero-client strong{
+    color:#fff;
+    font-size:15px;
+}
+
+.hero-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:44px;
+    padding:0 16px;
+    border-radius:13px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:900;
+    transition:.2s;
+}
+
+.action-btn:hover{
+    transform:translateY(-2px);
+}
+
+.action-btn.secondary{
+    color:#fff;
+    background:rgba(255,255,255,.09);
+    border:1px solid rgba(255,255,255,.15);
+}
+
+.action-btn.danger{
+    color:#fff;
+    background:#dc2626;
+    border:1px solid #ef4444;
+}
+
+.action-btn.finished{
+    color:#bbf7d0;
+    background:rgba(22,163,74,.2);
+    border:1px solid rgba(134,239,172,.2);
+}
+
+.kpi-grid-locacao{
+    display:grid;
+    grid-template-columns:repeat(6, minmax(0,1fr));
+    gap:14px;
+    margin-top:18px;
+}
+
+.kpi-locacao{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+    padding:18px;
+    border-radius:19px;
+    background:#fff;
+    border:1px solid var(--loc-border);
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
+}
+
+.kpi-locacao.success{
+    border-left:4px solid var(--loc-green);
+}
+
+.kpi-locacao.warning{
+    border-left:4px solid var(--loc-yellow);
+}
+
+.kpi-locacao.danger{
+    border-left:4px solid var(--loc-red);
+}
+
+.kpi-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    border-radius:13px;
+    background:#f1f5f9;
+    font-size:19px;
+}
+
+.kpi-locacao div{
+    min-width:0;
+}
+
+.kpi-locacao small{
+    display:block;
+    margin-bottom:4px;
+    color:var(--loc-muted);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.05em;
+}
+
+.kpi-locacao strong{
+    display:block;
+    overflow:hidden;
+    color:var(--loc-text);
+    font-size:17px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.content-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr);
+    gap:18px;
+    margin-top:18px;
+}
+
+.main-column,
+.side-column{
+    min-width:0;
+}
+
+.side-column{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.panel{
+    padding:24px;
+    border-radius:24px;
+    background:#fff;
+    border:1px solid var(--loc-border);
+    box-shadow:0 10px 28px rgba(15,23,42,.05);
+}
+
+.compact-panel{
+    padding:21px;
+}
+
+.panel-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:22px;
+}
+
+.eyebrow{
+    display:block;
+    margin-bottom:5px;
+    color:var(--loc-orange);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.12em;
+}
+
+.panel-header h2{
+    margin:0;
+    color:var(--loc-text);
+    font-size:23px;
+}
+
+.panel-header p{
+    margin:7px 0 0;
+    color:var(--loc-muted);
+    font-size:14px;
+}
+
+.parcel-summary{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:7px;
+    flex-wrap:wrap;
+}
+
+.mini-stat{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+}
+
+.mini-stat.paid{
+    color:#166534;
+    background:#dcfce7;
+}
+
+.mini-stat.open{
+    color:#1d4ed8;
+    background:#dbeafe;
+}
+
+.mini-stat.late{
+    color:#991b1b;
+    background:#fee2e2;
+}
+
+.parcelas-desktop{
+    overflow-x:auto;
+}
+
+.parcel-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+}
+
+.parcel-table th{
+    padding:12px 14px;
+    color:#64748b;
+    background:#f8fafc;
+    border-top:1px solid #e5e7eb;
+    border-bottom:1px solid #e5e7eb;
+    font-size:11px;
+    font-weight:900;
+    text-align:left;
+    letter-spacing:.04em;
+}
+
+.parcel-table th:first-child{
+    border-left:1px solid #e5e7eb;
+    border-radius:12px 0 0 12px;
+}
+
+.parcel-table th:last-child{
+    border-right:1px solid #e5e7eb;
+    border-radius:0 12px 12px 0;
+}
+
+.parcel-table td{
+    padding:15px 14px;
+    border-bottom:1px solid #eef2f7;
+    vertical-align:middle;
+}
+
+.actions-col{
+    min-width:225px;
+}
+
+.parcel-number{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.parcel-number span{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    border-radius:11px;
+    color:#fff;
+    background:var(--loc-dark);
+    font-weight:900;
+}
+
+.parcel-number small{
+    color:var(--loc-muted);
+    font-weight:800;
+}
+
+.date-cell,
+.money-cell{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.date-cell strong,
+.money-cell strong{
+    color:var(--loc-text);
+    font-size:14px;
+}
+
+.date-cell small,
+.money-cell small{
+    color:var(--loc-muted);
+    font-size:11px;
+}
+
+.parcel-status{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 10px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    white-space:nowrap;
+}
+
+.parcel-status.paga{
+    color:#166534;
+    background:#dcfce7;
+}
+
+.parcel-status.aberta{
+    color:#1d4ed8;
+    background:#dbeafe;
+}
+
+.parcel-status.atrasada{
+    color:#991b1b;
+    background:#fee2e2;
+}
+
+.parcel-status.negociada{
+    color:#92400e;
+    background:#fef3c7;
+}
+
+.row-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:6px;
+    flex-wrap:wrap;
+}
+
+.table-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-height:34px;
+    padding:0 11px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:11px;
+    font-weight:900;
+    transition:.2s;
+}
+
+.table-btn:hover{
+    transform:translateY(-1px);
+}
+
+.table-btn.receive{
+    color:#fff;
+    background:var(--loc-green);
+}
+
+.table-btn.negotiate{
+    color:#92400e;
+    background:#fef3c7;
+}
+
+.table-btn.history{
+    color:#334155;
+    background:#f1f5f9;
+}
+
+.parcelas-mobile{
+    display:none;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:18px;
+}
+
+.section-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    border-radius:13px;
+    background:#f1f5f9;
+    font-size:19px;
+}
+
+.section-title small{
+    display:block;
+    margin-bottom:2px;
+    color:var(--loc-orange);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.08em;
+}
+
+.section-title h3{
+    margin:0;
+    color:var(--loc-text);
+    font-size:17px;
+}
+
+.profile-block{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding-bottom:17px;
+    border-bottom:1px solid #eef2f7;
+}
+
+.profile-photo{
+    width:60px;
+    height:60px;
+    flex:0 0 60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border-radius:17px;
+    background:#f1f5f9;
+    font-size:28px;
+}
+
+.profile-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-copy{
+    display:flex;
+    min-width:0;
+    flex-direction:column;
+    gap:4px;
+}
+
+.profile-copy strong{
+    overflow:hidden;
+    color:var(--loc-text);
+    font-size:16px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.profile-copy span{
+    color:var(--loc-muted);
+    font-size:13px;
+}
+
+.info-list{
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    margin-top:10px;
+}
+
+.info-row{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:18px;
+    padding:11px 0;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+.info-row span{
+    color:var(--loc-muted);
+    font-size:12px;
+}
+
+.info-row strong{
+    max-width:58%;
+    color:var(--loc-text);
+    font-size:12px;
+    text-align:right;
+    word-break:break-word;
+}
+
+.wide-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    min-height:43px;
+    margin-top:15px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:900;
+}
+
+.wide-btn.whatsapp{
+    color:#fff;
+    background:#16a34a;
+}
+
+.vehicle-photo{
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    border-radius:17px;
+    background:#f1f5f9;
+}
+
+.vehicle-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.vehicle-photo span{
+    font-size:48px;
+}
+
+.vehicle-name{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-top:13px;
+}
+
+.vehicle-name strong{
+    color:var(--loc-text);
+    font-size:17px;
+}
+
+.vehicle-name span{
+    color:var(--loc-orange);
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:.08em;
+}
+
+.observation-box{
+    margin-top:14px;
+    padding:14px;
+    border-radius:14px;
+    background:#f8fafc;
+    border:1px solid #e5e7eb;
+}
+
+.observation-box small{
+    display:block;
+    margin-bottom:7px;
+    color:var(--loc-muted);
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.08em;
+}
+
+.observation-box p{
+    margin:0;
+    color:#334155;
+    font-size:13px;
+    line-height:1.55;
+}
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
+    margin-top:18px;
+}
+
+.quick-card{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    min-width:0;
+    padding:18px;
+    border-radius:19px;
+    color:var(--loc-text);
+    background:#fff;
+    border:1px solid var(--loc-border);
+    box-shadow:0 8px 24px rgba(15,23,42,.05);
+    text-decoration:none;
+    transition:.2s;
+}
+
+.quick-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 13px 30px rgba(15,23,42,.09);
+}
+
+.quick-card > span{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:45px;
+    height:45px;
+    flex:0 0 45px;
+    border-radius:13px;
+    background:#f1f5f9;
+    font-size:20px;
+}
+
+.quick-card div{
+    display:flex;
+    min-width:0;
+    flex-direction:column;
+    gap:3px;
+}
+
+.quick-card strong{
+    overflow:hidden;
+    color:var(--loc-text);
+    font-size:14px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.quick-card small{
+    overflow:hidden;
+    color:var(--loc-muted);
+    font-size:11px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.danger-card{
+    border-color:#fecaca;
+    background:#fffafa;
+}
+
+.finished-card{
+    border-color:#bbf7d0;
+    background:#f0fdf4;
+}
+
+.empty-state{
+    padding:55px 20px;
+    text-align:center;
+}
+
+.empty-state span{
+    display:block;
+    margin-bottom:10px;
+    font-size:48px;
+}
+
+.empty-state h3{
+    margin:0;
+    color:var(--loc-text);
+}
+
+.empty-state p{
+    margin:7px 0 0;
+    color:var(--loc-muted);
+}
+
+@media(max-width:1350px){
+
+    .kpi-grid-locacao{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
 
 }
 
-th{
+@media(max-width:1100px){
 
-text-align:left;
+    .locacao-hero{
+        align-items:flex-start;
+        flex-direction:column;
+    }
 
-padding:12px;
+    .hero-actions{
+        width:100%;
+        justify-content:flex-start;
+    }
+
+    .content-grid{
+        grid-template-columns:1fr;
+    }
+
+    .side-column{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+
+    .quick-actions{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+}
+
+@media(max-width:820px){
+
+    .side-column{
+        grid-template-columns:1fr;
+    }
+
+    .panel-header{
+        flex-direction:column;
+    }
+
+    .parcel-summary{
+        justify-content:flex-start;
+    }
+
+    .parcelas-desktop{
+        display:none;
+    }
+
+    .parcelas-mobile{
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+    }
+
+    .parcel-card-mobile{
+        padding:15px;
+        border-radius:16px;
+        background:#f8fafc;
+        border:1px solid #e5e7eb;
+    }
+
+    .parcel-mobile-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+    }
+
+    .parcel-mobile-number{
+        color:var(--loc-text);
+        font-size:13px;
+        font-weight:900;
+    }
+
+    .parcel-mobile-grid{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+        margin-top:14px;
+    }
+
+    .parcel-mobile-grid div{
+        display:flex;
+        min-width:0;
+        flex-direction:column;
+        gap:4px;
+    }
+
+    .parcel-mobile-grid small{
+        color:var(--loc-muted);
+        font-size:10px;
+        font-weight:900;
+    }
+
+    .parcel-mobile-grid strong{
+        color:var(--loc-text);
+        font-size:14px;
+    }
+
+    .payment-date-mobile{
+        margin:11px 0 0;
+        color:var(--loc-muted);
+        font-size:11px;
+    }
+
+    .parcel-mobile-actions{
+        display:flex;
+        gap:7px;
+        flex-wrap:wrap;
+        margin-top:13px;
+    }
 
 }
 
-td{
+@media(max-width:680px){
 
-padding:12px;
+    .locacao-hero{
+        padding:21px;
+        border-radius:21px;
+    }
 
-border-top:1px solid #edf2f7;
+    .hero-main{
+        align-items:flex-start;
+        width:100%;
+        flex-direction:column;
+    }
+
+    .hero-icon{
+        width:100%;
+        height:170px;
+        flex-basis:auto;
+    }
+
+    .hero-copy h1{
+        font-size:25px;
+    }
+
+    .hero-actions{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+    }
+
+    .action-btn{
+        width:100%;
+    }
+
+    .kpi-grid-locacao{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+    }
+
+    .kpi-locacao{
+        align-items:flex-start;
+        min-height:103px;
+        padding:14px;
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .kpi-icon{
+        width:36px;
+        height:36px;
+        flex-basis:36px;
+    }
+
+    .kpi-locacao strong{
+        font-size:15px;
+        white-space:normal;
+    }
+
+    .panel{
+        padding:18px;
+        border-radius:19px;
+    }
+
+    .quick-actions{
+        grid-template-columns:1fr;
+    }
 
 }
 
-@media(max-width:900px){
+@media(max-width:430px){
 
-div[style*="repeat(4"]{
+    .hero-actions{
+        grid-template-columns:1fr;
+    }
 
-grid-template-columns:repeat(2,1fr)!important;
+    .kpi-grid-locacao{
+        grid-template-columns:1fr 1fr;
+    }
 
-}
-
-table{
-
-display:block;
-overflow:auto;
-
-}
+    .parcel-mobile-grid{
+        grid-template-columns:1fr;
+    }
 
 }
 
