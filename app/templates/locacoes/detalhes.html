@@ -17,8 +17,8 @@
 
         <p>
 
-            {{ locacao.veiculo.marca.nome }}
-            {{ locacao.veiculo.modelo.nome }}
+            {{ locacao.veiculo.marca }}
+            {{ locacao.veiculo.modelo }}
 
         </p>
 
@@ -235,6 +235,8 @@ Recebimentos
 
 </a>
 
+{% if locacao.status == "ativa" %}
+
 <a
 class="premium-card"
 href="{{ url_for('locacoes.encerrar_locacao', locacao_id=locacao.id) }}">
@@ -242,10 +244,28 @@ href="{{ url_for('locacoes.encerrar_locacao', locacao_id=locacao.id) }}">
 🔚
 
 <h3>
-Encerrar
+
+Encerrar Locação
+
 </h3>
 
 </a>
+
+{% else %}
+
+<div class="premium-card">
+
+✅
+
+<h3>
+
+Locação Encerrada
+
+</h3>
+
+</div>
+
+{% endif %}
 
 </div>
 

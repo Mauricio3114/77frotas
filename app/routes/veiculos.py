@@ -270,10 +270,16 @@ def excluir(id):
         conta_id=current_user.conta_id
     ).first_or_404()
 
-    if veiculo.locacoes:
+    locacao_ativa = Locacao.query.filter_by(
+        conta_id=current_user.conta_id,
+        veiculo_id=veiculo.id,
+        status="ativa"
+    ).first()
+
+    if locacao_ativa:
 
         flash(
-            "Não é possível excluir um veículo que possui locações.",
+            "Não é possível excluir um veículo que possui uma locação ativa.",
             "warning"
         )
 

@@ -487,13 +487,15 @@ def nova_locacao():
 
             vencimento = datetime.today().date()
 
-        cliente = Cliente.query.get_or_404(
-            cliente_id
-        )
+        cliente = Cliente.query.filter_by(
+            id=cliente_id,
+            conta_id=current_user.conta_id
+        ).first_or_404()
 
-        veiculo = Veiculo.query.get_or_404(
-            veiculo_id
-        )
+        veiculo = Veiculo.query.filter_by(
+            id=veiculo_id,
+            conta_id=current_user.conta_id
+        ).first_or_404()
 
         # ==========================
         # Segurança
@@ -509,6 +511,23 @@ def nova_locacao():
             return redirect(
                 url_for("locacoes.nova_locacao")
             )
+
+            locacao_ativa = Locacao.query.filter_by(
+                conta_id=current_user.conta_id,
+                veiculo_id=veiculo.id,
+                status="ativa"
+            ).first()
+
+            if locacao_ativa:
+
+                flash(
+                    "Este veículo já possui uma locação ativa.",
+                    "warning"
+                )
+
+                return redirect(
+                    url_for("locacoes.nova_locacao")
+                )
 
         # ==========================
         # Cria Locação
