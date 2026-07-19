@@ -476,6 +476,10 @@
         {% elif current_user.perfil == "ADMIN" %}
             <div class="menu-label">Admin</div>
 
+            <div style="background:red;padding:10px;color:#fff;font-weight:bold;">
+                TESTE MENU
+            </div>
+
             <a href="/dashboard" class="menu-link">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
@@ -506,12 +510,10 @@
 
             <div class="menu-label">Parcerias</div>
 
-            <a href="/analysis-center" class="menu-link">
-                <img
-                    src="{{ url_for('static', filename='img/analysis-center.png') }}"
-                    style="width:20px;height:20px;border-radius:5px;object-fit:contain;background:#fff;padding:2px;">
-
-                <span>Analysis Center</span>
+            <a href="/analysis-center"
+                class="menu-link"
+                style="background:red !important;color:#fff !important;border:3px solid yellow !important;">
+                🚨 TESTE ANALYSIS CENTER
             </a>
 
         {% elif current_user.perfil == "CLIENTE" %}
