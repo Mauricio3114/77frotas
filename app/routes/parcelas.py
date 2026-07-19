@@ -4,6 +4,8 @@ from flask import Blueprint, render_template, request
 from flask_login import login_required, current_user
 
 from app.models.parcela import Parcela
+from app.models.locacao import Locacao
+from app.models.cliente import Cliente
 
 
 parcelas_bp = Blueprint(
@@ -21,9 +23,17 @@ def listar():
     hoje = date.today()
 
     status = request.args.get("status", "")
+    
+    cliente_id = request.args.get("cliente_id", type=int)
 
     query = Parcela.query.filter_by(
         conta_id=conta_id
+    )
+
+    query = (
+        Parcela.query
+        .join(Locacao)
+        .filter(Parcela.conta_id == conta_id)
     )
 
     if status == "pagas":
@@ -69,6 +79,12 @@ def listar():
     print("Qtd parcelas:", len(parcelas))
     print("Primeira:", parcelas[0] if parcelas else None)
 
+    clientes = Cliente.query.filter_by(
+        conta_id=conta_id
+    ).order_by(
+        Cliente.nome.asc()
+    ).all()
+
     return render_template(
         "parcelas/listar.html",
         parcelas=parcelas,
@@ -76,5 +92,7 @@ def listar():
         total_aberto=total_aberto,
         total_pago=total_pago,
         total_atrasadas=len(atrasadas),
+        clientes=clientes,
+        cliente_id=cliente_id,
         status=status
     )

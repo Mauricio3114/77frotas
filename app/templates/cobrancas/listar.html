@@ -50,9 +50,7 @@
         <small>EM ABERTO</small>
 
         <h2>
-
-            R$ {{ "%.2f"|format(total_aberto) }}
-
+            {{ total_aberto|moeda }}
         </h2>
 
     </div>
@@ -63,35 +61,73 @@
 
     <div class="filtros">
 
-        <a href="{{ url_for('cobrancas.listar') }}"
+        <form method="GET">
+
+            <select
+                name="cliente_id"
+                onchange="this.form.submit()">
+
+                <option value="">
+                    Todos os clientes
+                </option>
+
+                {% for cliente in clientes %}
+
+                <option
+                    value="{{ cliente.id }}"
+                    {% if cliente_id == cliente.id %}selected{% endif %}>
+
+                    {{ cliente.nome }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            {% if status %}
+            <input
+                type="hidden"
+                name="status"
+                value="{{ status }}">
+            {% endif %}
+
+        </form>
+
+        <a href="{{ url_for('cobrancas.listar', cliente_id=cliente_id) }}"
            class="filtro {% if filtro=='todas' %}ativo{% endif %}">
 
             Todas
 
         </a>
 
-        <a href="{{ url_for('cobrancas.listar', filtro='vencidas') }}"
-           class="filtro {% if filtro=='vencidas' %}ativo{% endif %}">
+        <a
+            href="{{ url_for(
+                'cobrancas.listar',
+                filtro='vencidas',
+                cliente_id=cliente_id
+            ) }}"
+            class="filtro {% if filtro=='vencidas' %}ativo{% endif %}">
 
             Vencidas
 
         </a>
 
-        <a href="{{ url_for('cobrancas.listar', filtro='hoje') }}"
+        <a href="{{ url_for('cobrancas.listar', filtro='hoje', cliente_id=cliente_id) }}"
            class="filtro {% if filtro=='hoje' %}ativo{% endif %}">
 
             Hoje
 
         </a>
 
-        <a href="{{ url_for('cobrancas.listar', filtro='7dias') }}"
+        <a href="{{ url_for('cobrancas.listar', filtro='7dias', cliente_id=cliente_id) }}"
            class="filtro {% if filtro=='7dias' %}ativo{% endif %}">
 
             7 Dias
 
         </a>
 
-        <a href="{{ url_for('cobrancas.listar', filtro='30dias') }}"
+        <a href="{{ url_for('cobrancas.listar', filtro='30dias', cliente_id=cliente_id) }}"
            class="filtro {% if filtro=='30dias' %}ativo{% endif %}">
 
             30 Dias
@@ -179,7 +215,7 @@
 
         <strong>
 
-            R$ {{ "%.2f"|format(p.valor) }}
+            {{ p.valor|moeda }}
 
         </strong>
 
@@ -392,6 +428,24 @@ strong{
         grid-template-columns:1fr;
 
     }
+
+}
+
+.filtros form{
+
+    display:flex;
+    align-items:center;
+
+}
+
+.filtros select{
+
+    min-width:260px;
+    padding:12px 14px;
+    border:1px solid #dbe3ec;
+    border-radius:14px;
+    background:#fff;
+    font-weight:700;
 
 }
 
