@@ -793,170 +793,254 @@ style="display:none;">
 
     </div>
 
-    <div class="premium-card">
+    <div class="financeiro-layout-premium">
 
-        <h2>
+        <div class="premium-card financeiro-form-card">
 
-            💰 Dados Financeiros
+            <div class="financeiro-card-header">
 
-        </h2>
+                <div class="financeiro-card-icon">💰</div>
 
-        <div class="financeiro-grid">
-
-            <div>
-
-                <label>
-
-                    Valor da Locação
-
-                </label>
-
-                <input
-                id="valorLocacao"
-                class="form-control"
-                readonly>
+                <div>
+                    <h2>Dados Financeiros</h2>
+                    <p>Defina os valores, vencimentos e condições da locação.</p>
+                </div>
 
             </div>
 
-            <div>
+            <div class="contexto-locacao">
 
-                <label>
+                <div class="contexto-item">
+                    <small>CLIENTE</small>
+                    <strong id="financeiroCliente">--</strong>
+                </div>
 
-                    Caução
+                <div class="contexto-item">
+                    <small>VEÍCULO</small>
+                    <strong id="financeiroVeiculo">--</strong>
+                </div>
 
-                </label>
-
-                <input
-                id="caucao"
-                class="form-control"
-                type="number"
-                value="0">
-
-            </div>
-
-            <div>
-
-                <label>
-
-                    Desconto
-
-                </label>
-
-                <input
-                id="desconto"
-                class="form-control"
-                type="number"
-                value="0">
+                <div class="contexto-item">
+                    <small>PLANO</small>
+                    <strong id="financeiroPlano">--</strong>
+                </div>
 
             </div>
 
-            <div>
+            <div class="financeiro-grid financeiro-grid-premium">
 
-                <label>
+                <div class="campo-financeiro campo-destaque">
 
-                    Forma de Pagamento
+                    <label id="labelValorPeriodo">
+                        Valor por mês
+                    </label>
 
-                </label>
+                    <div class="input-money-wrap">
+                        <span>R$</span>
+                        <input
+                        id="valorLocacao"
+                        class="form-control"
+                        inputmode="decimal"
+                        readonly>
+                    </div>
 
-                <select
-                id="formaPagamento"
-                class="form-select">
+                    <small id="ajudaValorPeriodo">
+                        Valor calculado conforme o plano selecionado.
+                    </small>
 
-                    <option>PIX</option>
-                    <option>Dinheiro</option>
-                    <option>Cartão Débito</option>
-                    <option>Cartão Crédito</option>
-                    <option>Boleto</option>
-                    <option>Transferência</option>
+                </div>
 
-                </select>
+                <div class="campo-financeiro">
+
+                    <label id="labelQuantidade">
+                        Quantidade de Meses
+                    </label>
+
+                    <input
+                    type="number"
+                    class="form-control"
+                    id="quantidadeParcelas"
+                    name="quantidade_parcelas"
+                    value="12"
+                    min="1"
+                    max="60">
+
+                    <small id="textoQuantidade">
+                        Informe por quantos meses o cliente permanecerá com o veículo.
+                    </small>
+
+                </div>
+
+                <div class="campo-financeiro">
+
+                    <label>Caução</label>
+
+                    <div class="input-money-wrap">
+                        <span>R$</span>
+                        <input
+                        id="caucao"
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value="0">
+                    </div>
+
+                    <small>Valor de garantia cobrado do cliente.</small>
+
+                </div>
+
+                <div class="campo-financeiro">
+
+                    <label>Desconto</label>
+
+                    <div class="input-money-wrap">
+                        <span>R$</span>
+                        <input
+                        id="desconto"
+                        class="form-control"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value="0">
+                    </div>
+
+                    <small>Desconto aplicado sobre o contrato.</small>
+
+                </div>
+
+                <div class="campo-financeiro">
+
+                    <label>Forma de Pagamento</label>
+
+                    <select
+                    id="formaPagamento"
+                    class="form-select">
+
+                        <option>PIX</option>
+                        <option>Dinheiro</option>
+                        <option>Cartão Débito</option>
+                        <option>Cartão Crédito</option>
+                        <option>Boleto</option>
+                        <option>Transferência</option>
+
+                    </select>
+
+                    <small>Forma principal combinada com o cliente.</small>
+
+                </div>
+
+                <div class="campo-financeiro">
+
+                    <label>Primeiro Vencimento</label>
+
+                    <input
+                    type="date"
+                    class="form-control"
+                    id="primeiroVencimento">
+
+                    <small>Data de vencimento da primeira cobrança.</small>
+
+                </div>
+
+                <div class="campo-financeiro">
+
+                    <label>Dia do Vencimento</label>
+
+                    <input
+                    type="number"
+                    class="form-control"
+                    id="diaVencimento"
+                    min="1"
+                    max="31"
+                    placeholder="Ex.: 10">
+
+                    <small>Dia padrão das próximas cobranças.</small>
+
+                </div>
 
             </div>
 
-            <div>
+            <div class="observacoes-financeiro">
 
-                <label>
+                <label>Observações</label>
 
-                    Primeiro Vencimento
-
-                </label>
-
-                <input
-                type="date"
+                <textarea
+                id="observacoes"
                 class="form-control"
-                id="primeiroVencimento">
-
-            </div>
-
-            <div>
-
-                <label>
-
-                    Dia do Vencimento
-
-                </label>
-
-                <input
-                type="number"
-                class="form-control"
-                id="diaVencimento"
-                min="1"
-                max="31">
-
-            </div>
-
-            <div>
-
-                <label>
-
-                    Quantidade de Cobranças
-
-                </label>
-
-                <input
-                type="number"
-                class="form-control"
-                id="quantidadeParcelas"
-                name="quantidade_parcelas"
-                value="12"
-                min="1"
-                max="60">
+                rows="4"
+                placeholder="Informe condições especiais, detalhes da negociação ou observações importantes..."></textarea>
 
             </div>
 
         </div>
 
-        <div style="margin-top:25px;">
+        <aside class="premium-card resumo-financeiro-card">
 
-            <label>
+            <div class="resumo-financeiro-topo">
+                <span>📊</span>
+                <div>
+                    <small>RESUMO EM TEMPO REAL</small>
+                    <h2>Total do Contrato</h2>
+                </div>
+            </div>
 
-                Observações
+            <div class="resumo-financeiro-linhas">
 
-            </label>
+                <div class="resumo-financeiro-linha">
+                    <span>Plano</span>
+                    <strong id="previewPlano">Mensal</strong>
+                </div>
 
-            <textarea
-            id="observacoes"
-            class="form-control"
-            rows="4"></textarea>
+                <div class="resumo-financeiro-linha">
+                    <span id="previewLabelValor">Valor mensal</span>
+                    <strong id="previewValorPeriodo">R$ 0,00</strong>
+                </div>
 
-        </div>
+                <div class="resumo-financeiro-linha">
+                    <span id="previewLabelQuantidade">Quantidade de meses</span>
+                    <strong id="previewQuantidade">12</strong>
+                </div>
 
-        <div
-        style="
-        margin-top:25px;
-        display:flex;
-        justify-content:flex-end;">
+                <div class="resumo-financeiro-linha subtotal">
+                    <span>Subtotal</span>
+                    <strong id="previewSubtotal">R$ 0,00</strong>
+                </div>
+
+                <div class="resumo-financeiro-linha desconto">
+                    <span>Desconto</span>
+                    <strong id="previewDesconto">- R$ 0,00</strong>
+                </div>
+
+                <div class="resumo-financeiro-linha caucao">
+                    <span>Caução</span>
+                    <strong id="previewCaucao">+ R$ 0,00</strong>
+                </div>
+
+            </div>
+
+            <div class="total-contrato-box">
+                <small>TOTAL PREVISTO</small>
+                <strong id="previewTotalContrato">R$ 0,00</strong>
+                <p>Subtotal menos desconto, somado à caução.</p>
+            </div>
+
+            <div class="resumo-vencimento-box">
+                <span>📅</span>
+                <div>
+                    <small>PRIMEIRO VENCIMENTO</small>
+                    <strong id="previewPrimeiroVencimento">Não informado</strong>
+                </div>
+            </div>
 
             <button
             type="button"
             id="continuarFinalizacao"
-            class="btn-premium">
-
+            class="btn-premium btn-revisar-locacao">
                 Revisar Locação →
-
             </button>
 
-        </div>
+        </aside>
 
     </div>
 
@@ -1030,12 +1114,22 @@ style="display:none;">
                 <h3 id="finalVencimento"></h3>
             </div>
 
+            <div class="resumo-item">
+                <small>QUANTIDADE</small>
+                <h3 id="finalQuantidade"></h3>
+            </div>
+
+            <div class="resumo-item destaque-total-final">
+                <small>TOTAL PREVISTO DO CONTRATO</small>
+                <h3 id="finalTotalContrato"></h3>
+            </div>
+
         </div>
 
         <div style="margin-top:25px; display:flex; justify-content:flex-end; gap:12px; flex-wrap:wrap;">
 
-            <button type="button" class="btn-premium" style="background:#64748b;">
-                Voltar
+            <button type="button" id="voltarFinanceiro" class="btn-premium" style="background:#64748b;">
+                ← Voltar ao Financeiro
             </button>
 
             <input type="hidden" name="cliente_id" id="cliente_id">
@@ -1376,19 +1470,472 @@ grid-template-columns:1fr;
 
 }
 
+
+.plano-card.plano-selecionado-ativo{
+    border:2px solid #ff6a00;
+    box-shadow:0 14px 34px rgba(255,106,0,.18);
+    transform:translateY(-4px);
+}
+
+/* ================= FINANCEIRO PREMIUM ================= */
+
+.financeiro-layout-premium{
+    display:grid;
+    grid-template-columns:minmax(0,1.55fr) minmax(320px,.75fr);
+    gap:24px;
+    align-items:start;
+}
+
+.financeiro-form-card,
+.resumo-financeiro-card{
+    margin-top:0;
+}
+
+.financeiro-card-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-bottom:20px;
+    border-bottom:1px solid #e2e8f0;
+}
+
+.financeiro-card-header h2,
+.financeiro-card-header p{
+    margin:0;
+}
+
+.financeiro-card-header p{
+    margin-top:5px;
+    color:#64748b;
+}
+
+.financeiro-card-icon{
+    width:48px;
+    height:48px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff7ed;
+    font-size:24px;
+}
+
+.contexto-locacao{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+    margin-top:20px;
+    padding:14px;
+    background:#0f172a;
+    border-radius:17px;
+}
+
+.contexto-item{
+    min-width:0;
+    padding:4px 8px;
+}
+
+.contexto-item small{
+    display:block;
+    margin-bottom:5px;
+    color:#94a3b8;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+.contexto-item strong{
+    display:block;
+    color:#fff;
+    font-size:14px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.financeiro-grid-premium{
+    margin-top:22px;
+}
+
+.campo-financeiro{
+    padding:15px;
+    border:1px solid #e2e8f0;
+    border-radius:16px;
+    background:#f8fafc;
+}
+
+.campo-financeiro.campo-destaque{
+    border-color:#fdba74;
+    background:#fff7ed;
+}
+
+.campo-financeiro small{
+    display:block;
+    margin-top:7px;
+    color:#64748b;
+    font-size:12px;
+    line-height:1.35;
+}
+
+.input-money-wrap{
+    display:flex;
+    align-items:center;
+    border:1px solid #cbd5e1;
+    border-radius:12px;
+    background:#fff;
+    overflow:hidden;
+}
+
+.input-money-wrap:focus-within{
+    border-color:#ff6a00;
+    box-shadow:0 0 0 3px rgba(255,106,0,.12);
+}
+
+.input-money-wrap span{
+    padding-left:14px;
+    color:#64748b;
+    font-weight:800;
+}
+
+.input-money-wrap .form-control{
+    border:0;
+    box-shadow:none;
+    background:transparent;
+}
+
+.observacoes-financeiro{
+    margin-top:20px;
+}
+
+.observacoes-financeiro label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.resumo-financeiro-card{
+    position:sticky;
+    top:90px;
+    padding:22px;
+    background:#0f172a;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.07);
+}
+
+.resumo-financeiro-topo{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    padding-bottom:18px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+.resumo-financeiro-topo > span{
+    font-size:27px;
+}
+
+.resumo-financeiro-topo small{
+    display:block;
+    color:#94a3b8;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.08em;
+}
+
+.resumo-financeiro-topo h2{
+    margin:4px 0 0;
+    font-size:20px;
+}
+
+.resumo-financeiro-linhas{
+    padding:14px 0;
+}
+
+.resumo-financeiro-linha{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:10px 0;
+    color:#cbd5e1;
+    border-bottom:1px dashed rgba(255,255,255,.08);
+}
+
+.resumo-financeiro-linha strong{
+    color:#fff;
+    text-align:right;
+}
+
+.resumo-financeiro-linha.subtotal{
+    margin-top:4px;
+    padding-top:14px;
+}
+
+.resumo-financeiro-linha.desconto strong{
+    color:#fca5a5;
+}
+
+.resumo-financeiro-linha.caucao strong{
+    color:#86efac;
+}
+
+.total-contrato-box{
+    margin-top:6px;
+    padding:20px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#ff6a00,#ea580c);
+    box-shadow:0 14px 28px rgba(234,88,12,.25);
+}
+
+.total-contrato-box small{
+    display:block;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.1em;
+    opacity:.9;
+}
+
+.total-contrato-box strong{
+    display:block;
+    margin-top:6px;
+    font-size:30px;
+    line-height:1.1;
+}
+
+.total-contrato-box p{
+    margin:8px 0 0;
+    font-size:11px;
+    opacity:.82;
+}
+
+.resumo-vencimento-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:14px;
+    padding:14px;
+    border-radius:15px;
+    background:rgba(255,255,255,.07);
+}
+
+.resumo-vencimento-box > span{
+    font-size:22px;
+}
+
+.resumo-vencimento-box small{
+    display:block;
+    color:#94a3b8;
+    font-size:10px;
+    font-weight:800;
+}
+
+.resumo-vencimento-box strong{
+    display:block;
+    margin-top:3px;
+}
+
+.btn-revisar-locacao{
+    width:100%;
+    margin-top:16px;
+    min-height:48px;
+}
+
+.destaque-total-final{
+    background:#0f172a;
+    color:#fff;
+}
+
+.destaque-total-final small{
+    color:#cbd5e1;
+}
+
+@media(max-width:1050px){
+    .financeiro-layout-premium{
+        grid-template-columns:1fr;
+    }
+
+    .resumo-financeiro-card{
+        position:static;
+    }
+}
+
+@media(max-width:700px){
+    .contexto-locacao{
+        grid-template-columns:1fr;
+    }
+
+    .contexto-item{
+        padding:5px 3px;
+    }
+
+    .total-contrato-box strong{
+        font-size:26px;
+    }
+}
+
 </style>
 
 <script>
 let diariaSelecionada = 0;
+let planoSelecionado = "";
 
 const formLocacao = document.getElementById("formLocacao");
+
+function numeroSeguro(valor){
+    const numero = parseFloat(valor);
+    return Number.isFinite(numero) ? numero : 0;
+}
+
+function moedaBR(valor){
+    return numeroSeguro(valor).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+function dataBR(valor){
+    if(!valor){
+        return "Não informado";
+    }
+
+    const partes = valor.split("-");
+
+    if(partes.length !== 3){
+        return valor;
+    }
+
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+function configuracaoPlano(plano){
+    const configuracoes = {
+        "Diária": {
+            labelQuantidade: "Quantidade de Diárias",
+            textoQuantidade: "Informe quantas diárias serão contratadas.",
+            labelValor: "Valor por diária",
+            previewValor: "Valor da diária",
+            previewQuantidade: "Quantidade de diárias",
+            unidade: "diária",
+            plural: "diárias",
+            quantidadePadrao: 1
+        },
+        "Semanal": {
+            labelQuantidade: "Quantidade de Semanas",
+            textoQuantidade: "Informe quantas semanas serão contratadas.",
+            labelValor: "Valor por semana",
+            previewValor: "Valor semanal",
+            previewQuantidade: "Quantidade de semanas",
+            unidade: "semana",
+            plural: "semanas",
+            quantidadePadrao: 4
+        },
+        "Quinzenal": {
+            labelQuantidade: "Quantidade de Quinzenas",
+            textoQuantidade: "Informe quantas quinzenas serão contratadas.",
+            labelValor: "Valor por quinzena",
+            previewValor: "Valor quinzenal",
+            previewQuantidade: "Quantidade de quinzenas",
+            unidade: "quinzena",
+            plural: "quinzenas",
+            quantidadePadrao: 2
+        },
+        "Mensal": {
+            labelQuantidade: "Quantidade de Meses",
+            textoQuantidade: "Informe por quantos meses o cliente permanecerá com o veículo.",
+            labelValor: "Valor por mês",
+            previewValor: "Valor mensal",
+            previewQuantidade: "Quantidade de meses",
+            unidade: "mês",
+            plural: "meses",
+            quantidadePadrao: 12
+        }
+    };
+
+    return configuracoes[plano] || configuracoes["Mensal"];
+}
+
+function atualizarTextosPlano(definirQuantidadePadrao = false){
+    const plano = planoSelecionado || document.getElementById("planoHidden").value || "Mensal";
+    const config = configuracaoPlano(plano);
+    const quantidadeInput = document.getElementById("quantidadeParcelas");
+
+    document.getElementById("labelQuantidade").textContent = config.labelQuantidade;
+    document.getElementById("textoQuantidade").textContent = config.textoQuantidade;
+    document.getElementById("labelValorPeriodo").textContent = config.labelValor;
+    document.getElementById("previewLabelValor").textContent = config.previewValor;
+    document.getElementById("previewLabelQuantidade").textContent = config.previewQuantidade;
+
+    if(definirQuantidadePadrao){
+        quantidadeInput.value = config.quantidadePadrao;
+    }
+}
+
+function atualizarResumoFinanceiro(){
+    const plano = planoSelecionado || document.getElementById("planoHidden").value || "Mensal";
+    const config = configuracaoPlano(plano);
+    const valorPeriodo = numeroSeguro(document.getElementById("valorHidden").value);
+    const quantidade = Math.max(1, parseInt(document.getElementById("quantidadeParcelas").value || 1));
+    const desconto = Math.max(0, numeroSeguro(document.getElementById("desconto").value));
+    const caucao = Math.max(0, numeroSeguro(document.getElementById("caucao").value));
+    const subtotal = valorPeriodo * quantidade;
+    const totalPrevisto = Math.max(0, subtotal - desconto) + caucao;
+    const primeiroVencimento = document.getElementById("primeiroVencimento").value;
+
+    document.getElementById("previewPlano").textContent = plano;
+    document.getElementById("previewValorPeriodo").textContent = moedaBR(valorPeriodo);
+    document.getElementById("previewQuantidade").textContent = `${quantidade} ${quantidade === 1 ? config.unidade : config.plural}`;
+    document.getElementById("previewSubtotal").textContent = moedaBR(subtotal);
+    document.getElementById("previewDesconto").textContent = `- ${moedaBR(desconto)}`;
+    document.getElementById("previewCaucao").textContent = `+ ${moedaBR(caucao)}`;
+    document.getElementById("previewTotalContrato").textContent = moedaBR(totalPrevisto);
+    document.getElementById("previewPrimeiroVencimento").textContent = dataBR(primeiroVencimento);
+
+    document.getElementById("financeiroCliente").textContent =
+        document.getElementById("clienteNome").textContent || "--";
+
+    document.getElementById("financeiroVeiculo").textContent =
+        document.getElementById("nomeVeiculo").textContent || "--";
+
+    document.getElementById("financeiroPlano").textContent = plano;
+
+    return {
+        plano,
+        config,
+        valorPeriodo,
+        quantidade,
+        desconto,
+        caucao,
+        subtotal,
+        totalPrevisto,
+        primeiroVencimento
+    };
+}
+
+function filtrarCards(inputId, seletorCard, atributo){
+    const input = document.getElementById(inputId);
+
+    if(!input){
+        return;
+    }
+
+    input.addEventListener("input", function(){
+        const busca = this.value.trim().toLowerCase();
+
+        document.querySelectorAll(seletorCard).forEach(card => {
+            const texto = (card.dataset[atributo] || "").toLowerCase();
+            card.style.display = texto.includes(busca) ? "flex" : "none";
+        });
+    });
+}
+
+filtrarCards("buscarCliente", ".cliente-card[data-nome]", "nome");
+filtrarCards("buscarVeiculo", ".veiculo-card[data-veiculo]", "veiculo");
 
 document.querySelectorAll(".selecionar-cliente").forEach(btn => {
     btn.addEventListener("click", function(e){
         e.preventDefault();
 
         document.getElementById("clienteSelecionado").style.display = "block";
-        document.getElementById("clienteNome").innerHTML = this.dataset.nome;
+        document.getElementById("clienteNome").textContent = this.dataset.nome;
         document.getElementById("cliente_id").value = this.dataset.id;
 
         window.scrollTo({
@@ -1414,19 +1961,19 @@ document.querySelectorAll(".selecionar-veiculo").forEach(btn => {
     btn.addEventListener("click", function(e){
         e.preventDefault();
 
-        diariaSelecionada = parseFloat(this.dataset.diaria || 0);
+        diariaSelecionada = numeroSeguro(this.dataset.diaria);
 
         document.getElementById("veiculoSelecionado").style.display = "block";
-        document.getElementById("nomeVeiculo").innerHTML = this.dataset.nome;
+        document.getElementById("nomeVeiculo").textContent = this.dataset.nome;
         document.getElementById("veiculo_id").value = this.dataset.id;
 
-        document.getElementById("clienteResumo").innerHTML =
-            document.getElementById("clienteNome").innerHTML;
+        document.getElementById("clienteResumo").textContent =
+            document.getElementById("clienteNome").textContent;
 
-        document.getElementById("valorDiariaResumo").innerHTML =
-            "R$ " + diariaSelecionada.toFixed(2);
+        document.getElementById("valorDiariaResumo").textContent =
+            moedaBR(diariaSelecionada);
 
-        document.getElementById("combustivelResumo").innerHTML =
+        document.getElementById("combustivelResumo").textContent =
             this.dataset.combustivel || "--";
 
         window.scrollTo({
@@ -1451,15 +1998,24 @@ document.querySelectorAll(".plano-card").forEach(card => {
     card.addEventListener("click", function(e){
         e.preventDefault();
 
-        let mult = parseInt(this.dataset.mult || 1);
-        let total = diariaSelecionada * mult;
+        const mult = parseInt(this.dataset.mult || 1);
+        const totalPeriodo = diariaSelecionada * mult;
+        planoSelecionado = this.dataset.plano;
+
+        document.querySelectorAll(".plano-card").forEach(item => {
+            item.classList.remove("plano-selecionado-ativo");
+        });
+        this.classList.add("plano-selecionado-ativo");
 
         document.getElementById("planoSelecionado").style.display = "block";
-        document.getElementById("resumoPlano").innerHTML = this.dataset.plano;
-        document.getElementById("valorPlano").innerHTML = "R$ " + total.toFixed(2);
+        document.getElementById("resumoPlano").textContent = planoSelecionado;
+        document.getElementById("valorPlano").textContent = moedaBR(totalPeriodo);
 
-        document.getElementById("planoHidden").value = this.dataset.plano;
-        document.getElementById("valorHidden").value = total.toFixed(2);
+        document.getElementById("planoHidden").value = planoSelecionado;
+        document.getElementById("valorHidden").value = totalPeriodo.toFixed(2);
+
+        atualizarTextosPlano(true);
+        atualizarResumoFinanceiro();
 
         window.scrollTo({
             top: document.getElementById("planoSelecionado").offsetTop - 80,
@@ -1472,9 +2028,11 @@ document.getElementById("continuarFinanceiro").addEventListener("click", functio
     e.preventDefault();
 
     document.getElementById("passoFinanceiro").style.display = "block";
-
     document.getElementById("valorLocacao").value =
-        document.getElementById("valorHidden").value;
+        numeroSeguro(document.getElementById("valorHidden").value).toFixed(2);
+
+    atualizarTextosPlano(false);
+    atualizarResumoFinanceiro();
 
     window.scrollTo({
         top: document.getElementById("passoFinanceiro").offsetTop - 80,
@@ -1482,34 +2040,51 @@ document.getElementById("continuarFinanceiro").addEventListener("click", functio
     });
 });
 
+[
+    "quantidadeParcelas",
+    "caucao",
+    "desconto",
+    "primeiroVencimento",
+    "diaVencimento",
+    "formaPagamento"
+].forEach(id => {
+    const campo = document.getElementById(id);
+
+    if(campo){
+        campo.addEventListener("input", atualizarResumoFinanceiro);
+        campo.addEventListener("change", atualizarResumoFinanceiro);
+    }
+});
+
 document.getElementById("continuarFinalizacao").addEventListener("click", function(e){
     e.preventDefault();
 
+    const dados = atualizarResumoFinanceiro();
+
+    if(!dados.primeiroVencimento){
+        alert("Informe o primeiro vencimento antes de revisar a locação.");
+        document.getElementById("primeiroVencimento").focus();
+        return;
+    }
+
     document.getElementById("passoFinalizacao").style.display = "block";
 
-    document.getElementById("finalCliente").innerHTML =
-        document.getElementById("clienteResumo").innerHTML;
+    document.getElementById("finalCliente").textContent =
+        document.getElementById("clienteResumo").textContent;
 
-    document.getElementById("finalVeiculo").innerHTML =
-        document.getElementById("nomeVeiculo").innerHTML;
+    document.getElementById("finalVeiculo").textContent =
+        document.getElementById("nomeVeiculo").textContent;
 
-    document.getElementById("finalPlano").innerHTML =
-        document.getElementById("resumoPlano").innerHTML;
-
-    document.getElementById("finalValor").innerHTML =
-        document.getElementById("valorPlano").innerHTML;
-
-    document.getElementById("finalCaucao").innerHTML =
-        "R$ " + parseFloat(document.getElementById("caucao").value || 0).toFixed(2);
-
-    document.getElementById("finalDesconto").innerHTML =
-        "R$ " + parseFloat(document.getElementById("desconto").value || 0).toFixed(2);
-
-    document.getElementById("finalPagamento").innerHTML =
+    document.getElementById("finalPlano").textContent = dados.plano;
+    document.getElementById("finalValor").textContent = moedaBR(dados.valorPeriodo);
+    document.getElementById("finalCaucao").textContent = moedaBR(dados.caucao);
+    document.getElementById("finalDesconto").textContent = moedaBR(dados.desconto);
+    document.getElementById("finalPagamento").textContent =
         document.getElementById("formaPagamento").value;
-
-    document.getElementById("finalVencimento").innerHTML =
-        document.getElementById("primeiroVencimento").value || "--";
+    document.getElementById("finalVencimento").textContent = dataBR(dados.primeiroVencimento);
+    document.getElementById("finalQuantidade").textContent =
+        `${dados.quantidade} ${dados.quantidade === 1 ? dados.config.unidade : dados.config.plural}`;
+    document.getElementById("finalTotalContrato").textContent = moedaBR(dados.totalPrevisto);
 
     window.scrollTo({
         top: document.getElementById("passoFinalizacao").offsetTop - 80,
@@ -1517,10 +2092,31 @@ document.getElementById("continuarFinalizacao").addEventListener("click", functi
     });
 });
 
+document.getElementById("voltarFinanceiro").addEventListener("click", function(e){
+    e.preventDefault();
+    document.getElementById("passoFinalizacao").style.display = "none";
+
+    window.scrollTo({
+        top: document.getElementById("passoFinanceiro").offsetTop - 80,
+        behavior: "smooth"
+    });
+});
+
 document.getElementById("finalizarLocacao").addEventListener("click", function(e){
     e.preventDefault();
+
+    if(!document.getElementById("cliente_id").value ||
+       !document.getElementById("veiculo_id").value ||
+       !document.getElementById("planoHidden").value){
+        alert("Selecione cliente, veículo e plano antes de finalizar.");
+        return;
+    }
+
     formLocacao.submit();
 });
+
+atualizarTextosPlano(false);
+atualizarResumoFinanceiro();
 </script>
 
 </form>
