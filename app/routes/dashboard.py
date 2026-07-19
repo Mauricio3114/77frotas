@@ -24,6 +24,7 @@ def dashboard():
 
     veiculos_locados = Veiculo.query.filter_by(
         conta_id=conta_id,
+        ativo=True,
         status="locado"
     ).count()
 
