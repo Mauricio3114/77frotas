@@ -161,7 +161,7 @@ def confirmar_pix(pagamento_id):
 
     # Confirma o pagamento existente.
     pagamento.webhook_recebido = True
-    pagamento.gateway = "Manual"
+    pagamento.gateway = pagamento.gateway or "Manual"
     pagamento.forma_pagamento = "pix"
     pagamento.data_pagamento = agora
 

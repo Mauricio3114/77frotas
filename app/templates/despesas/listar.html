@@ -1,0 +1,116 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Despesas{% endblock %}
+{% block topbar_title %}Despesas{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Despesas</h1>
+
+        <p>Controle simples dos gastos da frota.</p>
+
+    </div>
+
+    <a
+    href="{{ url_for('despesas.nova_despesa') }}"
+    class="btn-premium">
+
+        ➕ Nova Despesa
+
+    </a>
+
+</div>
+
+<div class="premium-card">
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Data</th>
+
+<th>Veículo</th>
+
+<th>Tipo</th>
+
+<th>Valor</th>
+
+<th width="180">Ações</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for despesa in despesas %}
+
+<tr>
+
+<td>
+
+{{ despesa.data.strftime("%d/%m/%Y") }}
+
+</td>
+
+<td>
+
+{{ despesa.veiculo.placa }}
+
+</td>
+
+<td>
+
+{{ despesa.tipo }}
+
+</td>
+
+<td>
+
+R$ {{ "%.2f"|format(despesa.valor) }}
+
+</td>
+
+<td>
+
+<a
+href="{{ url_for('despesas.editar_despesa', id=despesa.id) }}"
+class="btn-premium">
+
+Editar
+
+</a>
+
+<form
+method="POST"
+action="{{ url_for('despesas.excluir_despesa', id=despesa.id) }}"
+style="display:inline;">
+
+<button
+class="btn-premium btn-danger">
+
+Excluir
+
+</button>
+
+</form>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

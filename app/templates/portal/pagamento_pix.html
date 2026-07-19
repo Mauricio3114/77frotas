@@ -18,6 +18,10 @@ Realize o pagamento e aguarde a confirmação da locadora.
 
 <div class="premium-card">
 
+<form
+method="POST"
+enctype="multipart/form-data">
+
 <h3>
 
 Valor da Parcela
@@ -34,6 +38,46 @@ R$ {{ "%.2f"|format(parcela.valor) }}
 
 <h5>
 
+Favorecido
+
+</h5>
+
+<p>
+
+<strong>
+
+{{ conta.favorecido_pix }}
+
+</strong>
+
+</p>
+
+<h5>
+
+Banco
+
+</h5>
+
+<p>
+
+{{ conta.banco_pix }}
+
+</p>
+
+<h5>
+
+Tipo da Chave
+
+</h5>
+
+<p>
+
+{{ conta.tipo_chave_pix|upper }}
+
+</p>
+
+<h5>
+
 Chave PIX
 
 </h5>
@@ -45,6 +89,7 @@ Chave PIX
 </div>
 
 <button
+type="button"
 class="btn btn-warning mt-3"
 onclick="navigator.clipboard.writeText('{{ conta.chave_pix }}')">
 
@@ -54,19 +99,41 @@ onclick="navigator.clipboard.writeText('{{ conta.chave_pix }}')">
 
 <hr>
 
-<p>
+<div class="mt-4">
 
-Após realizar o pagamento, a locadora confirmará o recebimento.
+<label>
 
-</p>
+Comprovante (Opcional)
 
-<a
-href="{{ url_for('portal.parcelas') }}"
-class="btn btn-dark">
+</label>
 
-Voltar
+<input
+type="file"
+name="comprovante"
+class="form-control"
+accept=".jpg,.jpeg,.png,.pdf">
 
-</a>
+<small class="text-muted">
+
+Caso já tenha realizado o PIX, envie o comprovante para agilizar a confirmação.
+
+</small>
+
+</div>
+
+<div class="d-grid mt-4">
+
+<button
+type="submit"
+class="btn btn-success btn-lg">
+
+📨 Informar Pagamento
+
+</button>
+
+</div>
+
+</form>
 
 </div>
 
