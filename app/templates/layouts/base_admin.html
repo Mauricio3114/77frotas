@@ -674,12 +674,21 @@ onclick="document.body.classList.remove('sidebar-open')">
 
         </a>
 
-        <a href="/relatorios" class="menu-link">
-
+       <a href="/relatorios" class="menu-link">
             <i class="bi bi-file-earmark-bar-graph-fill"></i>
-
             Relatórios
+        </a>
 
+        <div class="menu-label">
+            PARCERIAS
+        </div>
+
+        <a href="/analysis-center" class="menu-link">
+            <img
+                src="{{ url_for('static', filename='img/analysis-center.png') }}"
+                style="width:20px;height:20px;border-radius:5px;object-fit:contain;background:#fff;padding:2px;">
+
+            <span>Analysis Center</span>
         </a>
 
         {% elif current_user.perfil=="CLIENTE" %}
@@ -747,16 +756,6 @@ onclick="document.body.classList.remove('sidebar-open')">
             Negociação
 
         </a>
-
-        <div class="menu-label">Parcerias</div>
-
-            <a href="/analysis-center" class="menu-link">
-                <img
-                    src="{{ url_for('static', filename='img/analysis-center.png') }}"
-                    style="width:20px;height:20px;border-radius:5px;object-fit:contain;background:#fff;padding:2px;">
-
-                <span>Analysis Center</span>
-            </a>
 
         {% endif %}
 
