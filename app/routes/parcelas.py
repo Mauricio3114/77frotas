@@ -23,19 +23,16 @@ def listar():
     hoje = date.today()
 
     status = request.args.get("status", "")
-    
     cliente_id = request.args.get("cliente_id", type=int)
 
-    query = Parcela.query.filter_by(
-        conta_id=conta_id
-    )
-
+    # Consulta base
     query = (
         Parcela.query
         .join(Locacao)
         .filter(Parcela.conta_id == conta_id)
     )
 
+    # Filtro por status
     if status == "pagas":
 
         query = query.filter(
@@ -55,9 +52,18 @@ def listar():
             Parcela.status != "paga"
         )
 
-    parcelas = query.order_by(
-        Parcela.vencimento.asc()
-    ).all()
+    # Filtro por cliente
+    if cliente_id:
+
+        query = query.filter(
+            Locacao.cliente_id == cliente_id
+        )
+
+    parcelas = (
+        query
+        .order_by(Parcela.vencimento.asc())
+        .all()
+    )
 
     total_aberto = sum(
         float(p.valor or 0)
@@ -72,18 +78,18 @@ def listar():
     )
 
     atrasadas = [
-        p for p in parcelas
-        if p.status != "paga" and p.vencimento < hoje
+        p
+        for p in parcelas
+        if p.status != "paga"
+        and p.vencimento < hoje
     ]
 
-    print("Qtd parcelas:", len(parcelas))
-    print("Primeira:", parcelas[0] if parcelas else None)
-
-    clientes = Cliente.query.filter_by(
-        conta_id=conta_id
-    ).order_by(
-        Cliente.nome.asc()
-    ).all()
+    clientes = (
+        Cliente.query
+        .filter_by(conta_id=conta_id)
+        .order_by(Cliente.nome.asc())
+        .all()
+    )
 
     return render_template(
         "parcelas/listar.html",

@@ -18,12 +18,12 @@
 
     <div class="kpi-card">
         <small>ABERTO</small>
-        <h2>R$ {{ "%.2f"|format(total_aberto or 0) }}</h2>
+        <h2>{{ total_aberto|moeda }}</h2>
     </div>
 
     <div class="kpi-card">
         <small>PAGO</small>
-        <h2>R$ {{ "%.2f"|format(total_pago or 0) }}</h2>
+        <h2>{{ total_pago|moeda }}</h2>
     </div>
 
     <div class="kpi-card">
@@ -42,19 +42,52 @@
 
     <div class="filtros">
 
-        <a href="{{ url_for('parcelas.listar') }}" class="filtro {% if not status %}ativo{% endif %}">
+        <form method="GET">
+
+            <select
+                name="cliente_id"
+                onchange="this.form.submit()">
+
+                <option value="">
+                    Todos os clientes
+                </option>
+
+                {% for cliente in clientes %}
+
+                <option
+                    value="{{ cliente.id }}"
+                    {% if cliente_id == cliente.id %}selected{% endif %}>
+
+                    {{ cliente.nome }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            {% if status %}
+            <input
+                type="hidden"
+                name="status"
+                value="{{ status }}">
+            {% endif %}
+
+        </form>
+
+        <a href="{{ url_for('parcelas.listar', cliente_id=cliente_id) }}" class="filtro {% if not status %}ativo{% endif %}">
             Todas
         </a>
 
-        <a href="{{ url_for('parcelas.listar', status='abertas') }}" class="filtro {% if status=='abertas' %}ativo{% endif %}">
+        <a href="{{ url_for('parcelas.listar',status='abertas',cliente_id=cliente_id) }}" class="filtro {% if status=='abertas' %}ativo{% endif %}">
             Abertas
         </a>
 
-        <a href="{{ url_for('parcelas.listar', status='atrasadas') }}" class="filtro {% if status=='atrasadas' %}ativo{% endif %}">
+        <a href="{{ url_for('parcelas.listar',status='atrasadas',cliente_id=cliente_id) }}" class="filtro {% if status=='atrasadas' %}ativo{% endif %}">
             Atrasadas
         </a>
 
-        <a href="{{ url_for('parcelas.listar', status='pagas') }}" class="filtro {% if status=='pagas' %}ativo{% endif %}">
+        <a href="{{ url_for('parcelas.listar',status='pagas',cliente_id=cliente_id) }}" class="filtro {% if status=='pagas' %}ativo{% endif %}">
             Pagas
         </a>
 
@@ -103,7 +136,7 @@
         <small>VALOR</small>
 
         <strong>
-            R$ {{ "%.2f"|format(p.valor or 0) }}
+            {{ p.valor|moeda }}
         </strong>
 
     </div>
@@ -386,6 +419,20 @@
     color:#92400e;
     border:1px solid #fde68a;
 
+}
+
+.filtros form{
+    display:flex;
+    align-items:center;
+}
+
+.filtros select{
+    min-width:260px;
+    padding:12px 14px;
+    border:1px solid #dbe3ec;
+    border-radius:14px;
+    background:#fff;
+    font-weight:700;
 }
 
 </style>
