@@ -7,6 +7,7 @@ from app import db
 from app.models.veiculo import Veiculo
 from app.models.marca import Marca
 from app.models.modelo import Modelo
+from app.models.locacao import Locacao
 
 from flask import jsonify
 
