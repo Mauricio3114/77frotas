@@ -18,11 +18,18 @@ veiculos_bp = Blueprint("veiculos", __name__, url_prefix="/veiculos")
 @veiculos_bp.route("/")
 @login_required
 def listar():
-    veiculos = Veiculo.query.filter_by(
-        conta_id=current_user.conta_id
-    ).order_by(Veiculo.id.desc()).all()
 
-    return render_template("veiculos/listar.html", veiculos=veiculos)
+    veiculos = Veiculo.query.filter_by(
+        conta_id=current_user.conta_id,
+        ativo=True
+    ).order_by(
+        Veiculo.id.desc()
+    ).all()
+
+    return render_template(
+        "veiculos/listar.html",
+        veiculos=veiculos
+    )
 
 
 @veiculos_bp.route("/novo", methods=["GET", "POST"])
@@ -288,11 +295,13 @@ def excluir(id):
             url_for("veiculos.listar")
         )
 
-    db.session.delete(veiculo)
+    veiculo.ativo = False
+    veiculo.status = "inativo"
+
     db.session.commit()
 
     flash(
-        "Veículo excluído com sucesso.",
+        "Veículo removido da frota com sucesso.",
         "success"
     )
 
