@@ -492,6 +492,23 @@ def nova_locacao():
             conta_id=current_user.conta_id
         ).first_or_404()
 
+        locacao_cliente = Locacao.query.filter_by(
+            conta_id=current_user.conta_id,
+            cliente_id=cliente.id,
+            status="ativa"
+        ).first()
+
+        if locacao_cliente:
+
+            flash(
+                "Este cliente já possui uma locação ativa.",
+                "warning"
+            )
+
+            return redirect(
+                url_for("locacoes.nova_locacao")
+            )
+
         veiculo = Veiculo.query.filter_by(
             id=veiculo_id,
             conta_id=current_user.conta_id
@@ -616,7 +633,17 @@ def nova_locacao():
 
     clientes = Cliente.query.filter_by(
         conta_id=current_user.conta_id
+    ).order_by(
+        Cliente.nome.asc()
     ).all()
+
+    clientes_ocupados = {
+        loc.cliente_id
+        for loc in Locacao.query.filter_by(
+            conta_id=current_user.conta_id,
+            status="ativa"
+        ).all()
+    }
 
     veiculos = Veiculo.query.filter_by(
         conta_id=current_user.conta_id,
@@ -626,6 +653,7 @@ def nova_locacao():
     return render_template(
         "locacoes/wizard.html",
         clientes=clientes,
+        clientes_ocupados=clientes_ocupados,
         veiculos=veiculos
     )
 
