@@ -9,13 +9,16 @@ from flask import (
 
 from datetime import datetime
 
+from flask_login import login_required, current_user
+from sqlalchemy import or_
+
 from app import db
 
-from flask_login import login_required, current_user
-
 from app.models.cliente import Cliente
+from app.models.locacao import Locacao
 
 from app.utils.pdf import gerar_pdf
+
 
 clientes_bp = Blueprint(
     "clientes",
@@ -28,9 +31,33 @@ clientes_bp = Blueprint(
 @login_required
 def listar():
 
-    clientes = Cliente.query.filter_by(
-        conta_id=current_user.conta_id
-    ).order_by(
+    busca = request.args.get("busca", "").strip()
+
+    clientes = Cliente.query.filter(
+        Cliente.conta_id == current_user.conta_id
+    )
+
+    if busca:
+
+        clientes = clientes.filter(
+
+            or_(
+
+                Cliente.nome.ilike(f"%{busca}%"),
+
+                Cliente.cpf.ilike(f"%{busca}%"),
+
+                Cliente.telefone.ilike(f"%{busca}%"),
+
+                Cliente.whatsapp.ilike(f"%{busca}%"),
+
+                Cliente.email.ilike(f"%{busca}%")
+
+            )
+
+        )
+
+    clientes = clientes.order_by(
         Cliente.nome.asc()
     ).all()
 
@@ -48,10 +75,6 @@ def listar():
 def novo():
 
     if request.method == "POST":
-
-        # ==========================
-        # Datas
-        # ==========================
 
         data_nascimento = request.form.get(
             "data_nascimento"
@@ -83,10 +106,6 @@ def novo():
 
             validade_cnh = None
 
-        # ==========================
-        # Cliente
-        # ==========================
-
         cliente = Cliente(
 
             conta_id=current_user.conta_id,
@@ -99,51 +118,29 @@ def novo():
 
             data_nascimento=data_nascimento,
 
-            numero_cnh=request.form.get(
-                "numero_cnh"
-            ),
+            numero_cnh=request.form.get("numero_cnh"),
 
-            categoria_cnh=request.form.get(
-                "categoria_cnh"
-            ),
+            categoria_cnh=request.form.get("categoria_cnh"),
 
             validade_cnh=validade_cnh,
 
-            telefone=request.form.get(
-                "telefone"
-            ),
+            telefone=request.form.get("telefone"),
 
-            whatsapp=request.form.get(
-                "whatsapp"
-            ),
+            whatsapp=request.form.get("whatsapp"),
 
-            email=request.form.get(
-                "email"
-            ),
+            email=request.form.get("email"),
 
-            cep=request.form.get(
-                "cep"
-            ),
+            cep=request.form.get("cep"),
 
-            endereco=request.form.get(
-                "endereco"
-            ),
+            endereco=request.form.get("endereco"),
 
-            numero=request.form.get(
-                "numero"
-            ),
+            numero=request.form.get("numero"),
 
-            bairro=request.form.get(
-                "bairro"
-            ),
+            bairro=request.form.get("bairro"),
 
-            cidade=request.form.get(
-                "cidade"
-            ),
+            cidade=request.form.get("cidade"),
 
-            estado=request.form.get(
-                "estado"
-            )
+            estado=request.form.get("estado")
 
         )
 
@@ -157,9 +154,7 @@ def novo():
         )
 
         return redirect(
-            url_for(
-                "clientes.listar"
-            )
+            url_for("clientes.listar")
         )
 
     return render_template(
@@ -176,9 +171,16 @@ def detalhes(id):
         conta_id=current_user.conta_id
     ).first_or_404()
 
+    locacao_ativa = Locacao.query.filter_by(
+        conta_id=current_user.conta_id,
+        cliente_id=cliente.id,
+        status="ativa"
+    ).first()
+
     return render_template(
         "clientes/detalhes.html",
-        cliente=cliente
+        cliente=cliente,
+        locacao_ativa=locacao_ativa
     )
 
 
@@ -212,13 +214,9 @@ def clientes_pdf():
     for cliente in clientes:
 
         linhas.append([
-
             cliente.nome,
-
             cliente.cpf or "-",
-
             cliente.telefone or "-"
-
         ])
 
     return gerar_pdf(
@@ -226,13 +224,9 @@ def clientes_pdf():
         titulo="Relatório de Clientes",
 
         cabecalho=[
-
             "Nome",
-
             "CPF",
-
             "Telefone"
-
         ],
 
         linhas=linhas,
@@ -251,10 +245,16 @@ def excluir(id):
         conta_id=current_user.conta_id
     ).first_or_404()
 
-    if cliente.locacoes:
+    locacao_ativa = Locacao.query.filter_by(
+        conta_id=current_user.conta_id,
+        cliente_id=cliente.id,
+        status="ativa"
+    ).first()
+
+    if locacao_ativa:
 
         flash(
-            "Não é possível excluir um cliente que possui locações.",
+            "Este cliente possui uma locação ativa e não pode ser excluído.",
             "warning"
         )
 
@@ -263,6 +263,7 @@ def excluir(id):
         )
 
     db.session.delete(cliente)
+
     db.session.commit()
 
     flash(

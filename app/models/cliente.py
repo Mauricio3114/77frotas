@@ -84,7 +84,36 @@ class Cliente(db.Model):
 
     @property
     def possui_locacao(self):
-        return len(self.locacoes) > 0
+
+        for locacao in self.locacoes:
+
+            if locacao.status == "ativa":
+
+                return True
+
+        return False
+
+
+    @property
+    def locacao_ativa(self):
+
+        for locacao in self.locacoes:
+
+            if locacao.status == "ativa":
+
+                return locacao
+
+        return None
+
+
+    @property
+    def veiculo_atual(self):
+
+        if self.locacao_ativa:
+
+            return self.locacao_ativa.veiculo
+
+        return None
 
     def __repr__(self):
         return self.nome

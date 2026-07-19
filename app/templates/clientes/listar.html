@@ -115,32 +115,65 @@
     <div class="cliente-acoes">
 
         <a
-        href="{{ url_for('clientes.detalhes',id=cliente.id) }}"
-        class="btn-mini">
+            href="{{ url_for('clientes.detalhes', id=cliente.id) }}"
+            class="btn-mini">
 
-            Abrir
+            👁 Abrir
 
         </a>
 
         <a
-        href="{{ url_for('clientes.editar',id=cliente.id) }}"
-        class="btn-mini secundario">
+            href="{{ url_for('clientes.editar', id=cliente.id) }}"
+            class="btn-mini secundario">
 
-            Editar
+            ✏ Editar
 
         </a>
+
+        <a
+            href="/locacoes/nova?cliente={{ cliente.id }}"
+            class="btn-mini sucesso">
+
+            🚗 Nova Locação
+
+        </a>
+
+        <a
+            href="#"
+            class="btn-mini contrato">
+
+            📄 Contrato
+
+        </a>
+
+        {% if cliente.possui_locacao %}
+
+            <span class="badge-locacao ativa">
+
+                🚗 Locação Ativa
+
+            </span>
+
+        {% else %}
+
+            <span class="badge-locacao livre">
+
+                ✔ Sem Locação
+
+            </span>
+
+        {% endif %}
 
         <form
             action="{{ url_for('clientes.excluir', id=cliente.id) }}"
             method="POST"
-            style="display:inline;"
             onsubmit="return confirm('Deseja realmente excluir este cliente?');">
 
             <button
-                class="btn btn-sm btn-danger">
+                type="submit"
+                class="btn-mini excluir">
 
-                <i class="bi bi-trash"></i>
-                Excluir
+                🗑 Excluir
 
             </button>
 
@@ -393,6 +426,65 @@ gap:10px;
 .btn-mini.secundario{
 
     background:#64748b;
+
+}
+
+.btn-mini.sucesso{
+
+    background:#16a34a;
+
+}
+
+.btn-mini.contrato{
+
+    background:#2563eb;
+
+}
+
+.btn-mini.excluir{
+
+    background:#dc2626;
+    border:none;
+    cursor:pointer;
+    width:100%;
+    font-family:inherit;
+
+}
+
+.badge-locacao{
+
+    display:inline-block;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    text-align:center;
+
+}
+
+.badge-locacao.ativa{
+
+    background:#fee2e2;
+    color:#991b1b;
+
+}
+
+.badge-locacao.livre{
+
+    background:#dcfce7;
+    color:#166534;
+
+}
+
+.cliente-acoes form{
+
+    width:100%;
+
+}
+
+.cliente-acoes form button{
+
+    width:100%;
 
 }
 
