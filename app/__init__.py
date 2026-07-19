@@ -79,4 +79,38 @@ def create_app():
         from app.bootstrap import bootstrap
         bootstrap()
 
+    @app.template_filter("moeda")
+    def moeda(valor):
+        try:
+            valor = float(valor or 0)
+
+            numero = f"{valor:,.2f}"
+
+            numero = numero.replace(",", "X")
+            numero = numero.replace(".", ",")
+            numero = numero.replace("X", ".")
+
+            return f"R$ {numero}"
+
+        except (TypeError, ValueError):
+            return "R$ 0,00"
+            print("✅ Filtro moeda registrado")
+
+
+    @app.template_filter("data_br")
+    def data_br(valor):
+        if not valor:
+            return "-"
+
+        try:
+            return valor.strftime("%d/%m/%Y")
+
+        except AttributeError:
+            return str(valor)
+
+        print("✅ Filtro data_br registrado")
+
+        print("Filtros disponíveis:")
+        print(app.jinja_env.filters.keys())
+
     return app
