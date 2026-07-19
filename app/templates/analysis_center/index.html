@@ -1,0 +1,142 @@
+{% extends "layouts/base_admin.html" %}
+
+{% block title %}Analysis Center{% endblock %}
+{% block topbar_title %}Analysis Center{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>🤝 Analysis Center</h1>
+        <p>Parceiro Oficial do 77 Frotas para consultas cadastrais.</p>
+    </div>
+</div>
+
+<div class="premium-card" style="max-width:1000px;margin:auto;">
+
+    <div style="text-align:center;padding:15px 0 30px;">
+
+        <img
+            src="{{ url_for('static', filename='img/analysis-center.png') }}"
+            style="max-width:180px;margin-bottom:20px;">
+
+        <h2 style="margin-bottom:8px;">
+            Analysis Center
+        </h2>
+
+        <span style="
+            display:inline-block;
+            background:#ecfeff;
+            color:#0f766e;
+            padding:8px 18px;
+            border-radius:30px;
+            font-weight:800;">
+            Parceiro Oficial do 77 Frotas
+        </span>
+
+        <p style="
+            margin-top:25px;
+            color:#64748b;
+            font-size:17px;
+            line-height:1.7;">
+            Consulte seu cliente antes de aprovar uma locação e reduza riscos de inadimplência.
+        </p>
+
+    </div>
+
+    <div class="grid-kpis">
+
+        <div class="kpi-card">
+            <small>CONSULTA BÁSICA</small>
+
+            <h2>R$ 17</h2>
+
+            <ul style="margin-top:18px;line-height:2;">
+                <li>Dados Pessoais</li>
+                <li>Black List</li>
+                <li>Prontuário CNH</li>
+                <li>Mandados de Prisão</li>
+                <li>Análise Judicial</li>
+            </ul>
+        </div>
+
+        <div class="kpi-card">
+            <small>INTERMEDIÁRIA</small>
+
+            <h2>R$ 30</h2>
+
+            <ul style="margin-top:18px;line-height:2;">
+                <li>Tudo da Básica</li>
+                <li>Localizador</li>
+            </ul>
+        </div>
+
+        <div class="kpi-card">
+            <small>COMPLETA</small>
+
+            <h2>R$ 50</h2>
+
+            <ul style="margin-top:18px;line-height:2;">
+                <li>Tudo da Intermediária</li>
+                <li>Serasa</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div style="
+        margin-top:35px;
+        background:#f8fafc;
+        border-radius:20px;
+        padding:28px;
+        text-align:center;">
+
+        <h3>🛡 Black List Exclusiva</h3>
+
+        <p style="font-size:17px;">
+            Mais de <strong>11.000 locatários negativados</strong> cadastrados em nossa base exclusiva.
+        </p>
+
+    </div>
+
+    <div style="text-align:center;margin:40px 0;">
+
+        <a
+            href="https://wa.me/5585981219679?text=Olá!%20Sou%20cliente%20do%2077%20Frotas%20e%20gostaria%20de%20realizar%20uma%20consulta%20cadastral."
+            target="_blank"
+            class="btn-premium"
+            style="
+                background:#25D366;
+                font-size:18px;
+                padding:18px 40px;">
+
+            <i class="bi bi-whatsapp"></i>
+
+            Iniciar Consulta
+
+        </a>
+
+    </div>
+
+    <div style="
+        border-top:1px solid #e2e8f0;
+        padding-top:25px;
+        text-align:center;">
+
+        <img
+            src="{{ url_for('static', filename='img/analysis-center.png') }}"
+            style="width:42px;margin-bottom:10px;">
+
+        <div style="font-weight:900;">
+            Analysis Center
+        </div>
+
+        <div style="color:#64748b;">
+            Parceiro Oficial do 77 Frotas
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

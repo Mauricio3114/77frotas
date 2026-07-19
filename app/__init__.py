@@ -61,6 +61,7 @@ def create_app():
     from app.routes.portal import portal_bp
     from app.routes.negociacoes import negociacoes_bp
     from app.routes.configuracoes import configuracoes_bp
+    from app.routes.analysis_center import analysis_center_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(master_bp)
@@ -74,6 +75,7 @@ def create_app():
     app.register_blueprint(portal_bp)
     app.register_blueprint(negociacoes_bp)
     app.register_blueprint(configuracoes_bp)
+    app.register_blueprint(analysis_center_bp)
 
     with app.app_context():
         from app.bootstrap import bootstrap
