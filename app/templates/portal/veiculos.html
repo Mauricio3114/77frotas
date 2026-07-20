@@ -1,338 +1,3039 @@
 {% extends "layouts/base_cliente.html" %}
 
-{% block title %}Veículos Disponíveis{% endblock %}
+{% block title %}Veículos Disponíveis | 77 Frotas{% endblock %}
 
 {% block content %}
 
-<div class="page-header">
+<div class="showroom-page">
 
-    <div>
+    <section class="showroom-hero">
 
-        <h1>Veículos Disponíveis</h1>
+        <div class="hero-glow hero-glow-one"></div>
+        <div class="hero-glow hero-glow-two"></div>
 
-        <p>
+        <div class="hero-content">
 
-            Confira todos os veículos disponíveis das locadoras
-            parceiras do 77 Frotas.
+            <div class="hero-copy">
 
-        </p>
+                <div class="hero-badge">
 
-    </div>
+                    <span class="hero-badge-dot"></span>
 
-</div>
+                    Vitrine 77 Frotas
 
-{% if veiculos %}
+                </div>
 
-<div class="veiculos-grid">
+                <h1>
+                    Encontre seu próximo veículo.
+                </h1>
 
-{% for v in veiculos %}
+                <p>
+                    Confira os veículos disponíveis nas locadoras
+                    parceiras e fale diretamente com a empresa responsável.
+                </p>
 
-<div class="veiculo-card">
+                <div class="hero-stats">
 
-    <div class="foto">
+                    <div class="hero-stat">
 
-        {% if v.foto_principal %}
+                        <div class="hero-stat-icon">
 
-            <img
-                src="{{ v.foto_principal }}"
-                alt="Veículo">
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
 
-        {% else %}
+                                <path
+                                    d="M3 13L5.5 7.5C5.82 6.79 6.53 6.33 7.31 6.33H16.69C17.47 6.33 18.18 6.79 18.5 7.5L21 13"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"/>
 
-            🚗
+                                <path
+                                    d="M5 13H19C20.1 13 21 13.9 21 15V18C21 18.55 20.55 19 20 19H4C3.45 19 3 18.55 3 18V15C3 13.9 3.9 13 5 13Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"/>
 
-        {% endif %}
+                                <path
+                                    d="M6.5 16H6.51M17.5 16H17.51"
+                                    stroke="currentColor"
+                                    stroke-width="2.4"
+                                    stroke-linecap="round"/>
 
-    </div>
+                            </svg>
 
-    <div class="dados">
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                {{ veiculos|length if veiculos else 0 }}
+                            </strong>
+
+                            <span>
+                                veículos disponíveis
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hero-stat">
+
+                        <div class="hero-stat-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M4 21V7L12 3L20 7V21"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linejoin="round"/>
+
+                                <path
+                                    d="M9 21V15H15V21M8 9H8.01M12 9H12.01M16 9H16.01M8 12H8.01M12 12H12.01M16 12H16.01"
+                                    stroke="currentColor"
+                                    stroke-width="2.2"
+                                    stroke-linecap="round"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Atendimento direto
+                            </strong>
+
+                            <span>
+                                fale com a locadora
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hero-stat">
+
+                        <div class="hero-stat-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M12 3L19 6V11C19 15.42 16.01 19.55 12 21C7.99 19.55 5 15.42 5 11V6L12 3Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linejoin="round"/>
+
+                                <path
+                                    d="M9 12L11 14L15.5 9.5"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Portal seguro
+                            </strong>
+
+                            <span>
+                                exclusivo para clientes
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="hero-visual">
+
+                <div class="hero-car-card">
+
+                    <div class="hero-car-top">
+
+                        <span>
+                            DISPONÍVEL AGORA
+                        </span>
+
+                        <div class="hero-car-status">
+                            <i></i>
+                            Online
+                        </div>
+
+                    </div>
+
+                    <div class="hero-car-icon">
+
+                        <svg
+                            viewBox="0 0 160 90"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path
+                                d="M31 57L43 30C45 25 50 22 56 22H106C112 22 117 25 120 30L134 57"
+                                stroke="currentColor"
+                                stroke-width="6"
+                                stroke-linecap="round"/>
+
+                            <path
+                                d="M27 55H136C143 55 148 60 148 67V73C148 77 145 80 141 80H22C18 80 15 77 15 73V67C15 60 20 55 27 55Z"
+                                stroke="currentColor"
+                                stroke-width="6"
+                                stroke-linejoin="round"/>
+
+                            <path
+                                d="M45 80V84M119 80V84"
+                                stroke="currentColor"
+                                stroke-width="8"
+                                stroke-linecap="round"/>
+
+                            <path
+                                d="M34 67H48M115 67H129"
+                                stroke="currentColor"
+                                stroke-width="6"
+                                stroke-linecap="round"/>
+
+                            <path
+                                d="M51 35H112"
+                                stroke="currentColor"
+                                stroke-width="5"
+                                stroke-linecap="round"
+                                opacity=".7"/>
+
+                        </svg>
+
+                    </div>
+
+                    <div class="hero-car-footer">
+
+                        <div>
+
+                            <small>
+                                ESCOLHA
+                            </small>
+
+                            <strong>
+                                Seu próximo carro
+                            </strong>
+
+                        </div>
+
+                        <span class="hero-arrow">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M5 12H19M14 7L19 12L14 17"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+
+                            </svg>
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    {% if veiculos %}
+
+    <section class="showroom-toolbar">
+
+        <div class="toolbar-heading">
+
+            <div>
+
+                <span class="section-kicker">
+                    OPÇÕES DISPONÍVEIS
+                </span>
+
+                <h2>
+                    Escolha o veículo ideal
+                </h2>
+
+            </div>
+
+            <div class="results-counter">
+
+                <strong id="resultadosEncontrados">
+                    {{ veiculos|length }}
+                </strong>
+
+                <span>
+                    resultado{% if veiculos|length != 1 %}s{% endif %}
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="filter-panel">
+
+            <div class="filter-search">
+
+                <span class="filter-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                            stroke="currentColor"
+                            stroke-width="1.8"/>
+
+                        <path
+                            d="M16.5 16.5L21 21"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </span>
+
+                <input
+                    type="search"
+                    id="buscaVeiculo"
+                    placeholder="Buscar por marca, modelo, categoria ou locadora"
+                    autocomplete="off">
+
+                <button
+                    type="button"
+                    id="limparBusca"
+                    class="clear-search"
+                    aria-label="Limpar busca">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M6 6L18 18M18 6L6 18"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+            <div class="filter-select-wrapper">
+
+                <span class="filter-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M4 6H20M7 12H17M10 18H14"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </span>
+
+                <select id="filtroCambio">
+
+                    <option value="">
+                        Todos os câmbios
+                    </option>
+
+                    {% for v in veiculos %}
+
+                        {% if v.cambio %}
+
+                            <option value="{{ v.cambio|lower }}">
+                                {{ v.cambio }}
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="filter-select-wrapper">
+
+                <span class="filter-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+
+                        <path
+                            d="M12 3C12 3 6 9.17 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9.17 12 3 12 3Z"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linejoin="round"/>
+
+                        <path
+                            d="M9.5 15.5C10 16.5 10.83 17 12 17"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"/>
+
+                    </svg>
+
+                </span>
+
+                <select id="filtroCombustivel">
+
+                    <option value="">
+                        Todos os combustíveis
+                    </option>
+
+                    {% for v in veiculos %}
+
+                        {% if v.combustivel %}
+
+                            <option value="{{ v.combustivel|lower }}">
+                                {{ v.combustivel }}
+                            </option>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section
+        class="veiculos-grid"
+        id="veiculosGrid">
+
+        {% for v in veiculos %}
+
+        <article
+            class="veiculo-card"
+            data-busca="{{ v.marca or '' }} {{ v.modelo or '' }} {{ v.categoria or '' }} {{ v.conta.nome or '' }} {{ v.cambio or '' }} {{ v.combustivel or '' }}"
+            data-cambio="{{ (v.cambio or '')|lower }}"
+            data-combustivel="{{ (v.combustivel or '')|lower }}">
+
+            <div class="vehicle-media">
+
+                {% if v.foto_principal %}
+
+                    <img
+                        src="{{ v.foto_principal }}"
+                        alt="{{ v.marca }} {{ v.modelo }}"
+                        loading="lazy">
+
+                {% else %}
+
+                    <div class="vehicle-placeholder">
+
+                        <div class="placeholder-circle">
+
+                            <svg
+                                viewBox="0 0 120 70"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M22 44L32 22C34 18 38 16 43 16H79C84 16 88 18 90 22L101 44"
+                                    stroke="currentColor"
+                                    stroke-width="5"
+                                    stroke-linecap="round"/>
+
+                                <path
+                                    d="M19 42H103C108 42 112 46 112 51V56C112 59 110 61 107 61H15C12 61 10 59 10 56V51C10 46 14 42 19 42Z"
+                                    stroke="currentColor"
+                                    stroke-width="5"
+                                    stroke-linejoin="round"/>
+
+                                <path
+                                    d="M29 61V64M91 61V64"
+                                    stroke="currentColor"
+                                    stroke-width="7"
+                                    stroke-linecap="round"/>
+
+                                <path
+                                    d="M25 51H37M84 51H96"
+                                    stroke="currentColor"
+                                    stroke-width="5"
+                                    stroke-linecap="round"/>
+
+                            </svg>
+
+                        </div>
+
+                        <strong>
+                            Foto não disponível
+                        </strong>
+
+                        <span>
+                            {{ v.marca }} {{ v.modelo }}
+                        </span>
+
+                    </div>
+
+                {% endif %}
+
+                <div class="media-overlay"></div>
+
+                <div class="available-badge">
+
+                    <span></span>
+
+                    Disponível
+
+                </div>
+
+                {% if v.categoria %}
+
+                <div class="category-badge">
+
+                    {{ v.categoria }}
+
+                </div>
+
+                {% endif %}
+
+                <div class="media-locadora">
+
+                    <div class="locadora-avatar">
+
+                        {{ (v.conta.nome or "L")[:1]|upper }}
+
+                    </div>
+
+                    <div>
+
+                        <small>
+                            LOCADORA
+                        </small>
+
+                        <strong>
+                            {{ v.conta.nome }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="vehicle-content">
+
+                <div class="vehicle-heading">
+
+                    <div>
+
+                        <span class="vehicle-type">
+
+                            {{ v.categoria or "Veículo disponível" }}
+
+                        </span>
+
+                        <h2>
+
+                            {{ v.marca }}
+                            {{ v.modelo }}
+
+                        </h2>
+
+                    </div>
+
+                    <div
+                        class="vehicle-code"
+                        title="Código do veículo">
+
+                        #{{ v.id }}
+
+                    </div>
+
+                </div>
+
+                <div class="vehicle-specs">
+
+                    <div class="spec-item">
+
+                        <div class="spec-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <rect
+                                    x="4"
+                                    y="5"
+                                    width="16"
+                                    height="16"
+                                    rx="3"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"/>
+
+                                <path
+                                    d="M8 3V7M16 3V7M4 10H20"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <small>
+                                Ano
+                            </small>
+
+                            <strong>
+                                {{ v.ano_modelo or "Não informado" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="spec-item">
+
+                        <div class="spec-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M7 4V20M17 4V20M7 8H17M7 16H17M12 8V16"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+
+                                <circle
+                                    cx="7"
+                                    cy="4"
+                                    r="2"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"/>
+
+                                <circle
+                                    cx="17"
+                                    cy="20"
+                                    r="2"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <small>
+                                Câmbio
+                            </small>
+
+                            <strong>
+                                {{ v.cambio or "Não informado" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="spec-item">
+
+                        <div class="spec-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+
+                                <path
+                                    d="M12 3C12 3 6 9.17 6 14C6 17.31 8.69 20 12 20C15.31 20 18 17.31 18 14C18 9.17 12 3 12 3Z"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linejoin="round"/>
+
+                                <path
+                                    d="M9.5 15.5C10 16.5 10.83 17 12 17"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"/>
+
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <small>
+                                Combustível
+                            </small>
+
+                            <strong>
+                                {{ v.combustivel or "Não informado" }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="vehicle-price-box">
+
+                    <div class="price-copy">
+
+                        <span>
+                            Valor da diária
+                        </span>
+
+                        <div class="price-value">
+
+                            <strong>
+                                {{ v.valor_diaria|moeda }}
+                            </strong>
+
+                            <small>
+                                / diária
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <div class="price-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <rect
+                                x="3"
+                                y="5"
+                                width="18"
+                                height="14"
+                                rx="3"
+                                stroke="currentColor"
+                                stroke-width="1.8"/>
+
+                            <path
+                                d="M7 12H7.01M17 12H17.01"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                stroke-linecap="round"/>
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="3"
+                                stroke="currentColor"
+                                stroke-width="1.8"/>
+
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <div class="vehicle-company">
+
+                    <div class="company-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path
+                                d="M4 21V7L12 3L20 7V21"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linejoin="round"/>
+
+                            <path
+                                d="M9 21V15H15V21M8 9H8.01M12 9H12.01M16 9H16.01M8 12H8.01M12 12H12.01M16 12H16.01"
+                                stroke="currentColor"
+                                stroke-width="2.2"
+                                stroke-linecap="round"/>
+
+                        </svg>
+
+                    </div>
+
+                    <div class="company-data">
+
+                        <small>
+                            OFERECIDO POR
+                        </small>
+
+                        <strong>
+                            {{ v.conta.nome }}
+                        </strong>
+
+                    </div>
+
+                    <div class="verified-company">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path
+                                d="M12 3L14.2 5.1L17.2 4.8L18.3 7.6L21 9L20.2 12L21 15L18.3 16.4L17.2 19.2L14.2 18.9L12 21L9.8 18.9L6.8 19.2L5.7 16.4L3 15L3.8 12L3 9L5.7 7.6L6.8 4.8L9.8 5.1L12 3Z"
+                                stroke="currentColor"
+                                stroke-width="1.6"
+                                stroke-linejoin="round"/>
+
+                            <path
+                                d="M9 12L11 14L15.5 9.5"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"/>
+
+                        </svg>
+
+                        Verificada
+
+                    </div>
+
+                </div>
+
+                <a
+                    class="btn-interesse"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://wa.me/55{{ v.conta.telefone|replace('(','')|replace(')','')|replace('-','')|replace(' ','') }}?text=Olá!%0A%0AMeu nome é {{ cliente.nome|replace(' ','%20') }}.%0ACPF:%20{{ cliente.cpf }}.%0ACódigo%20Cliente:%20{{ cliente.id }}.%0A%0ATenho interesse no veículo:%0A🚗 {{ v.marca }} {{ v.modelo }}.%0A%0AEncontrei através do Portal 77 Frotas e gostaria de mais informações.">
+
+                    <span class="whatsapp-icon">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path
+                                d="M20.5 11.6C20.5 16.35 16.65 20.2 11.9 20.2C10.4 20.2 8.99 19.82 7.76 19.15L3.5 20.5L4.89 16.39C4.15 15.1 3.73 13.6 3.73 12C3.73 7.25 7.58 3.4 12.33 3.4C16.84 3.4 20.5 7.06 20.5 11.6Z"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                                stroke-linejoin="round"/>
+
+                            <path
+                                d="M8.3 8.2C8.6 7.85 8.86 7.83 9.12 7.83H9.45C9.57 7.83 9.77 7.88 9.92 8.23L10.52 9.7C10.6 9.92 10.57 10.09 10.44 10.28L10.07 10.76C9.92 10.93 9.77 11.11 9.9 11.35C10.03 11.58 10.48 12.31 11.15 12.9C12.02 13.67 12.75 13.91 12.99 14.03C13.22 14.15 13.36 14.13 13.5 13.96L14.13 13.23C14.28 13.05 14.43 13.08 14.63 13.15L16.1 13.85C16.3 13.95 16.43 14 16.47 14.08C16.52 14.18 16.52 14.58 16.35 15.05C16.18 15.53 15.38 15.98 14.98 16.03C14.63 16.08 14.18 16.1 13.7 15.95C13.4 15.85 13.02 15.73 12.53 15.53C10.47 14.65 9.12 12.6 9.02 12.47C8.92 12.35 8.18 11.37 8.18 10.35C8.18 9.33 8.7 8.83 8.3 8.2Z"
+                                fill="currentColor"/>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="interest-copy">
+
+                        <small>
+                            FALAR PELO WHATSAPP
+                        </small>
+
+                        <strong>
+                            Tenho interesse
+                        </strong>
+
+                    </span>
+
+                    <span class="interest-arrow">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+
+                            <path
+                                d="M5 12H19M14 7L19 12L14 17"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"/>
+
+                        </svg>
+
+                    </span>
+
+                </a>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </section>
+
+    <div
+        class="search-empty"
+        id="searchEmpty">
+
+        <div class="search-empty-icon">
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    stroke-width="1.8"/>
+
+                <path
+                    d="M16.5 16.5L21 21M8.5 8.5L13.5 13.5M13.5 8.5L8.5 13.5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"/>
+
+            </svg>
+
+        </div>
 
         <h2>
-
-            {{ v.marca }}
-
-            {{ v.modelo }}
-
+            Nenhum veículo encontrado
         </h2>
 
         <p>
-
-            {{ v.categoria or "Veículo" }}
-
+            Tente buscar outro modelo ou remover os filtros selecionados.
         </p>
 
-        <div class="linha">
+        <button
+            type="button"
+            id="resetarFiltros">
 
-            <span>
+            Limpar filtros
 
-                Ano
+        </button>
 
-            </span>
+    </div>
 
-            <strong>
+    {% else %}
 
-                {{ v.ano_modelo }}
+    <section class="general-empty">
 
-            </strong>
+        <div class="general-empty-visual">
 
-        </div>
+            <div class="empty-circle-one"></div>
+            <div class="empty-circle-two"></div>
 
-        <div class="linha">
+            <div class="general-empty-icon">
 
-            <span>
+                <svg
+                    viewBox="0 0 120 70"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
 
-                Câmbio
+                    <path
+                        d="M22 44L32 22C34 18 38 16 43 16H79C84 16 88 18 90 22L101 44"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"/>
 
-            </span>
+                    <path
+                        d="M19 42H103C108 42 112 46 112 51V56C112 59 110 61 107 61H15C12 61 10 59 10 56V51C10 46 14 42 19 42Z"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linejoin="round"/>
 
-            <strong>
+                    <path
+                        d="M29 61V64M91 61V64"
+                        stroke="currentColor"
+                        stroke-width="7"
+                        stroke-linecap="round"/>
 
-                {{ v.cambio }}
+                    <path
+                        d="M25 51H37M84 51H96"
+                        stroke="currentColor"
+                        stroke-width="5"
+                        stroke-linecap="round"/>
 
-            </strong>
+                </svg>
 
-        </div>
-
-        <div class="linha">
-
-            <span>
-
-                Combustível
-
-            </span>
-
-            <strong>
-
-                {{ v.combustivel }}
-
-            </strong>
-
-        </div>
-
-        <div class="linha">
-
-            <span>
-
-                Diária
-
-            </span>
-
-            <strong class="valor">
-
-                R$ {{ "%.2f"|format(v.valor_diaria or 0) }}
-
-            </strong>
+            </div>
 
         </div>
 
-        <div class="empresa">
+        <span class="empty-kicker">
+            VITRINE EM ATUALIZAÇÃO
+        </span>
 
-            {{ v.conta.nome }}
+        <h2>
+            Nenhum veículo disponível no momento.
+        </h2>
 
-        </div>
+        <p>
+            Assim que uma locadora disponibilizar um novo veículo,
+            ele aparecerá automaticamente aqui para você.
+        </p>
 
-        <a
+        <a href="{{ url_for('portal.home') }}">
 
-        class="btn-interesse"
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
 
-        target="_blank"
+                <path
+                    d="M15 18L9 12L15 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
 
-        href="https://wa.me/55{{ v.conta.telefone|replace('(','')|replace(')','')|replace('-','')|replace(' ','') }}?text=Olá!%0A%0AMeu nome é {{ cliente.nome|replace(' ','%20') }}.%0ACPF:%20{{ cliente.cpf }}.%0ACódigo%20Cliente:%20{{ cliente.id }}.%0A%0ATenho interesse no veículo:%0A🚗 {{ v.marca }} {{ v.modelo }}.%0A%0AEncontrei através do Portal 77 Frotas e gostaria de mais informações.">
+            </svg>
 
-            Tenho Interesse
+            Voltar para o início
 
         </a>
 
-    </div>
+    </section>
+
+    {% endif %}
 
 </div>
-
-{% endfor %}
-
-</div>
-
-{% else %}
-
-<div class="premium-card empty">
-
-    <div style="font-size:70px;">
-
-        🚗
-
-    </div>
-
-    <h2>
-
-        Nenhum veículo disponível.
-
-    </h2>
-
-</div>
-
-{% endif %}
 
 <style>
+
+:root{
+
+    --showroom-orange:#ff6a00;
+    --showroom-orange-dark:#e85f00;
+    --showroom-orange-light:#ff8b38;
+    --showroom-dark:#0b1220;
+    --showroom-dark-soft:#111827;
+    --showroom-text:#0f172a;
+    --showroom-muted:#64748b;
+    --showroom-border:#e2e8f0;
+    --showroom-background:#f4f7fb;
+    --showroom-green:#16a34a;
+    --showroom-green-dark:#12823c;
+
+}
+
+*{
+
+    box-sizing:border-box;
+
+}
+
+.showroom-page{
+
+    width:100%;
+    max-width:1500px;
+    margin:0 auto;
+    padding:0 0 40px;
+
+}
+
+.showroom-hero{
+
+    position:relative;
+    min-height:335px;
+    margin-bottom:34px;
+    overflow:hidden;
+    border-radius:30px;
+    color:#fff;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,15,29,.99),
+            rgba(17,24,39,.97)
+        );
+    box-shadow:
+        0 24px 55px rgba(15,23,42,.15);
+
+}
+
+.showroom-hero::before{
+
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,106,0,.05),
+            transparent 50%
+        );
+    pointer-events:none;
+
+}
+
+.hero-glow{
+
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+
+}
+
+.hero-glow-one{
+
+    width:420px;
+    height:420px;
+    top:-260px;
+    right:-80px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,106,0,.25),
+            transparent 68%
+        );
+
+}
+
+.hero-glow-two{
+
+    width:280px;
+    height:280px;
+    bottom:-170px;
+    left:30%;
+    border:1px solid rgba(255,255,255,.07);
+
+}
+
+.hero-content{
+
+    position:relative;
+    z-index:2;
+    min-height:335px;
+    display:grid;
+    grid-template-columns:minmax(0, 1.35fr) minmax(330px, .65fr);
+    align-items:center;
+    gap:40px;
+    padding:44px 50px;
+
+}
+
+.hero-copy{
+
+    max-width:790px;
+
+}
+
+.hero-badge{
+
+    width:max-content;
+    max-width:100%;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:19px;
+    padding:8px 13px;
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:999px;
+    background:rgba(255,255,255,.055);
+    color:#e2e8f0;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    backdrop-filter:blur(12px);
+
+}
+
+.hero-badge-dot{
+
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--showroom-orange);
+    box-shadow:
+        0 0 0 5px rgba(255,106,0,.13);
+
+}
+
+.hero-copy h1{
+
+    max-width:750px;
+    margin:0 0 15px;
+    color:#fff;
+    font-size:clamp(38px, 4vw, 62px);
+    line-height:1.02;
+    letter-spacing:-.055em;
+
+}
+
+.hero-copy > p{
+
+    max-width:680px;
+    margin:0;
+    color:#aeb9c9;
+    font-size:15px;
+    line-height:1.7;
+
+}
+
+.hero-stats{
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:11px;
+    margin-top:28px;
+
+}
+
+.hero-stat{
+
+    min-width:180px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:12px 14px;
+    border:1px solid rgba(255,255,255,.09);
+    border-radius:16px;
+    background:rgba(255,255,255,.045);
+    backdrop-filter:blur(12px);
+
+}
+
+.hero-stat-icon{
+
+    width:36px;
+    height:36px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:rgba(255,106,0,.13);
+    color:var(--showroom-orange-light);
+
+}
+
+.hero-stat-icon svg{
+
+    width:20px;
+    height:20px;
+
+}
+
+.hero-stat strong{
+
+    display:block;
+    margin-bottom:2px;
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+
+}
+
+.hero-stat span{
+
+    display:block;
+    color:#94a3b8;
+    font-size:9px;
+    font-weight:600;
+
+}
+
+.hero-visual{
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.hero-car-card{
+
+    width:100%;
+    max-width:350px;
+    padding:17px;
+    border:1px solid rgba(255,255,255,.11);
+    border-radius:25px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(255,255,255,.035)
+        );
+    box-shadow:
+        0 25px 50px rgba(0,0,0,.18);
+    backdrop-filter:blur(18px);
+    transform:rotate(2deg);
+
+}
+
+.hero-car-top{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    color:#aeb9c9;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.1em;
+
+}
+
+.hero-car-status{
+
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#d1fae5;
+    letter-spacing:0;
+
+}
+
+.hero-car-status i{
+
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#22c55e;
+    box-shadow:
+        0 0 0 4px rgba(34,197,94,.12);
+
+}
+
+.hero-car-icon{
+
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--showroom-orange);
+
+}
+
+.hero-car-icon svg{
+
+    width:82%;
+    max-height:120px;
+    filter:
+        drop-shadow(
+            0 18px 20px rgba(255,106,0,.13)
+        );
+
+}
+
+.hero-car-footer{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:13px;
+    border-radius:16px;
+    background:rgba(3,7,18,.28);
+
+}
+
+.hero-car-footer small{
+
+    display:block;
+    margin-bottom:2px;
+    color:#94a3b8;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.12em;
+
+}
+
+.hero-car-footer strong{
+
+    color:#fff;
+    font-size:12px;
+    font-weight:900;
+
+}
+
+.hero-arrow{
+
+    width:35px;
+    height:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:var(--showroom-orange);
+    color:#fff;
+
+}
+
+.hero-arrow svg{
+
+    width:18px;
+    height:18px;
+
+}
+
+.showroom-toolbar{
+
+    margin-bottom:25px;
+
+}
+
+.toolbar-heading{
+
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:17px;
+
+}
+
+.section-kicker{
+
+    display:block;
+    margin-bottom:7px;
+    color:var(--showroom-orange-dark);
+    font-size:10px;
+    font-weight:1000;
+    letter-spacing:.14em;
+
+}
+
+.toolbar-heading h2{
+
+    margin:0;
+    color:var(--showroom-text);
+    font-size:25px;
+    letter-spacing:-.035em;
+
+}
+
+.results-counter{
+
+    display:flex;
+    align-items:baseline;
+    gap:5px;
+    padding:8px 12px;
+    border:1px solid var(--showroom-border);
+    border-radius:12px;
+    background:#fff;
+
+}
+
+.results-counter strong{
+
+    color:var(--showroom-orange);
+    font-size:18px;
+    font-weight:1000;
+
+}
+
+.results-counter span{
+
+    color:var(--showroom-muted);
+    font-size:10px;
+    font-weight:700;
+
+}
+
+.filter-panel{
+
+    display:grid;
+    grid-template-columns:minmax(280px, 1.7fr) minmax(190px, .65fr) minmax(190px, .65fr);
+    gap:12px;
+    padding:14px;
+    border:1px solid var(--showroom-border);
+    border-radius:20px;
+    background:#fff;
+    box-shadow:
+        0 12px 30px rgba(15,23,42,.045);
+
+}
+
+.filter-search,
+.filter-select-wrapper{
+
+    position:relative;
+
+}
+
+.filter-icon{
+
+    position:absolute;
+    top:50%;
+    left:14px;
+    z-index:2;
+    width:20px;
+    height:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#94a3b8;
+    transform:translateY(-50%);
+    pointer-events:none;
+
+}
+
+.filter-icon svg{
+
+    width:19px;
+    height:19px;
+
+}
+
+.filter-search input,
+.filter-select-wrapper select{
+
+    width:100%;
+    height:50px;
+    outline:none;
+    border:1px solid #dce3eb;
+    border-radius:14px;
+    background:#f8fafc;
+    color:var(--showroom-text);
+    font-family:inherit;
+    font-size:12px;
+    font-weight:700;
+    transition:
+        border-color .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+
+}
+
+.filter-search input{
+
+    padding:0 48px 0 45px;
+
+}
+
+.filter-select-wrapper select{
+
+    padding:0 38px 0 44px;
+    cursor:pointer;
+
+}
+
+.filter-search input:focus,
+.filter-select-wrapper select:focus{
+
+    border-color:var(--showroom-orange);
+    background:#fff;
+    box-shadow:
+        0 0 0 4px rgba(255,106,0,.09);
+
+}
+
+.clear-search{
+
+    position:absolute;
+    top:50%;
+    right:10px;
+    width:31px;
+    height:31px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    border-radius:9px;
+    background:#eef2f7;
+    color:#64748b;
+    cursor:pointer;
+    transform:translateY(-50%);
+
+}
+
+.clear-search.visible{
+
+    display:flex;
+
+}
+
+.clear-search svg{
+
+    width:16px;
+    height:16px;
+
+}
 
 .veiculos-grid{
 
     display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-    gap:24px;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:22px;
 
 }
 
 .veiculo-card{
 
-    background:#fff;
-
-    border-left:6px solid #ff6a00;
-
-    border-radius:24px;
-
+    min-width:0;
     overflow:hidden;
-
-    box-shadow:0 18px 40px rgba(15,23,42,.06);
-
-    transition:.25s;
+    border:1px solid rgba(226,232,240,.95);
+    border-radius:25px;
+    background:#fff;
+    box-shadow:
+        0 15px 40px rgba(15,23,42,.065);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+    animation:
+        vehicleCardEnter .55s ease both;
 
 }
 
 .veiculo-card:hover{
 
-    transform:translateY(-5px);
+    transform:translateY(-7px);
+    border-color:rgba(255,106,0,.24);
+    box-shadow:
+        0 25px 55px rgba(15,23,42,.12);
 
 }
 
-.foto{
+.veiculo-card.hidden-card{
 
-    height:220px;
-
-    background:#f8fafc;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:70px;
+    display:none;
 
 }
 
-.foto img{
+@keyframes vehicleCardEnter{
+
+    from{
+
+        opacity:0;
+        transform:translateY(14px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
+
+.vehicle-media{
+
+    position:relative;
+    height:230px;
+    overflow:hidden;
+    background:
+        linear-gradient(
+            145deg,
+            #eef2f7,
+            #f8fafc
+        );
+
+}
+
+.vehicle-media > img{
 
     width:100%;
-
     height:100%;
-
+    display:block;
     object-fit:cover;
+    transition:
+        transform .45s ease;
 
 }
 
-.dados{
+.veiculo-card:hover .vehicle-media > img{
 
+    transform:scale(1.055);
+
+}
+
+.media-overlay{
+
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(2,6,23,.08) 0%,
+            transparent 38%,
+            rgba(2,6,23,.78) 100%
+        );
+    pointer-events:none;
+
+}
+
+.vehicle-placeholder{
+
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
     padding:25px;
+    text-align:center;
+    color:#94a3b8;
 
 }
 
-.dados h2{
+.placeholder-circle{
 
-    margin-bottom:6px;
+    width:115px;
+    height:82px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:10px;
+    border-radius:25px;
+    background:#fff;
+    color:var(--showroom-orange);
+    box-shadow:
+        0 15px 30px rgba(15,23,42,.07);
 
 }
 
-.dados p{
+.placeholder-circle svg{
 
-    color:#64748b;
+    width:82px;
+    height:52px;
 
+}
+
+.vehicle-placeholder strong{
+
+    margin-bottom:4px;
+    color:#475569;
+    font-size:12px;
+
+}
+
+.vehicle-placeholder span{
+
+    color:#94a3b8;
+    font-size:10px;
+
+}
+
+.available-badge{
+
+    position:absolute;
+    top:14px;
+    left:14px;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:8px 11px;
+    border:1px solid rgba(255,255,255,.24);
+    border-radius:999px;
+    background:rgba(15,23,42,.72);
+    color:#fff;
+    font-size:9px;
+    font-weight:900;
+    text-transform:uppercase;
+    backdrop-filter:blur(12px);
+
+}
+
+.available-badge span{
+
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#22c55e;
+    box-shadow:
+        0 0 0 4px rgba(34,197,94,.15);
+
+}
+
+.category-badge{
+
+    position:absolute;
+    top:14px;
+    right:14px;
+    z-index:3;
+    max-width:46%;
+    overflow:hidden;
+    padding:8px 11px;
+    border-radius:999px;
+    background:var(--showroom-orange);
+    color:#fff;
+    font-size:9px;
+    font-weight:900;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
+    white-space:nowrap;
+    box-shadow:
+        0 9px 20px rgba(255,106,0,.25);
+
+}
+
+.media-locadora{
+
+    position:absolute;
+    right:14px;
+    bottom:14px;
+    left:14px;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+}
+
+.locadora-avatar{
+
+    width:38px;
+    height:38px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:2px solid rgba(255,255,255,.5);
+    border-radius:12px;
+    background:
+        linear-gradient(
+            145deg,
+            var(--showroom-orange-light),
+            var(--showroom-orange)
+        );
+    color:#fff;
+    font-size:14px;
+    font-weight:1000;
+    box-shadow:
+        0 9px 20px rgba(0,0,0,.22);
+
+}
+
+.media-locadora small{
+
+    display:block;
+    margin-bottom:1px;
+    color:#cbd5e1;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.13em;
+
+}
+
+.media-locadora strong{
+
+    display:block;
+    overflow:hidden;
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+}
+
+.vehicle-content{
+
+    padding:20px;
+
+}
+
+.vehicle-heading{
+
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
     margin-bottom:18px;
 
 }
 
-.linha{
+.vehicle-heading > div:first-child{
 
-    display:flex;
-
-    justify-content:space-between;
-
-    margin:12px 0;
+    min-width:0;
 
 }
 
-.valor{
+.vehicle-type{
 
-    color:#ff6a00;
-
-    font-size:22px;
+    display:block;
+    margin-bottom:5px;
+    overflow:hidden;
+    color:var(--showroom-orange-dark);
+    font-size:9px;
+    font-weight:1000;
+    letter-spacing:.1em;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
+    white-space:nowrap;
 
 }
 
-.empresa{
+.vehicle-heading h2{
 
-    margin-top:22px;
+    margin:0;
+    overflow:hidden;
+    color:var(--showroom-text);
+    font-size:21px;
+    line-height:1.15;
+    letter-spacing:-.035em;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 
-    background:#fff7ed;
+}
 
-    border-radius:12px;
+.vehicle-code{
 
-    padding:12px;
+    flex:none;
+    padding:6px 8px;
+    border-radius:9px;
+    background:#f1f5f9;
+    color:#94a3b8;
+    font-size:8px;
+    font-weight:900;
 
+}
+
+.vehicle-specs{
+
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:8px;
+    margin-bottom:15px;
+
+}
+
+.spec-item{
+
+    min-width:0;
+    padding:11px 9px;
+    border:1px solid #e8edf3;
+    border-radius:14px;
+    background:#f8fafc;
     text-align:center;
 
+}
+
+.spec-icon{
+
+    width:29px;
+    height:29px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 6px;
+    border-radius:9px;
+    background:#fff;
+    color:var(--showroom-orange);
+    box-shadow:
+        0 5px 13px rgba(15,23,42,.055);
+
+}
+
+.spec-icon svg{
+
+    width:16px;
+    height:16px;
+
+}
+
+.spec-item small{
+
+    display:block;
+    margin-bottom:2px;
+    color:#94a3b8;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.07em;
+    text-transform:uppercase;
+
+}
+
+.spec-item strong{
+
+    display:block;
+    overflow:hidden;
+    color:#334155;
+    font-size:9px;
+    font-weight:900;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+}
+
+.vehicle-price-box{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:13px;
+    padding:14px;
+    border:1px solid #fed7aa;
+    border-radius:16px;
+    background:
+        linear-gradient(
+            135deg,
+            #fffaf5,
+            #fff7ed
+        );
+
+}
+
+.price-copy > span{
+
+    display:block;
+    margin-bottom:3px;
+    color:#9a6044;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+
+}
+
+.price-value{
+
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:4px;
+
+}
+
+.price-value strong{
+
+    color:var(--showroom-orange-dark);
+    font-size:24px;
+    font-weight:1000;
+    line-height:1;
+
+}
+
+.price-value small{
+
+    color:#b56f4c;
+    font-size:9px;
     font-weight:800;
 
-    color:#c2410c;
+}
+
+.price-icon{
+
+    width:39px;
+    height:39px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:12px;
+    background:#ffedd5;
+    color:var(--showroom-orange-dark);
+
+}
+
+.price-icon svg{
+
+    width:21px;
+    height:21px;
+
+}
+
+.vehicle-company{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+    padding:11px;
+    border:1px solid #e5eaf0;
+    border-radius:15px;
+    background:#f8fafc;
+
+}
+
+.company-icon{
+
+    width:35px;
+    height:35px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:#fff;
+    color:#475569;
+    box-shadow:
+        0 5px 13px rgba(15,23,42,.055);
+
+}
+
+.company-icon svg{
+
+    width:18px;
+    height:18px;
+
+}
+
+.company-data{
+
+    min-width:0;
+    flex:1;
+
+}
+
+.company-data small{
+
+    display:block;
+    margin-bottom:2px;
+    color:#94a3b8;
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.09em;
+
+}
+
+.company-data strong{
+
+    display:block;
+    overflow:hidden;
+    color:#334155;
+    font-size:10px;
+    font-weight:900;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+
+}
+
+.verified-company{
+
+    flex:none;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    color:#16a34a;
+    font-size:7px;
+    font-weight:900;
+
+}
+
+.verified-company svg{
+
+    width:15px;
+    height:15px;
 
 }
 
 .btn-interesse{
 
-    margin-top:20px;
-
-    display:block;
-
-    text-align:center;
-
-    background:#16a34a;
-
+    width:100%;
+    min-height:58px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px 13px;
+    overflow:hidden;
+    border-radius:16px;
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            var(--showroom-green)
+        );
     color:#fff;
-
     text-decoration:none;
-
-    padding:16px;
-
-    border-radius:14px;
-
-    font-weight:900;
+    box-shadow:
+        0 13px 25px rgba(22,163,74,.19);
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
 
 }
 
 .btn-interesse:hover{
 
-    background:#15803d;
+    color:#fff;
+    text-decoration:none;
+    transform:translateY(-2px);
+    filter:saturate(1.08);
+    box-shadow:
+        0 17px 30px rgba(22,163,74,.28);
 
 }
 
-.empty{
+.whatsapp-icon{
 
+    width:37px;
+    height:37px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:11px;
+    background:rgba(255,255,255,.16);
+
+}
+
+.whatsapp-icon svg{
+
+    width:22px;
+    height:22px;
+
+}
+
+.interest-copy{
+
+    min-width:0;
+    flex:1;
+
+}
+
+.interest-copy small{
+
+    display:block;
+    margin-bottom:1px;
+    color:rgba(255,255,255,.78);
+    font-size:7px;
+    font-weight:900;
+    letter-spacing:.1em;
+
+}
+
+.interest-copy strong{
+
+    display:block;
+    color:#fff;
+    font-size:12px;
+    font-weight:1000;
+
+}
+
+.interest-arrow{
+
+    width:31px;
+    height:31px;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:10px;
+    background:rgba(255,255,255,.12);
+
+}
+
+.interest-arrow svg{
+
+    width:17px;
+    height:17px;
+
+}
+
+.search-empty{
+
+    display:none;
+    margin-top:20px;
+    padding:60px 25px;
+    border:1px dashed #cbd5e1;
+    border-radius:24px;
+    background:#fff;
     text-align:center;
 
-    padding:70px;
+}
+
+.search-empty.visible{
+
+    display:block;
 
 }
 
-@media(max-width:768px){
+.search-empty-icon{
+
+    width:72px;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 17px;
+    border-radius:22px;
+    background:#fff7ed;
+    color:var(--showroom-orange);
+
+}
+
+.search-empty-icon svg{
+
+    width:35px;
+    height:35px;
+
+}
+
+.search-empty h2{
+
+    margin:0 0 8px;
+    color:var(--showroom-text);
+    font-size:22px;
+
+}
+
+.search-empty p{
+
+    margin:0 0 20px;
+    color:var(--showroom-muted);
+    font-size:12px;
+
+}
+
+.search-empty button{
+
+    min-height:43px;
+    padding:0 18px;
+    border:0;
+    border-radius:12px;
+    background:var(--showroom-dark);
+    color:#fff;
+    font-family:inherit;
+    font-size:11px;
+    font-weight:900;
+    cursor:pointer;
+
+}
+
+.general-empty{
+
+    position:relative;
+    overflow:hidden;
+    padding:70px 30px;
+    border:1px solid var(--showroom-border);
+    border-radius:28px;
+    background:#fff;
+    text-align:center;
+    box-shadow:
+        0 18px 45px rgba(15,23,42,.065);
+
+}
+
+.general-empty-visual{
+
+    position:relative;
+    width:180px;
+    height:140px;
+    margin:0 auto 20px;
+
+}
+
+.empty-circle-one,
+.empty-circle-two{
+
+    position:absolute;
+    border-radius:50%;
+
+}
+
+.empty-circle-one{
+
+    width:130px;
+    height:130px;
+    top:5px;
+    left:25px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,106,0,.13),
+            rgba(255,106,0,.03)
+        );
+
+}
+
+.empty-circle-two{
+
+    width:75px;
+    height:75px;
+    right:0;
+    bottom:0;
+    border:1px solid rgba(255,106,0,.15);
+
+}
+
+.general-empty-icon{
+
+    position:absolute;
+    top:27px;
+    left:30px;
+    z-index:2;
+    width:120px;
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:28px;
+    background:#fff;
+    color:var(--showroom-orange);
+    box-shadow:
+        0 17px 35px rgba(15,23,42,.09);
+
+}
+
+.general-empty-icon svg{
+
+    width:85px;
+    height:55px;
+
+}
+
+.empty-kicker{
+
+    display:block;
+    margin-bottom:9px;
+    color:var(--showroom-orange-dark);
+    font-size:10px;
+    font-weight:1000;
+    letter-spacing:.14em;
+
+}
+
+.general-empty h2{
+
+    margin:0 0 10px;
+    color:var(--showroom-text);
+    font-size:27px;
+    letter-spacing:-.035em;
+
+}
+
+.general-empty p{
+
+    max-width:520px;
+    margin:0 auto 22px;
+    color:var(--showroom-muted);
+    font-size:13px;
+    line-height:1.65;
+
+}
+
+.general-empty a{
+
+    width:max-content;
+    min-height:45px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:0 17px;
+    border-radius:13px;
+    background:var(--showroom-dark);
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    text-decoration:none;
+
+}
+
+.general-empty a svg{
+
+    width:17px;
+    height:17px;
+
+}
+
+@media(max-width:1250px){
+
+    .veiculos-grid{
+
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+
+    }
+
+}
+
+@media(max-width:1040px){
+
+    .hero-content{
+
+        grid-template-columns:1fr;
+        padding:40px;
+
+    }
+
+    .hero-visual{
+
+        display:none;
+
+    }
+
+    .filter-panel{
+
+        grid-template-columns:1fr 1fr;
+
+    }
+
+    .filter-search{
+
+        grid-column:1 / -1;
+
+    }
+
+}
+
+@media(max-width:760px){
+
+    .showroom-page{
+
+        padding-bottom:25px;
+
+    }
+
+    .showroom-hero{
+
+        min-height:auto;
+        margin-bottom:25px;
+        border-radius:23px;
+
+    }
+
+    .hero-content{
+
+        min-height:auto;
+        padding:30px 24px;
+
+    }
+
+    .hero-copy h1{
+
+        font-size:36px;
+
+    }
+
+    .hero-copy > p{
+
+        font-size:13px;
+
+    }
+
+    .hero-stats{
+
+        display:grid;
+        grid-template-columns:1fr;
+        gap:8px;
+
+    }
+
+    .hero-stat{
+
+        min-width:0;
+
+    }
+
+    .toolbar-heading{
+
+        align-items:center;
+
+    }
+
+    .toolbar-heading h2{
+
+        font-size:21px;
+
+    }
+
+    .filter-panel{
+
+        grid-template-columns:1fr;
+        padding:11px;
+        border-radius:17px;
+
+    }
+
+    .filter-search{
+
+        grid-column:auto;
+
+    }
 
     .veiculos-grid{
 
         grid-template-columns:1fr;
+        gap:17px;
+
+    }
+
+    .vehicle-media{
+
+        height:225px;
+
+    }
+
+}
+
+@media(max-width:500px){
+
+    .showroom-hero{
+
+        border-radius:20px;
+
+    }
+
+    .hero-content{
+
+        padding:25px 20px;
+
+    }
+
+    .hero-badge{
+
+        margin-bottom:16px;
+        font-size:8px;
+
+    }
+
+    .hero-copy h1{
+
+        margin-bottom:12px;
+        font-size:31px;
+
+    }
+
+    .hero-copy > p{
+
+        font-size:12px;
+        line-height:1.6;
+
+    }
+
+    .hero-stats{
+
+        margin-top:22px;
+
+    }
+
+    .hero-stat{
+
+        padding:10px 12px;
+
+    }
+
+    .toolbar-heading{
+
+        align-items:flex-end;
+
+    }
+
+    .section-kicker{
+
+        font-size:8px;
+
+    }
+
+    .toolbar-heading h2{
+
+        font-size:19px;
+
+    }
+
+    .results-counter{
+
+        padding:6px 9px;
+
+    }
+
+    .results-counter strong{
+
+        font-size:16px;
+
+    }
+
+    .results-counter span{
+
+        display:none;
+
+    }
+
+    .vehicle-media{
+
+        height:205px;
+
+    }
+
+    .vehicle-content{
+
+        padding:17px;
+
+    }
+
+    .vehicle-heading h2{
+
+        font-size:19px;
+
+    }
+
+    .vehicle-specs{
+
+        gap:6px;
+
+    }
+
+    .spec-item{
+
+        padding:9px 6px;
+
+    }
+
+    .spec-item strong{
+
+        font-size:8px;
+
+    }
+
+    .price-value strong{
+
+        font-size:22px;
+
+    }
+
+    .verified-company{
+
+        display:none;
+
+    }
+
+}
+
+@media(max-width:365px){
+
+    .hero-content{
+
+        padding:22px 17px;
+
+    }
+
+    .hero-copy h1{
+
+        font-size:28px;
+
+    }
+
+    .vehicle-media{
+
+        height:190px;
+
+    }
+
+    .vehicle-content{
+
+        padding:14px;
+
+    }
+
+    .vehicle-specs{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .spec-item{
+
+        display:flex;
+        align-items:center;
+        gap:10px;
+        padding:9px;
+        text-align:left;
+
+    }
+
+    .spec-icon{
+
+        margin:0;
 
     }
 
 }
 
 </style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    const campoBusca = document.getElementById("buscaVeiculo");
+    const filtroCambio = document.getElementById("filtroCambio");
+    const filtroCombustivel = document.getElementById("filtroCombustivel");
+    const botaoLimparBusca = document.getElementById("limparBusca");
+    const botaoResetarFiltros = document.getElementById("resetarFiltros");
+    const contadorResultados = document.getElementById("resultadosEncontrados");
+    const estadoVazio = document.getElementById("searchEmpty");
+
+    const cards = Array.from(
+        document.querySelectorAll(".veiculo-card")
+    );
+
+    function normalizarTexto(valor){
+
+        return String(valor || "")
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim();
+
+    }
+
+    function removerOpcoesDuplicadas(select){
+
+        if(!select){
+
+            return;
+
+        }
+
+        const valoresEncontrados = new Set();
+
+        Array.from(select.options).forEach(function(option, index){
+
+            if(index === 0){
+
+                return;
+
+            }
+
+            const valorNormalizado = normalizarTexto(
+                option.value
+            );
+
+            if(
+                !valorNormalizado ||
+                valoresEncontrados.has(valorNormalizado)
+            ){
+
+                option.remove();
+                return;
+
+            }
+
+            valoresEncontrados.add(valorNormalizado);
+
+        });
+
+    }
+
+    function atualizarBotaoLimpar(){
+
+        if(!campoBusca || !botaoLimparBusca){
+
+            return;
+
+        }
+
+        botaoLimparBusca.classList.toggle(
+            "visible",
+            campoBusca.value.trim().length > 0
+        );
+
+    }
+
+    function filtrarVeiculos(){
+
+        const termoBusca = normalizarTexto(
+            campoBusca ? campoBusca.value : ""
+        );
+
+        const cambioSelecionado = normalizarTexto(
+            filtroCambio ? filtroCambio.value : ""
+        );
+
+        const combustivelSelecionado = normalizarTexto(
+            filtroCombustivel
+                ? filtroCombustivel.value
+                : ""
+        );
+
+        let quantidadeVisivel = 0;
+
+        cards.forEach(function(card){
+
+            const textoCard = normalizarTexto(
+                card.dataset.busca
+            );
+
+            const cambioCard = normalizarTexto(
+                card.dataset.cambio
+            );
+
+            const combustivelCard = normalizarTexto(
+                card.dataset.combustivel
+            );
+
+            const atendeBusca =
+                !termoBusca ||
+                textoCard.includes(termoBusca);
+
+            const atendeCambio =
+                !cambioSelecionado ||
+                cambioCard === cambioSelecionado;
+
+            const atendeCombustivel =
+                !combustivelSelecionado ||
+                combustivelCard === combustivelSelecionado;
+
+            const deveExibir =
+                atendeBusca &&
+                atendeCambio &&
+                atendeCombustivel;
+
+            card.classList.toggle(
+                "hidden-card",
+                !deveExibir
+            );
+
+            if(deveExibir){
+
+                quantidadeVisivel++;
+
+            }
+
+        });
+
+        if(contadorResultados){
+
+            contadorResultados.textContent =
+                quantidadeVisivel;
+
+        }
+
+        if(estadoVazio){
+
+            estadoVazio.classList.toggle(
+                "visible",
+                quantidadeVisivel === 0
+            );
+
+        }
+
+        atualizarBotaoLimpar();
+
+    }
+
+    function limparTodosOsFiltros(){
+
+        if(campoBusca){
+
+            campoBusca.value = "";
+
+        }
+
+        if(filtroCambio){
+
+            filtroCambio.value = "";
+
+        }
+
+        if(filtroCombustivel){
+
+            filtroCombustivel.value = "";
+
+        }
+
+        filtrarVeiculos();
+
+        if(campoBusca){
+
+            campoBusca.focus();
+
+        }
+
+    }
+
+    removerOpcoesDuplicadas(filtroCambio);
+    removerOpcoesDuplicadas(filtroCombustivel);
+
+    if(campoBusca){
+
+        campoBusca.addEventListener(
+            "input",
+            filtrarVeiculos
+        );
+
+    }
+
+    if(filtroCambio){
+
+        filtroCambio.addEventListener(
+            "change",
+            filtrarVeiculos
+        );
+
+    }
+
+    if(filtroCombustivel){
+
+        filtroCombustivel.addEventListener(
+            "change",
+            filtrarVeiculos
+        );
+
+    }
+
+    if(botaoLimparBusca){
+
+        botaoLimparBusca.addEventListener(
+            "click",
+            function(){
+
+                campoBusca.value = "";
+                filtrarVeiculos();
+                campoBusca.focus();
+
+            }
+        );
+
+    }
+
+    if(botaoResetarFiltros){
+
+        botaoResetarFiltros.addEventListener(
+            "click",
+            limparTodosOsFiltros
+        );
+
+    }
+
+    filtrarVeiculos();
+
+});
+
+</script>
 
 {% endblock %}
