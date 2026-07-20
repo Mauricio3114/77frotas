@@ -185,6 +185,45 @@
 
         <h3>📎 Documentos</h3>
 
+        <div class="premium-card">
+
+            <h3>✅ Situação do Cliente</h3>
+
+            <div class="campo">
+
+                <label>Status do Cadastro</label>
+
+                <select name="ativo">
+
+                    <option
+                        value="1"
+                        {% if cliente.ativo %}selected{% endif %}>
+
+                        🟢 Cliente Ativo
+
+                    </option>
+
+                    <option
+                        value="0"
+                        {% if not cliente.ativo %}selected{% endif %}>
+
+                        🔴 Cliente Inativo
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <p style="margin-top:12px;color:#64748b;">
+
+                Clientes inativos permanecem no histórico,
+                porém não poderão ser utilizados em novas locações.
+
+            </p>
+
+        </div>
+
         <div class="campo">
             <label>Foto Cliente</label>
             <input type="file" name="foto_cliente">

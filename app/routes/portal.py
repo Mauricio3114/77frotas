@@ -65,16 +65,20 @@ def login():
             request.form.get("senha") or ""
         ).strip()
 
-        clientes = Cliente.query.all()
-
         cliente = None
 
+        clientes = Cliente.query.filter_by(
+            ativo=True
+        ).all()
+
         for c in clientes:
+
             cpf_cliente = (
                 c.cpf or ""
             ).replace(".", "").replace("-", "").replace(" ", "")
 
             if cpf_cliente == cpf:
+
                 cliente = c
                 break
 
@@ -86,13 +90,16 @@ def login():
 
             return redirect(url_for("portal.login"))
 
-        if not getattr(cliente, "data_nascimento", None):
+        if not cliente.ativo:
+
             flash(
-                "Seu cadastro ainda não possui data de nascimento. Fale com a locadora.",
+                "Seu cadastro está inativo. Entre em contato com sua locadora.",
                 "warning"
             )
 
-            return redirect(url_for("portal.login"))
+            return redirect(
+                url_for("portal.login")
+            )
 
         data_nascimento = cliente.data_nascimento
 

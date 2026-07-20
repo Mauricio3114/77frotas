@@ -61,6 +61,12 @@ class Cliente(db.Model):
     # inadimplente
     # bloqueado
 
+    ativo = db.Column(
+        db.Boolean,
+        default=True,
+        nullable=False
+    )
+
     observacoes = db.Column(db.Text)
 
     data_cadastro = db.Column(

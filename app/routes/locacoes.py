@@ -632,9 +632,10 @@ def nova_locacao():
         )
 
     clientes = Cliente.query.filter_by(
-        conta_id=current_user.conta_id
+        conta_id=current_user.conta_id,
+        ativo=True
     ).order_by(
-        Cliente.nome.asc()
+        Cliente.nome
     ).all()
 
     clientes_ocupados = {

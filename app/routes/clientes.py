@@ -184,7 +184,10 @@ def detalhes(id):
     )
 
 
-@clientes_bp.route("/<int:id>/editar")
+@clientes_bp.route(
+    "/<int:id>/editar",
+    methods=["GET", "POST"]
+)
 @login_required
 def editar(id):
 
@@ -192,6 +195,65 @@ def editar(id):
         id=id,
         conta_id=current_user.conta_id
     ).first_or_404()
+
+    if request.method == "POST":
+
+        data_nascimento = request.form.get("data_nascimento")
+        validade_cnh = request.form.get("validade_cnh")
+
+        if data_nascimento:
+            data_nascimento = datetime.strptime(
+                data_nascimento,
+                "%Y-%m-%d"
+            ).date()
+        else:
+            data_nascimento = None
+
+        if validade_cnh:
+            validade_cnh = datetime.strptime(
+                validade_cnh,
+                "%Y-%m-%d"
+            ).date()
+        else:
+            validade_cnh = None
+
+        cliente.nome = request.form.get("nome")
+        cliente.cpf = request.form.get("cpf")
+        cliente.rg = request.form.get("rg")
+        cliente.data_nascimento = data_nascimento
+
+        cliente.numero_cnh = request.form.get("numero_cnh")
+        cliente.categoria_cnh = request.form.get("categoria_cnh")
+        cliente.validade_cnh = validade_cnh
+
+        cliente.telefone = request.form.get("telefone")
+        cliente.whatsapp = request.form.get("whatsapp")
+        cliente.email = request.form.get("email")
+
+        cliente.cep = request.form.get("cep")
+        cliente.endereco = request.form.get("endereco")
+        cliente.numero = request.form.get("numero")
+        cliente.bairro = request.form.get("bairro")
+        cliente.cidade = request.form.get("cidade")
+        cliente.estado = request.form.get("estado")
+
+        cliente.ativo = (
+            request.form.get("ativo") == "1"
+        )
+
+        db.session.commit()
+
+        flash(
+            "Cliente atualizado com sucesso.",
+            "success"
+        )
+
+        return redirect(
+            url_for(
+                "clientes.detalhes",
+                id=cliente.id
+            )
+        )
 
     return render_template(
         "clientes/editar.html",
