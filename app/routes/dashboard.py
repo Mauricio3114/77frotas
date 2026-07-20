@@ -54,20 +54,33 @@ def dashboard():
     ).count()
 
     total_locacoes = Locacao.query.filter_by(
-        conta_id=conta_id
+        conta_id=conta_id,
+        status="ativa"
     ).count()
 
-    parcelas_receber_hoje = Parcela.query.filter(
-        Parcela.conta_id == conta_id,
-        Parcela.vencimento == hoje,
-        Parcela.status != "paga"
-    ).all()
+    parcelas_receber_hoje = (
+        Parcela.query
+        .join(Locacao)
+        .filter(
+            Parcela.conta_id == conta_id,
+            Locacao.status == "ativa",
+            Parcela.vencimento == hoje,
+            Parcela.status != "paga"
+        )
+        .all()
+    )
 
-    parcelas_atrasadas = Parcela.query.filter(
-        Parcela.conta_id == conta_id,
-        Parcela.vencimento < hoje,
-        Parcela.status != "paga"
-    ).all()
+    parcelas_atrasadas = (
+        Parcela.query
+        .join(Locacao)
+        .filter(
+            Parcela.conta_id == conta_id,
+            Locacao.status == "ativa",
+            Parcela.vencimento < hoje,
+            Parcela.status != "paga"
+        )
+        .all()
+    )
 
     parcelas_recebidas_hoje = Parcela.query.filter(
         Parcela.conta_id == conta_id,
@@ -75,12 +88,18 @@ def dashboard():
         Parcela.status == "paga"
     ).all()
 
-    parcelas_previsao_mes = Parcela.query.filter(
-        Parcela.conta_id == conta_id,
-        Parcela.status != "paga",
-        Parcela.vencimento >= primeiro_dia_mes,
-        Parcela.vencimento < primeiro_dia_proximo_mes
-    ).all()
+    parcelas_previsao_mes = (
+        Parcela.query
+        .join(Locacao)
+        .filter(
+            Parcela.conta_id == conta_id,
+            Locacao.status == "ativa",
+            Parcela.status != "paga",
+            Parcela.vencimento >= primeiro_dia_mes,
+            Parcela.vencimento < primeiro_dia_proximo_mes
+        )
+        .all()
+    )
 
     veiculos_livres = Veiculo.query.filter_by(
         conta_id=conta_id,
@@ -88,18 +107,29 @@ def dashboard():
         status="disponivel"
     ).limit(6).all()
 
-    ultimas_locacoes = Locacao.query.filter_by(
-        conta_id=conta_id
-    ).order_by(
-        Locacao.data_cadastro.desc()
-    ).limit(6).all()
+    ultimas_locacoes = (
+        Locacao.query
+        .filter_by(
+            conta_id=conta_id,
+            status="ativa"
+        )
+        .order_by(Locacao.data_inicio.desc())
+        .limit(6)
+        .all()
+    )
 
-    ultimas_parcelas = Parcela.query.filter(
-        Parcela.conta_id == conta_id,
-        Parcela.status != "paga"
-    ).order_by(
-        Parcela.vencimento.asc()
-    ).limit(8).all()
+    ultimas_parcelas = (
+        Parcela.query
+        .join(Locacao)
+        .filter(
+            Parcela.conta_id == conta_id,
+            Locacao.status == "ativa",
+            Parcela.status != "paga"
+        )
+        .order_by(Parcela.vencimento.asc())
+        .limit(8)
+        .all()
+    )
 
     receber_hoje = sum(
         float(parcela.valor or 0)
