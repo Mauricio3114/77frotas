@@ -114,7 +114,7 @@
 
             <strong>
 
-                R$ {{ "%.2f"|format(v.valor_diaria or 0) }}
+                {{ v.valor_diaria|moeda }}
 
             </strong>
 

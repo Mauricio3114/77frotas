@@ -162,7 +162,7 @@ def confirmar_pix(pagamento_id):
     # Confirma o pagamento existente.
     pagamento.webhook_recebido = True
     pagamento.gateway = pagamento.gateway or "Manual"
-    pagamento.forma_pagamento = "pix"
+    pagamento.forma_pagamento = "PIX Manual"
     pagamento.data_pagamento = agora
 
     texto = "Pagamento PIX confirmado manualmente pela locadora."
@@ -181,7 +181,7 @@ def confirmar_pix(pagamento_id):
     db.session.commit()
 
     flash(
-        "Pagamento confirmado e parcela baixada com sucesso.",
+        "Recebimento confirmado com sucesso. A parcela foi baixada e o histórico financeiro foi atualizado.",
         "success"
     )
 

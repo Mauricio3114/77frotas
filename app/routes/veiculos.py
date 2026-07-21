@@ -73,6 +73,25 @@ def novo():
 
         if existe:
 
+            if not existe.ativo:
+
+                existe.ativo = True
+                existe.status = "disponivel"
+
+                db.session.commit()
+
+                flash(
+                    "Veículo reativado com sucesso.",
+                    "success"
+                )
+
+                return redirect(
+                    url_for(
+                        "veiculos.detalhes",
+                        id=existe.id
+                    )
+                )
+
             flash(
                 "Já existe um veículo com essa placa.",
                 "danger"

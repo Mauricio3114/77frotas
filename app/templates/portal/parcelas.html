@@ -36,7 +36,9 @@
 
         <div class="valor">
 
-            R$ {{ "%.2f"|format(p.valor or 0) }}
+            <strong>
+                {{ p.valor|moeda }}
+            </strong>
 
         </div>
 

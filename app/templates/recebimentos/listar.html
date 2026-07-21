@@ -29,7 +29,7 @@
 
         <h2>
 
-            R$ {{ "%.2f"|format(total_hoje or 0) }}
+            {{ total_hoje|moeda }}
 
         </h2>
 
@@ -41,7 +41,7 @@
 
         <h2>
 
-            R$ {{ "%.2f"|format(total_pix or 0) }}
+            {{ total_pix|moeda }}
 
         </h2>
 
@@ -53,7 +53,7 @@
 
         <h2>
 
-            R$ {{ "%.2f"|format(total_geral or 0) }}
+            {{ total_geral|moeda }}
 
         </h2>
 
@@ -191,7 +191,7 @@
 
         <strong>
 
-            R$ {{ "%.2f"|format(pagamento.valor or 0) }}
+            {{ pagamento.valor|moeda }}
 
         </strong>
 

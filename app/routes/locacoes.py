@@ -461,6 +461,23 @@ def nova_locacao():
 
         plano = request.form.get("plano")
 
+        caucao = float(
+            request.form.get("caucao") or 0
+        )
+
+        desconto = float(
+            request.form.get("desconto") or 0
+        )
+
+        forma_pagamento = request.form.get(
+            "forma_pagamento"
+        )
+
+        observacoes = request.form.get(
+            "observacoes",
+            ""
+        )
+
         valor_total = float(
             request.form.get("valor_locacao") or 0
         )
@@ -564,6 +581,8 @@ def nova_locacao():
 
             valor_diaria=valor_total,
 
+            observacoes=observacoes,
+
             status="ativa"
 
         )
@@ -606,7 +625,10 @@ def nova_locacao():
                 locacao=locacao,
                 numero=numero,
                 vencimento=venc,
-                valor=valor_total,
+                valor=max(
+                    0,
+                    valor_total - desconto
+                ),
                 status="aberta"
             )
 
